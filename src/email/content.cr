@@ -1,6 +1,4 @@
-
 abstract class EMail::Content
-
   @mime_type : String
   @data : String = ""
   @content_type : Header::ContentType
@@ -52,8 +50,7 @@ abstract class EMail::Content
   end
 
   class TextPlain < Content
-
-    def initialize()
+    def initialize
       super("text/plain")
       @content_type.set_charset("UTF-8")
     end
@@ -65,7 +62,6 @@ abstract class EMail::Content
   end
 
   class AttachedFile < Content
-
     # :nodoc:
     NAME_TO_ENCODE = /[^\w\_\-\. ]/
 
@@ -81,10 +77,10 @@ abstract class EMail::Content
 
     def initialize(io : IO, @file_name : String, mime_type : ::String? = nil)
       extname = if @file_name =~ /(\.[^\.]+)\z/
-        $1
-      else
-        ""
-      end
+                  $1
+                else
+                  ""
+                end
       mime_type ||= (EMail::MIME_TYPE[extname]? || "application/octet-stream")
       super(mime_type)
       @content_type.set_fname(@file_name)
@@ -98,7 +94,5 @@ abstract class EMail::Content
     def headers
       super() << content_disposition
     end
-
   end
-
 end

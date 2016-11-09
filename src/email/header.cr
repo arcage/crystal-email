@@ -1,11 +1,9 @@
-
 abstract class EMail::Header
-
   FIELD_NAME = /\A[\x{21}-\x{39}\x{3b}-\x{7e}]+\z/
   FIELD_BODY = /\A[\x{1}-\x{8}\x{b}\x{c}\x{e}-\x{1f}\x{21}-\x{7f}]+\z/
 
-  NON_VCHAR = /[^\x{9}\x{20}-\x{7e}]/
-  LINE_LENGTH = 78
+  NON_VCHAR              = /[^\x{9}\x{20}-\x{7e}]/
+  LINE_LENGTH            = 78
   ENCODE_DEFINITION_SIZE = 13
   ENCODE_DEFINITION_HEAD = " =?UTF-8?B?"
   ENCODE_DEFINITION_TAIL = "?="
@@ -65,7 +63,7 @@ abstract class EMail::Header
         io << " #{body_part}"
         offset += body_part.size + 1
       else
-        encoded_part , offset = Header.base64_encode(body_part, offset)
+        encoded_part, offset = Header.base64_encode(body_part, offset)
         io << encoded_part
       end
     end
@@ -95,7 +93,6 @@ abstract class EMail::Header
     def add(mail_address : Address)
       @list << mail_address
     end
-
   end
 
   class SingleAddress < Header
@@ -122,13 +119,12 @@ abstract class EMail::Header
     end
   end
 
-
   class Date < Header
     RFC2822_FORMAT = "%a, %d %b %Y %T %z"
 
     @timestamp : ::Time? = nil
 
-    def initialize()
+    def initialize
       super("Date")
     end
 
@@ -143,7 +139,6 @@ abstract class EMail::Header
     def body
       @timestamp.not_nil!.to_s(RFC2822_FORMAT)
     end
-
   end
 
   class Unstructured < Header
@@ -160,7 +155,7 @@ abstract class EMail::Header
 
   class ContentType < Header
     @mime_type : ::String
-    @charset   : ::String? = nil
+    @charset : ::String? = nil
     @file_name : ::String? = nil
 
     def initialize(@mime_type : ::String)
@@ -178,7 +173,6 @@ abstract class EMail::Header
     def set_fname(file_name : ::String)
       @file_name = file_name
     end
-
 
     def body
       body_text = "#{@mime_type};"
@@ -215,7 +209,6 @@ abstract class EMail::Header
   end
 
   class ContentDisposition < Header
-
     @file_name : ::String
 
     def initialize(@file_name : ::String)
@@ -245,5 +238,4 @@ abstract class EMail::Header
       encoded_lines.join
     end
   end
-
 end

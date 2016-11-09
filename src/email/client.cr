@@ -1,6 +1,4 @@
-
 class EMail::Client
-
   alias OnFailedProc = Message, ::Array(::String) ->
 
   # :nodoc:
@@ -14,14 +12,14 @@ class EMail::Client
 
   getter command_history
 
-  @host            : ::String
-  @port            : ::Int32
-  @logger          : ::Logger
-  @local_host      : ::String = ""
-  @socket          : ::TCPSocket? = nil
-  @helo_domain     : ::String? = nil
+  @host : ::String
+  @port : ::Int32
+  @logger : ::Logger
+  @local_host : ::String = ""
+  @socket : ::TCPSocket? = nil
+  @helo_domain : ::String? = nil
   @command_history : ::Array(::String) = [] of ::String
-  @on_failed       : OnFailedProc? = nil
+  @on_failed : OnFailedProc? = nil
 
   def initialize(@host : ::String, @port : ::Int32 = DEFAULT_SMTP_PORT)
     @logger = logger_setting(::STDOUT, "EMail_Client", ::Logger::INFO)
@@ -61,10 +59,10 @@ class EMail::Client
 
   private def socket
     if _socket = @socket
-     _socket
-   else
-     raise Error::ClientError.new("Client socket not opened.")
-   end
+      _socket
+    else
+      raise Error::ClientError.new("Client socket not opened.")
+    end
   end
 
   def send(mail : Message)
@@ -76,7 +74,7 @@ class EMail::Client
     mail.date timestamp
     mail.message_id String.build { |io|
       io << timestamp.epoch_ms << "." << Process.pid
-      io << "."<< @logger.progname << "@[" << helo_domain << "]"
+      io << "." << @logger.progname << "@[" << helo_domain << "]"
     }
     envelope_from = mail.envelope_from
     recipients = mail.recipients
@@ -131,7 +129,6 @@ class EMail::Client
     {status_code, status_message}
   end
 
-
   private def call_helo
     status_code, _ = server_responce
     if status_code == "220"
@@ -153,7 +150,7 @@ class EMail::Client
   end
 
   private def call_rcpt(recipients : ::Array(Address))
-    succeed= true
+    succeed = true
     recipients.each do |recipient|
       status_code, status_message = server_call("RCPT TO:<#{recipient.addr}>")
       succeed = false unless status_code[0] == '2'
@@ -184,5 +181,4 @@ class EMail::Client
     @logger.fatal(logging_message)
     exit(1)
   end
-
 end

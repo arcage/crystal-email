@@ -1,6 +1,4 @@
-
 class EMail::Error < Exception
-
   class InvalidMailAddress < Error
     def initialize(address : ::String)
       super(address.inspect)
@@ -36,5 +34,4 @@ class EMail::Error < Exception
 
   class InvalidMessage < Error
   end
-
 end

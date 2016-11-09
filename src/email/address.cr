@@ -1,6 +1,4 @@
-
 class EMail::Address
-
   getter addr
   getter name
 
@@ -43,5 +41,4 @@ class EMail::Address
       io << @addr
     end
   end
-
 end

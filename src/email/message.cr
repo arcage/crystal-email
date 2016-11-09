@@ -1,6 +1,4 @@
-
 class EMail::Message
-
   @headers = {
     return_path: Header::SingleAddress.new("Return-Path"),
     sender:      Header::SingleAddress.new("Sender"),
@@ -11,11 +9,11 @@ class EMail::Message
     bcc:         Header::AddressList.new("Bcc"),
     subject:     Header::Unstructured.new("Subject"),
     message_id:  Header::Unstructured.new("Message-Id"),
-    date:        Header::Date.new
+    date:        Header::Date.new,
   }
   @optional_headers = Hash(String, Array(Header)).new
 
-  @body     = Content::TextPlain.new
+  @body = Content::TextPlain.new
   @attaches = [] of Content::AttachedFile
   @envelope_from : Address? = nil
 
@@ -59,7 +57,7 @@ class EMail::Message
   def to_s(io : IO)
     validate!
     @headers.each_value do |header|
-      io << header  << "\n" unless header.name == "Bcc" || header.empty?
+      io << header << "\n" unless header.name == "Bcc" || header.empty?
     end
     @optional_headers.each_value do |header_list|
       header_list.each do |header|
@@ -133,5 +131,4 @@ class EMail::Message
   add_address :cc
   add_address :bcc
   add_address :reply_to
-
 end
