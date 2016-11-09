@@ -119,10 +119,6 @@ mail.to "to2@some.domain"
 # Optionally, you can add mailbox name to above mail addresses.
 
 mail.from "your@mail.addr", "Your Name"
-
-# Multi byte mailbox name is acceptable.
-
-mail.cc "cc@some.domain"
 ```
 
 Call `#attach` to add an attached file.
