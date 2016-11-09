@@ -1,17 +1,17 @@
 class EMail::Message
   @headers = {
-    return_path: Header::SingleAddress.new("Return-Path"),
-    sender:      Header::SingleAddress.new("Sender"),
-    from:        Header::AddressList.new("From"),
-    reply_to:    Header::AddressList.new("Reply-To"),
-    to:          Header::AddressList.new("To"),
-    cc:          Header::AddressList.new("Cc"),
-    bcc:         Header::AddressList.new("Bcc"),
-    subject:     Header::Unstructured.new("Subject"),
-    message_id:  Header::Unstructured.new("Message-Id"),
-    date:        Header::Date.new,
+    return_path:  Header::SingleAddress.new("Return-Path"),
+    sender:       Header::SingleAddress.new("Sender"),
+    from:         Header::AddressList.new("From"),
+    reply_to:     Header::AddressList.new("Reply-To"),
+    to:           Header::AddressList.new("To"),
+    cc:           Header::AddressList.new("Cc"),
+    bcc:          Header::AddressList.new("Bcc"),
+    subject:      Header::Unstructured.new("Subject"),
+    message_id:   Header::Unstructured.new("Message-Id"),
+    date:         Header::Date.new,
+    mime_version: Header::MimeVersion.new
   }
-  @optional_headers = Hash(String, Array(Header)).new
 
   @body = Content::TextPlain.new
   @attaches = [] of Content::AttachedFile
@@ -58,11 +58,6 @@ class EMail::Message
     validate!
     @headers.each_value do |header|
       io << header << "\n" unless header.name == "Bcc" || header.empty?
-    end
-    @optional_headers.each_value do |header_list|
-      header_list.each do |header|
-        io << header << "\n" unless header.empty?
-      end
     end
     if @attaches.empty?
       @body.headers.each do |header|

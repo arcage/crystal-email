@@ -153,6 +153,18 @@ abstract class EMail::Header
     end
   end
 
+  class MimeVersion < Header
+
+    def initialize
+      super("Mime-Version")
+    end
+
+    def body
+      "1.0"
+    end
+
+  end
+
   class ContentType < Header
     @mime_type : ::String
     @charset : ::String? = nil
