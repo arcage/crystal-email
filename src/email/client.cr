@@ -7,6 +7,8 @@ class EMail::Client
     io << severity << " " << message
   end
 
+  NO_LOGGING = Logger::Severity::UNKNOWN
+
   # :nodoc:
   DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
 
@@ -69,7 +71,7 @@ class EMail::Client
     mail.validate!
     @command_history.clear
     @socket = TCPSocket.new(@host, @port)
-    @logger.info("OK: connecting to #{@host}")
+    @logger.info("OK: successfully connected to #{@host}")
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
@@ -81,9 +83,9 @@ class EMail::Client
     sent = call_helo && call_mail(envelope_from) && call_rcpt(recipients) && call_data(mail.data)
     call_quit
     if sent
-      @logger.info("OK: successfully sent message from <#{envelope_from}> to #{recipients.size} resipients")
+      @logger.info("OK: successfully sent message from <#{envelope_from}> to #{recipients.size} recipient(s)")
     else
-      @logger.info("NG: failed sinding message　for some reason")
+      @logger.info("NG: failed sending message for some reason")
       if on_failed = @on_failed
         on_failed.call(mail, @command_history)
       end
