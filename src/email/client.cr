@@ -78,12 +78,12 @@ class EMail::Client
       io << timestamp.epoch_ms << "." << Process.pid
       io << "." << @logger.progname << "@[" << helo_domain << "]"
     }
-    envelope_from = mail.envelope_from
+    mail_from = mail.mail_from
     recipients = mail.recipients
-    sent = call_helo && call_mail(envelope_from) && call_rcpt(recipients) && call_data(mail.data)
+    sent = call_helo && call_mail(mail_from) && call_rcpt(recipients) && call_data(mail.data)
     call_quit
     if sent
-      @logger.info("OK: successfully sent message from <#{envelope_from}> to #{recipients.size} recipient(s)")
+      @logger.info("OK: successfully sent message from <#{mail_from}> to #{recipients.size} recipient(s)")
     else
       @logger.info("NG: failed sending message for some reason")
       if on_failed = @on_failed
@@ -146,8 +146,8 @@ class EMail::Client
     end
   end
 
-  private def call_mail(envelope_from : Address)
-    status_code, _ = server_call("MAIL FROM:<#{envelope_from.addr}>")
+  private def call_mail(mail_from : Address)
+    status_code, _ = server_call("MAIL FROM:<#{mail_from.addr}>")
     status_code == "250"
   end
 

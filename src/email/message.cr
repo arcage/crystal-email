@@ -42,11 +42,11 @@ class EMail::Message
     @headers[:to].list + @headers[:cc].list + @headers[:bcc].list
   end
 
-  def envelope_from
+  def mail_from
     @envelope_from ||= @headers[:return_path].addr
   end
 
-  def envelope_from=(mail_address : ::String)
+  def envelope_from(mail_address : ::String)
     @envelope_from = Address.new(mail_address)
   end
 

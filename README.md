@@ -14,7 +14,7 @@ dependencies:
 
 ## Usage
 
-Basic e-Mail sending procedure is as follows:
+Basic e-Mail sending procedure:
 
 ```crystal
 require "email"
@@ -35,7 +35,7 @@ EMail.send("your.mx.server.name", 25) do |mail|
 end
 ```
 
-This code will output log to `STDOUT` as follows:
+This code will output log entries to `STDOUT` as follows:
 
 ```
 2016/11/09 16:37:25 [EMail_Client/23852] INFO OK: connecting to your.mx.server.name
@@ -138,8 +138,8 @@ mail.attach "attached_file.txt", file_name: "other_name.txt"
 
 mail.attach "attached_file", mime_type: "text/plain"
 
-# You can use readable `IO` instead of the file path.
-# In this case, the 2nd(`file_name`) argument is required.
+# You can use readable `IO` object instead of the file path.
+# In this case, the 2nd argument(`file_name`) is required.
 # (The `mime_type` argument is also acceptable.)
 
 mail.attach some_io, file_name: "other_name.txt"
@@ -161,6 +161,29 @@ mail.attach "写真.jpg"
 ```
 
 For the simplifying the implementation, the mail message and all attached data will be encoded by Base64, even when that includes only ascii characters.
+
+Call `#envelope_from`, `#sender`, `#return_path` to set envelope from address, _Sender_ or _Return-Path_ explicitly.
+
+```crystal
+mail.envelope_from "return@your.mail"
+mail.sender        "sender@your.mail"
+mail.return_path   "return@your.mail"
+```
+
+When they are unspecified:
+
+- Envelope from
+
+    The first _From_ address will be assigned.
+
+- _Sender_
+
+    When _From_ has only one address, _Sender_ will not appear. Otherwise, the first _From_ address will be assigned.
+
+- _Return-Path_
+    1. Use envelope from address if it is explicitly specified.
+    2. Use _Sender_ address if it is exist.
+    3. Otherwise, the first _From_ address will be assigned.
 
 ## Contributors
 
