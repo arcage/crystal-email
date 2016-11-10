@@ -1,6 +1,18 @@
 # EMail for Crystal
 
-Simple e-Mail sending library for the **Cristal** language(<https://crystal-lang.org/>).
+Simple e-Mail sending library for the **Cristal** language([https://crystal-lang.org/](https://crystal-lang.org/)).
+
+You can do:
+
+- constructing e-Mail with a text message and/or some attachment files.
+- setting multiple recipients to e-Mail.
+- using multibyte characters(only UTF-8) in e-Mail.
+- sending e-Mail by using local or remote SMTP server.
+
+You can not do:
+
+- constructing multipart/alternative contents for e-Mail.
+- using AUTH, STARTTLS or any other ESMTP features.
 
 ## Installation
 
@@ -45,11 +57,13 @@ This code will output log entries to `STDOUT` as follows:
 You can add some option arguments to `EMail.send`.
 
 - `:log_level` : `Logger::Severity`
+
     Set log level for SMTP session.
     - `Logger::Severity::DEBUG` : logging all smtp commands and responses.
     - `Logger::Severity::INFO` : default
     - `Logger::Severity::ERROR` : logging only events stem from some errors.
     - `EMail::Client::NO_LOGGING`(`Logger::Severity::UNKOWN`) : no events will be logged.
+
 - `:client_name` : `String`
 
     Set `progname` of the internal `Logger` object. It is also used as a part of _Message-Id_ header. (Default: `"EMail_Client"`)
@@ -121,22 +135,22 @@ mail.to "to2@some.domain"
 mail.from "your@mail.addr", "Your Name"
 ```
 
-Call `#attach` to add an attached file.
+Call `#attach` to add an attachment file.
 
 ```crystal
-mail.attach "attached_file.txt"
+mail.attach "attachment.txt"
 
 # You can designate other file name for recipient.
 
-mail.attach "attached_file.txt", file_name: "other_name.txt"
+mail.attach "attachment.txt", file_name: "other_name.txt"
 
-# You can designate mime type of the attached file explicitly.
+# You can designate mime type of the attachment file explicitly.
 #
-# By default, the mime type of the attached file will be infered
+# By default, the mime type of the attachment file will be infered
 # from the extension of that file.
 #   eg: ".txt" => "text/plain"
 
-mail.attach "attached_file", mime_type: "text/plain"
+mail.attach "attachment", mime_type: "text/plain"
 
 # You can use readable `IO` object instead of the file path.
 # In this case, the 2nd argument(`file_name`) is required.
@@ -148,7 +162,7 @@ mail.attach some_io, file_name: "other_name.txt"
 UTF-8 string can be used as follows:
 - mail message
 - part of header body(when it can be multibyte)
-- attached file name
+- name of attachment file
 
 ```crystal
 mail.subject "メールサブジェクト"

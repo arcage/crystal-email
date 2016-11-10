@@ -14,14 +14,14 @@ class EMail::Message
   }
 
   @body = Content::TextPlain.new
-  @attaches = [] of Content::AttachedFile
+  @attachments = [] of Content::AttachmentFile
   @envelope_from : Address? = nil
 
   def validate!
-    raise Error::InvalidMessage.new("Message has no from address.") if @headers[:from].empty?
-    raise Error::InvalidMessage.new("Message has no recipient.") if recipients.empty?
-    raise Error::InvalidMessage.new("Message has no content.") if @body.empty? && @attaches.empty?
-    raise Error::InvalidMessage.new("Message has no subnect.") if @headers[:subject].empty?
+    raise Error::MessageError.new("Message has no from address.") if @headers[:from].empty?
+    raise Error::MessageError.new("Message has no recipient.") if recipients.empty?
+    raise Error::MessageError.new("Message has no content.") if @body.empty? && @attachments.empty?
+    raise Error::MessageError.new("Message has no subnect.") if @headers[:subject].empty?
     if @headers[:sender].empty? && @headers[:from].size > 1
       sender @headers[:from].list.first
     end
@@ -31,11 +31,11 @@ class EMail::Message
   end
 
   def attach(file_path : ::String, file_name : ::String? = nil, mime_type : ::String? = nil)
-    @attaches << Content::AttachedFile.new(file_path, file_name, mime_type)
+    @attachments << Content::AttachmentFile.new(file_path, file_name, mime_type)
   end
 
   def attach(io : ::IO, file_name : ::String, mime_type : ::String? = nil)
-    @attaches << Content::AttachedFile.new(io, file_name, mime_type)
+    @attachments << Content::AttachmentFile.new(io, file_name, mime_type)
   end
 
   def recipients
@@ -59,7 +59,7 @@ class EMail::Message
     @headers.each_value do |header|
       io << header << "\n" unless header.name == "Bcc" || header.empty?
     end
-    if @attaches.empty?
+    if @attachments.empty?
       @body.headers.each do |header|
         io << header << "\n" unless header.empty?
       end
@@ -73,9 +73,9 @@ class EMail::Message
         io << "\n--" << boundary << "\n"
         io << @body.data(with_header: true)
       end
-      @attaches.each do |attached_file|
+      @attachments.each do |attachment|
         io << "\n--" << boundary << "\n"
-        io << attached_file.data(with_header: true)
+        io << attachment.data(with_header: true)
       end
       io << "\n--" << boundary
     end
@@ -89,14 +89,14 @@ class EMail::Message
     @headers[:date].time = timestamp
   end
 
-  macro set_unstructured(header_type)
+  macro set_text(header_type)
     def {{header_type.id}}(header_body : ::String)
       @headers[{{header_type}}].set(header_body)
     end
   end
 
-  set_unstructured :subject
-  set_unstructured :message_id
+  set_text :subject
+  set_text :message_id
 
   macro set_address(header_type)
     def {{header_type.id}}(mail_address : ::String, sender_name : ::String? = nil)
