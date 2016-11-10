@@ -50,7 +50,7 @@ end
 This code will output log entries to `STDOUT` as follows:
 
 ```
-2016/11/09 16:37:25 [EMail_Client/23852] INFO OK: connecting to your.mx.server.name
+2016/11/09 16:37:25 [EMail_Client/23852] INFO OK: successfully connected to your.mx.server.name
 2016/11/09 16:37:25 [EMail_Client/23852] INFO OK: successfully sent message from <your@mail.addr> to 3 recipient(s)
 ```
 
@@ -160,6 +160,7 @@ mail.attach some_io, file_name: "other_name.txt"
 ```
 
 UTF-8 string can be used as follows:
+
 - mail message
 - part of header body(when it can be multibyte)
 - name of attachment file

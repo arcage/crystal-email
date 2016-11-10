@@ -85,6 +85,7 @@ class EMail::Message
     @body.message = message_body
   end
 
+  # :nodoc:
   def date(timestamp : ::Time)
     @headers[:date].time = timestamp
   end

@@ -55,10 +55,6 @@ class EMail::Client
     @on_failed = on_failed
   end
 
-  private def helo_domain
-    @helo_domain ||= "[#{socket.local_address.address}]"
-  end
-
   private def socket
     if _socket = @socket
       _socket
@@ -71,19 +67,20 @@ class EMail::Client
     mail.validate!
     @command_history.clear
     @socket = TCPSocket.new(@host, @port)
+    @helo_domain ||= "[#{socket.local_address.address}]"
     @logger.info("OK: successfully connected to #{@host}")
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
       io << timestamp.epoch_ms << "." << Process.pid
-      io << "." << @logger.progname << "@[" << helo_domain << "]"
+      io << "." << @logger.progname << "@[" << @helo_domain << "]"
     }
     mail_from = mail.mail_from
     recipients = mail.recipients
     sent = call_helo && call_mail(mail_from) && call_rcpt(recipients) && call_data(mail.data)
     call_quit
     if sent
-      @logger.info("OK: successfully sent message from <#{mail_from}> to #{recipients.size} recipient(s)")
+      @logger.info("OK: successfully sent message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
       @logger.info("NG: failed sending message for some reason")
       if on_failed = @on_failed
@@ -134,11 +131,11 @@ class EMail::Client
   private def call_helo
     status_code, _ = server_responce
     if status_code == "220"
-      status_code, _ = server_call("EHLO #{helo_domain}")
+      status_code, _ = server_call("EHLO #{@helo_domain}")
       if status_code == "250"
         true
       elsif status_code == "502"
-        status_code, _ = server_call("HELO #{helo_domain}")
+        status_code, _ = server_call("HELO #{@helo_domain}")
         status_code == "250"
       end
     else
