@@ -9,13 +9,13 @@ class EMail::Address
   NAME_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~ \t]+\z/
 
   def self.valid_address!(mail_address : ::String)
-    raise Error::InvalidMailAddress.new(mail_address) unless mail_address =~ ADDRESS_FORMAT
+    raise Error::AddressError.new("#{mail_address.inspect} is invalid as a mail address.") unless mail_address =~ ADDRESS_FORMAT
     mail_address
   end
 
   def self.valid_name!(sender_name : ::String?)
     if sender_name
-      raise Error::InvalidMailName.new(sender_name) if sender_name =~ /[\r\n]/
+      raise Error::AddressError.new("#{sender_name.inspect} is invalid as a sender name") if sender_name =~ /[\r\n]/
     end
     sender_name
   end

@@ -55,13 +55,12 @@ abstract class EMail::Content
       @content_type.set_charset("UTF-8")
     end
 
-    # :nodoc:
     def message=(message_body : ::String)
       @data = read_data(::MemoryIO.new(message_body))
     end
   end
 
-  class AttachedFile < Content
+  class AttachmentFile < Content
     # :nodoc:
     NAME_TO_ENCODE = /[^\w\_\-\. ]/
 
@@ -69,7 +68,7 @@ abstract class EMail::Content
 
     def initialize(file_path : String, file_name : String? = nil, mime_type : ::String? = nil)
       file_name ||= file_path.split(/\//).last
-      raise Error::AttachedFileNotFound.new(file_path) unless File.file?(file_path)
+      raise Error::ContentError.new("Attached file #{file_path} is not exist.") unless File.file?(file_path)
       File.open(file_path) do |io|
         initialize(io, file_name, mime_type)
       end

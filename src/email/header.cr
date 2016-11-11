@@ -1,11 +1,19 @@
 abstract class EMail::Header
+
+  # :nodoc:
   FIELD_NAME = /\A[\x{21}-\x{39}\x{3b}-\x{7e}]+\z/
+  # :nodoc:
   FIELD_BODY = /\A[\x{1}-\x{8}\x{b}\x{c}\x{e}-\x{1f}\x{21}-\x{7f}]+\z/
 
+  # :nodoc:
   NON_VCHAR              = /[^\x{9}\x{20}-\x{7e}]/
+  # :nodoc:
   LINE_LENGTH            = 78
+  # :nodoc:
   ENCODE_DEFINITION_SIZE = 13
+  # :nodoc:
   ENCODE_DEFINITION_HEAD = " =?UTF-8?B?"
+  # :nodoc:
   ENCODE_DEFINITION_TAIL = "?="
 
   def self.base64_encode(src_string : String, offset : Int32) : Tuple(String, Int32)
@@ -38,11 +46,13 @@ abstract class EMail::Header
   @name : String
 
   def initialize(field_name : ::String)
-    raise Error::InvalidHeaderName.new(field_name) unless field_name =~ FIELD_NAME
+    raise Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
     @name = field_name.split("-").map(&.capitalize).join("-")
   end
 
-  abstract def body
+  private def body
+    ""
+  end
 
   def empty?
     body.empty?
@@ -50,7 +60,7 @@ abstract class EMail::Header
 
   def to_s(io : IO)
     header_body = body
-    raise Error::InvalidLineBreak.new(header_body) if header_body =~ /\n[^\x{9}\x{20}]/
+    raise Error::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
     io << @name << ":"
     splited_body = header_body.split(/\s+/)
     offset = @name.size + 1
@@ -74,7 +84,7 @@ abstract class EMail::Header
 
     @list = [] of Address
 
-    def body
+    private def body
       @list.join(", ")
     end
 
@@ -98,7 +108,7 @@ abstract class EMail::Header
   class SingleAddress < Header
     @addr : Address? = nil
 
-    def body
+    private def body
       addr.to_s
     end
 
@@ -136,7 +146,7 @@ abstract class EMail::Header
       @timestamp.nil?
     end
 
-    def body
+    private def body
       @timestamp.not_nil!.to_s(RFC2822_FORMAT)
     end
   end
@@ -144,13 +154,25 @@ abstract class EMail::Header
   class Unstructured < Header
     @text : ::String = ""
 
-    def body
+    private def body
       @text
     end
 
     def set(body_text : ::String)
       @text = body_text
     end
+  end
+
+  class MimeVersion < Header
+
+    def initialize
+      super("Mime-Version")
+    end
+
+    private def body
+      "1.0"
+    end
+
   end
 
   class ContentType < Header
@@ -174,7 +196,7 @@ abstract class EMail::Header
       @file_name = file_name
     end
 
-    def body
+    private def body
       body_text = "#{@mime_type};"
       if _charset = @charset
         body_text += " charset=#{_charset};"
@@ -193,7 +215,7 @@ abstract class EMail::Header
       super("Content-Type")
     end
 
-    def body
+    private def body
       "multipart/mixied; boundary=\"#{@boundary}\""
     end
   end
@@ -203,7 +225,7 @@ abstract class EMail::Header
       super("Content-Transfer-Encoding")
     end
 
-    def body
+    private def body
       @encoding
     end
   end
@@ -215,7 +237,7 @@ abstract class EMail::Header
       super("Content-Disposition")
     end
 
-    def body
+    private def body
       body_text = "attachment; "
       body_text += encoded_fname(@file_name)
     end

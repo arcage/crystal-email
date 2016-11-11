@@ -1,9 +1,10 @@
 require "./spec_helper"
 
 describe EMail do
-  # TODO: Write tests
 
-  it "works" do
-    false.should eq(true)
+  descrive EMail::Address do
+    it "rejects invalid email address" do
+      EMail::Address.new("aaa@ww.bbcc,cc")
+    end
   end
 end
