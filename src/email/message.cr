@@ -18,10 +18,10 @@ class EMail::Message
   @envelope_from : Address? = nil
 
   def validate!
+    raise Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
     raise Error::MessageError.new("Message has no From address.") if @headers[:from].empty?
     raise Error::MessageError.new("Message has no To addresses.") if @headers[:to].empty?
     raise Error::MessageError.new("Message has no contents.") if @body.empty? && @attachments.empty?
-    raise Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
     if @headers[:sender].empty? && @headers[:from].size > 1
       sender @headers[:from].list.first
     end
