@@ -10,7 +10,7 @@ class EMail::Message
     subject:      Header::Unstructured.new("Subject"),
     message_id:   Header::Unstructured.new("Message-Id"),
     date:         Header::Date.new,
-    mime_version: Header::MimeVersion.new
+    mime_version: Header::MimeVersion.new,
   }
 
   @body = Content::TextPlain.new
@@ -18,16 +18,17 @@ class EMail::Message
   @envelope_from : Address? = nil
 
   def validate!
-    raise Error::MessageError.new("Message has no from address.") if @headers[:from].empty?
-    raise Error::MessageError.new("Message has no recipient.") if recipients.empty?
-    raise Error::MessageError.new("Message has no content.") if @body.empty? && @attachments.empty?
-    raise Error::MessageError.new("Message has no subnect.") if @headers[:subject].empty?
+    raise Error::MessageError.new("Message has no From address.") if @headers[:from].empty?
+    raise Error::MessageError.new("Message has no To addresses.") if @headers[:to].empty?
+    raise Error::MessageError.new("Message has no contents.") if @body.empty? && @attachments.empty?
+    raise Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
     if @headers[:sender].empty? && @headers[:from].size > 1
       sender @headers[:from].list.first
     end
     if @headers[:return_path].empty?
       return_path @envelope_from || (@headers[:sender].empty? ? @headers[:from].list.first : @headers[:sender].addr)
     end
+    self
   end
 
   def attach(file_path : ::String, file_name : ::String? = nil, mime_type : ::String? = nil)

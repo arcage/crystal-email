@@ -1,3 +1,4 @@
+# Base class for a single e-Mail content part. 
 abstract class EMail::Content
   @mime_type : String
   @data : String = ""

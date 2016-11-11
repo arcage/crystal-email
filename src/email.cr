@@ -12,7 +12,7 @@ module EMail
 
   def self.send(host : ::String, port : ::Int32 = DEFAULT_SMTP_PORT, **option)
     mail = Message.new
-    yield mail
+    with mail yield
     mail.validate!
     client = Client.new(host, port)
     {% for opt in %i(log_level client_name helo_domain on_failed use_tls auth) %}
@@ -21,5 +21,9 @@ module EMail
       end
     {% end %}
     client.send(mail)
+  rescue
+    if client
+      client.close_socket
+    end
   end
 end
