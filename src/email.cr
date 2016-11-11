@@ -1,6 +1,9 @@
 require "base64"
 require "logger"
 require "socket"
+{% if !flag?(:without_openssl) %}
+  require "openssl"
+{% end %}
 require "uri"
 require "./email/*"
 
@@ -12,18 +15,11 @@ module EMail
     yield mail
     mail.validate!
     client = Client.new(host, port)
-    if log_level = option[:log_level]?
-      client.log_level = log_level
-    end
-    if client_name = option[:client_name]?
-      client.client_name = client_name
-    end
-    if helo_domain = option[:helo_domain]?
-      client.helo_domain = helo_domain
-    end
-    if on_failed = option[:on_failed]?
-      client.on_failed = on_failed
-    end
+    {% for opt in %i(log_level client_name helo_domain on_failed use_tls auth) %}
+      if {{opt.id}} = option[{{opt}}]?
+        client.{{opt.id}} = {{opt.id}}
+      end
+    {% end %}
     client.send(mail)
   end
 end
