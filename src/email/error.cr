@@ -1,5 +1,4 @@
 class EMail::Error < Exception
-
   class AddressError < Error; end
 
   class ContentError < Error; end

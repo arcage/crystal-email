@@ -1,4 +1,6 @@
 class EMail::Client
+
+
   alias OnFailedProc = Message, ::Array(::String) ->
 
   # :nodoc:
@@ -96,8 +98,9 @@ class EMail::Client
     }
     mail_from = mail.mail_from
     recipients = mail.recipients
-    sent = call_start && call_helo && call_starttls && call_auth && call_mail(mail_from) && call_rcpt(recipients) && call_data(mail.data)
-    call_quit
+    sent = smtp_start && smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
+    smtp_quit
+    close_socket
     if sent
       @logger.info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
@@ -108,19 +111,20 @@ class EMail::Client
     end
     sent
   rescue ex : Error
+    close_socket
     fatal_error(ex)
   end
 
-  private def server_call(smtp_command : ::String, parameter : String? = nil)
-    command = smtp_command
-    command += " " + parameter if parameter
-    @command_history << command
-    @logger.debug("--> #{command}")
-    socket.write (command + "\r\n").to_slice
-    server_responce(smtp_command)
+  private def smtp_command(command : ::String, parameter : String? = nil)
+    command_and_parameter = command
+    command_and_parameter += " " + parameter if parameter
+    @command_history << command_and_parameter
+    @logger.debug("--> #{command_and_parameter}")
+    socket.write (command_and_parameter + "\r\n").to_slice
+    smtp_responce(command)
   end
 
-  private def server_responce(smtp_command : ::String)
+  private def smtp_responce(command : ::String)
     status_code = ""
     status_messages = [] of ::String
     while (line = socket.gets)
@@ -141,7 +145,7 @@ class EMail::Client
       end
     end
     status_message = status_messages.join(" / ")
-    logging_message = "<-- #{smtp_command} #{status_code} #{status_message}"
+    logging_message = "<-- #{command} #{status_code} #{status_message}"
     case status_code[0]
     when '4', '5'
       @logger.error(logging_message)
@@ -151,24 +155,24 @@ class EMail::Client
     {status_code, status_message}
   end
 
-  private def call_start
-    status_code, _ = server_responce("CONN")
+  private def smtp_start
+    status_code, _ = smtp_responce("CONN")
     status_code == "220"
   end
 
-  private def call_helo
-    status_code, _ = server_call("EHLO", @helo_domain)
+  private def smtp_helo
+    status_code, _ = smtp_command("EHLO", @helo_domain)
     if status_code == "250"
       true
     elsif status_code == "502"
-      status_code, _ = server_call("HELO", @helo_domain)
+      status_code, _ = smtp_command("HELO", @helo_domain)
       status_code == "250"
     end
   end
 
-  private def call_starttls
+  private def smtp_starttls
     if @use_tls
-      _status_code, _status_message = server_call("STARTTLS")
+      _status_code, _status_message = smtp_command("STARTTLS")
       if (_status_code == "220")
         {% if flag?(:without_openssl) %}
           @logger.error("TLS is disabled because `-D without_openssl` was passed at compile time")
@@ -177,7 +181,7 @@ class EMail::Client
           tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), sync_close: true, hostname: @host)
           @logger.info("Start TLS session")
           @socket = tls_socket
-          call_helo
+          smtp_helo
         {% end %}
       else
         false
@@ -187,14 +191,14 @@ class EMail::Client
     end
   end
 
-  private def call_auth
+  private def smtp_auth
     login_credential = @login_credential
     if login_credential
       if socket.is_a?(OpenSSL::SSL::Socket::Client)
         login_id = login_credential[0]
         login_password = login_credential[1]
         credential = Base64.strict_encode("\0#{login_id}\0#{login_password}")
-        status_code, status_message = server_call("AUTH", "PLAIN #{credential}")
+        status_code, status_message = smtp_command("AUTH", "PLAIN #{credential}")
         if status_code == "235"
           @logger.info("Authentication success with #{login_id} / ********")
           true
@@ -210,41 +214,46 @@ class EMail::Client
     end
   end
 
-  private def call_mail(mail_from : Address)
-    status_code, _ = server_call("MAIL", "FROM:<#{mail_from.addr}>")
+  private def smtp_mail(mail_from : Address)
+    status_code, _ = smtp_command("MAIL", "FROM:<#{mail_from.addr}>")
     status_code == "250"
   end
 
-  private def call_rcpt(recipients : ::Array(Address))
+  private def smtp_rcpt(recipients : ::Array(Address))
     succeed = true
     recipients.each do |recipient|
-      status_code, status_message = server_call("RCPT", "TO:<#{recipient.addr}>")
+      status_code, status_message = smtp_command("RCPT", "TO:<#{recipient.addr}>")
       succeed = false unless status_code[0] == '2'
     end
     succeed
   end
 
-  private def call_data(mail_data : ::String)
-    status_code, _ = server_call("DATA")
+  private def smtp_data(mail_data : ::String)
+    status_code, _ = smtp_command("DATA")
     if status_code == "354"
       @logger.debug("--> Sending mail data")
       socket.write mail_data.to_slice
-      status_code, _ = server_responce("DATA")
+      status_code, _ = smtp_responce("DATA")
       status_code[0] == '2'
     else
       false
     end
   end
 
-  private def call_quit
-    server_call("QUIT")
-    socket.close
-    @socket = nil
+  private def smtp_quit
+    smtp_command("QUIT")
   end
 
   private def fatal_error(error : ::Exception)
     logging_message = error.message.try(&.gsub(/\s+/, " ")).to_s + "(#{error.class})"
     @logger.fatal(logging_message)
     exit(1)
+  end
+
+  def close_socket
+    if _socket = @socket
+      _socket.close unless _socket.closed?
+    end
+    @socket = nil
   end
 end

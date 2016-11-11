@@ -33,7 +33,7 @@ Basic e-Mail sending procedure:
 ```crystal
 require "email"
 
-EMail.send("your.mx.server.name", 25) do |mail|
+EMail.send("your.mx.server.name", 25) do
   from     "your@mail.addr"
   to       "to@some.domain"
   cc       "cc@some.domain"
@@ -58,7 +58,7 @@ This code will output log entries to `STDOUT` as follows:
 
 You can add some option arguments to `EMail.send`.
 
-- `log_level` : `Logger::Severity` (Default: `Logger::Severity::INFO`)
+- `log_level : Logger::Severity` (Default: `Logger::Severity::INFO`)
 
     Set log level for SMTP session.
 
@@ -66,21 +66,21 @@ You can add some option arguments to `EMail.send`.
     - `Logger::Severity::ERROR` : logging only events stem from some errors.
     - `EMail::Client::NO_LOGGING`(`Logger::Severity::UNKOWN`) : no events will be logged.
 
-- `client_name` : `String` (Default: `"EMail_Client"`)
+- `client_name : String` (Default: `"EMail_Client"`)
 
     Set `progname` of the internal `Logger` object. It is also used as a part of _Message-Id_ header.
 
-- `helo_domain` : `String`
+- `helo_domain : String` (Default: `"[" + lcoal_ip_addr + "]"`)
 
     Set the parameter string for SMTP `EHLO`(or `HELO`) command. By default, the local ip address of the socket will be assigned.
 
-- `on_failed` : `EMail::Client::OnFailedProc` (Default: None)
+- `on_failed : EMail::Client::OnFailedProc` (Default: None)
 
     Set callback function to be called when sending e-Mail is failed while in SMTP session. It will be called with e-Mail message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
 
     `EMail::Client::OnFailedProc` is an alias of the Proc type `EMail::Message, Array(String) ->`.
 
-- `use_tls` : `Bool` (Default: `false`)
+- `use_tls : Bool` (Default: `false`)
 
     Try to use `STARTTLS` command to send e-Mail with TLS encryption.
 
@@ -105,7 +105,7 @@ EMail.send("your.mx.server.name", 587,
            helo_domain: "your.host.fqdn",
            on_failed:   on_failed,
            use_tls: true,
-           auth: {"your_id", "your_password"}) do |mail|
+           auth: {"your_id", "your_password"}) do
 
   # same as above
 

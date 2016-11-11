@@ -10,7 +10,7 @@ class EMail::Message
     subject:      Header::Unstructured.new("Subject"),
     message_id:   Header::Unstructured.new("Message-Id"),
     date:         Header::Date.new,
-    mime_version: Header::MimeVersion.new
+    mime_version: Header::MimeVersion.new,
   }
 
   @body = Content::TextPlain.new
