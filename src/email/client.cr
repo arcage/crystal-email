@@ -85,22 +85,38 @@ class EMail::Client
   end
 
   def send(mail : Message)
-    mail.validate!
+    ready_to_send
+    sent = smtp_session {
+      valid_mail = mail_validate!(mail)
+      send_mail(valid_mail)
+    }
+    sent
+  rescue ex : Error
+    close_socket
+    fatal_error(ex)
+  end
+
+  private def ready_to_send
     @command_history.clear
     @socket = TCPSocket.new(@host, @port)
     @helo_domain ||= "[#{socket.as(TCPSocket).local_address.address}]"
     @logger.info("Start TCP session to #{@host}:#{@port}")
+  end
+
+  private def mail_validate!(mail : Message)
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
-      io << timestamp.epoch_ms << "." << Process.pid
-      io << "." << @logger.progname << "@[" << @helo_domain << "]"
+      io << "<" << timestamp.epoch_ms << "." << Process.pid
+      io << "." << @logger.progname << "@" << @helo_domain << ">"
     }
+    mail.validate!
+  end
+
+  private def send_mail(mail : Message)
     mail_from = mail.mail_from
     recipients = mail.recipients
-    sent = smtp_start && smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
-    smtp_quit
-    close_socket
+    sent = smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
     if sent
       @logger.info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
@@ -110,9 +126,18 @@ class EMail::Client
       end
     end
     sent
-  rescue ex : Error
+  end
+
+  private def smtp_session
+    status_code, _ = smtp_responce("CONN")
+    sent =  if status_code == "220"
+              yield
+            else
+              false
+            end
+    smtp_quit
     close_socket
-    fatal_error(ex)
+    sent
   end
 
   private def smtp_command(command : ::String, parameter : String? = nil)
@@ -153,11 +178,6 @@ class EMail::Client
       @logger.debug(logging_message)
     end
     {status_code, status_message}
-  end
-
-  private def smtp_start
-    status_code, _ = smtp_responce("CONN")
-    status_code == "220"
   end
 
   private def smtp_helo
