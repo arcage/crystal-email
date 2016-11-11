@@ -17,7 +17,6 @@ class EMail::Client
   @host : ::String
   @port : ::Int32
   @logger : ::Logger
-  @local_host : ::String = ""
   {% if flag?(:without_openssl) %}
     @socket : ::TCPSocket? = nil
   {% else %}
@@ -26,9 +25,10 @@ class EMail::Client
   @helo_domain : ::String? = nil
   @command_history : ::Array(::String) = [] of ::String
   @on_failed : OnFailedProc? = nil
-  @login_credential : ::Tuple(String, String)? = nil
   @use_tls : Bool = false
+  @login_credential : ::Tuple(String, String)? = nil
 
+  # Createss smtp client object.
   def initialize(@host : ::String, @port : ::Int32 = DEFAULT_SMTP_PORT)
     @logger = logger_setting(::STDOUT, "EMail_Client", ::Logger::INFO)
   rescue ex : Error
