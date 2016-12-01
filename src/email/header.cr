@@ -2,7 +2,7 @@ abstract class EMail::Header
   # :nodoc:
   FIELD_NAME = /\A[\x{21}-\x{39}\x{3b}-\x{7e}]+\z/
   # :nodoc:
-  FIELD_BODY = /\A[\x{1}-\x{8}\x{b}\x{c}\x{e}-\x{1f}\x{21}-\x{7f}]+\z/
+  FIELD_BODY = /\A[\x{1}-\x{9}\x{b}\x{c}\x{e}-\x{1f}\x{20}-\x{7f}]+\z/
 
   # :nodoc:
   NON_VCHAR = /[^\x{9}\x{20}-\x{7e}]/
