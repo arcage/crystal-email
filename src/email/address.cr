@@ -30,12 +30,7 @@ class EMail::Address
 
   def to_s(io : IO)
     if sender_name = @name
-      if sender_name =~ Header::FIELD_BODY
-        io << sender_name
-      else
-        encoded_name, _ = Header.base64_encode(sender_name, 0)
-        io << encoded_name
-      end
+      io << sender_name
       io << " <" << @addr << ">"
     else
       io << @addr

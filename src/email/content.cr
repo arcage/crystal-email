@@ -1,4 +1,4 @@
-# Base class for a single e-Mail content part. 
+# Base class for a single e-Mail content part.
 abstract class EMail::Content
   @mime_type : String
   @data : String = ""
@@ -57,7 +57,7 @@ abstract class EMail::Content
     end
 
     def message=(message_body : ::String)
-      @data = read_data(::MemoryIO.new(message_body))
+      @data = read_data(::IO::Memory.new(message_body))
     end
   end
 
