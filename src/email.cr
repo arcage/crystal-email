@@ -11,10 +11,10 @@ module EMail
   DEFAULT_SMTP_PORT = 25
 
   def self.send(host : ::String, port : ::Int32 = DEFAULT_SMTP_PORT, **option)
+    client = Client.new(host, port)
     mail = Message.new
     with mail yield
     mail.validate!
-    client = Client.new(host, port)
     {% for opt in %i(log_level client_name helo_domain on_failed use_tls auth) %}
       if {{opt.id}} = option[{{opt}}]?
         client.{{opt.id}} = {{opt.id}}
