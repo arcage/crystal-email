@@ -33,8 +33,6 @@ class EMail::Client
   # Createss smtp client object.
   def initialize(@host : ::String, @port : ::Int32 = DEFAULT_SMTP_PORT)
     @logger = logger_setting(::STDOUT, "EMail_Client", ::Logger::INFO)
-  rescue ex : Error
-    fatal_error(ex)
   end
 
   private def logger_setting(io : IO, progname : ::String, level : ::Logger::Severity)
@@ -153,7 +151,6 @@ class EMail::Client
     status_code = ""
     status_messages = [] of ::String
     while (line = socket.gets)
-      line = line.chomp
       @command_history << line
       if line =~ /\A(\d{3})((( |-)(.*))?)\z/
         continue = false
