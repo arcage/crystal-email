@@ -1,7 +1,6 @@
 require "../spec_helper"
 
 describe EMail::Address do
-
   describe ".valid_address!" do
     it "returns argument when it seems to be a valid email address" do
       EMail::Address.valid_address!("aa@bb.cc").should eq "aa@bb.cc"
@@ -38,7 +37,6 @@ describe EMail::Address do
         EMail::Address.new("aa@bb.cc", "John\nDoe")
       }
     end
-
   end
 
   describe "#to_s" do

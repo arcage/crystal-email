@@ -1,6 +1,4 @@
 class EMail::Client
-
-
   alias OnFailedProc = Message, ::Array(::String) ->
 
   # :nodoc:
@@ -128,11 +126,11 @@ class EMail::Client
 
   private def smtp_session
     status_code, _ = smtp_responce("CONN")
-    sent =  if status_code == "220"
-              yield
-            else
-              false
-            end
+    sent = if status_code == "220"
+             yield
+           else
+             false
+           end
     smtp_quit
     close_socket
     sent
@@ -143,7 +141,8 @@ class EMail::Client
     command_and_parameter += " " + parameter if parameter
     @command_history << command_and_parameter
     @logger.debug("--> #{command_and_parameter}")
-    socket.write (command_and_parameter + "\r\n").to_slice
+    socket << command_and_parameter + "\r\n"
+    socket.flush
     smtp_responce(command)
   end
 
@@ -151,6 +150,7 @@ class EMail::Client
     status_code = ""
     status_messages = [] of ::String
     while (line = socket.gets)
+      puts line
       @command_history << line
       if line =~ /\A(\d{3})((( |-)(.*))?)\z/
         continue = false
@@ -196,6 +196,7 @@ class EMail::Client
           false
         {% else %}
           tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), sync_close: true, hostname: @host)
+          tls_socket.sync = false
           @logger.info("Start TLS session")
           @socket = tls_socket
           smtp_helo
@@ -249,7 +250,8 @@ class EMail::Client
     status_code, _ = smtp_command("DATA")
     if status_code == "354"
       @logger.debug("--> Sending mail data")
-      socket.write mail_data.to_slice
+      socket << mail_data
+      socket.flush
       status_code, _ = smtp_responce("DATA")
       status_code[0] == '2'
     else
