@@ -141,7 +141,7 @@ class EMail::Client
     command_and_parameter += " " + parameter if parameter
     @command_history << command_and_parameter
     @logger.debug("--> #{command_and_parameter}")
-    socket << command_and_parameter + "\r\n"
+    socket << command_and_parameter << "\r\n"
     socket.flush
     smtp_responce(command)
   end
