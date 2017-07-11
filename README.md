@@ -9,7 +9,7 @@ You can do:
 - using multibyte characters(only UTF-8) in e-Mail.
 - sending e-Mail by using local or remote SMTP server.
 - using TLS connection by `STARTTLS` command.
-- using SMTP-AUTH by `AUTH PLAIN` command when using TLS.
+- using SMTP-AUTH by `AUTH PLAIN` and `AUTH LOGIN` when using TLS.
 
 You can not do:
 
@@ -199,7 +199,7 @@ For the simplifying the implementation, the mail message and all attached data w
 
 ## TODO
 
-- [ ] support AUTH LOGIN
+- [x] ~~support AUTH LOGIN~~
 - [ ] support AUTH CRAM-MD5
 - [ ] support HTML e-Mail
 - [ ] performance tuning
