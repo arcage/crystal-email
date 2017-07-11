@@ -23,10 +23,11 @@ class EMail::Client
     @socket : ::TCPSocket | OpenSSL::SSL::Socket::Client | Nil = nil
   {% end %}
   @helo_domain : ::String? = nil
-  @command_history : ::Array(::String) = [] of ::String
+  @command_history = [] of ::String
   @on_failed : OnFailedProc? = nil
-  @use_tls : Bool = false
+  @use_tls = false
   @login_credential : ::Tuple(String, String)? = nil
+  @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
   # Createss smtp client object.
   def initialize(@host : ::String, @port : ::Int32 = DEFAULT_SMTP_PORT)
@@ -150,7 +151,6 @@ class EMail::Client
     status_code = ""
     status_messages = [] of ::String
     while (line = socket.gets)
-      puts line
       @command_history << line
       if line =~ /\A(\d{3})((( |-)(.*))?)\z/
         continue = false
@@ -174,12 +174,17 @@ class EMail::Client
     else
       @logger.debug(logging_message)
     end
-    {status_code, status_message}
+    {status_code, status_messages}
   end
 
   private def smtp_helo
-    status_code, _ = smtp_command("EHLO", @helo_domain)
+    status_code, status_messages = smtp_command("EHLO", @helo_domain)
     if status_code == "250"
+      status_messages.each do |status_message|
+        message_parts = status_message.strip.split(' ')
+        command = message_parts.shift
+        @esmtp_commands[command] = message_parts
+      end
       true
     elsif status_code == "502"
       status_code, _ = smtp_command("HELO", @helo_domain)
@@ -189,8 +194,8 @@ class EMail::Client
 
   private def smtp_starttls
     if @use_tls
-      _status_code, _status_message = smtp_command("STARTTLS")
-      if (_status_code == "220")
+      status_code, _ = smtp_command("STARTTLS")
+      if (status_code == "220")
         {% if flag?(:without_openssl) %}
           @logger.error("TLS is disabled because `-D without_openssl` was passed at compile time")
           false
@@ -212,23 +217,60 @@ class EMail::Client
   private def smtp_auth
     login_credential = @login_credential
     if login_credential
+      login_id = login_credential[0]
+      login_password = login_credential[1]
       if socket.is_a?(OpenSSL::SSL::Socket::Client)
-        login_id = login_credential[0]
-        login_password = login_credential[1]
-        credential = Base64.strict_encode("\0#{login_id}\0#{login_password}")
-        status_code, status_message = smtp_command("AUTH", "PLAIN #{credential}")
-        if status_code == "235"
+        if @esmtp_commands["AUTH"].includes?("PLAIN")
+          smtp_auth_plain(login_id, login_password)
+        elsif @esmtp_commands["AUTH"].includes?("LOGIN")
+          smtp_auth_login(login_id, login_password)
+        else
+          @logger.error("cannot found supported authentication methods")
+          false
+        end
+      else
+        @logger.error("AUTH command cannot be used without TLS")
+        false
+      end
+    else
+      true
+    end
+  end
+
+  private def smtp_auth_login(login_id : String, login_password : String)
+    status_code, _ = smtp_command("AUTH", "LOGIN")
+    if status_code == "334"
+      @logger.debug("--> Sending login id")
+      socket << Base64.strict_encode(login_id) << "\r\n"
+      socket.flush
+      status_code_id, _ = smtp_responce("AUTH")
+      if status_code_id == "334"
+        @logger.debug("--> Sending login password")
+        socket << Base64.strict_encode(login_password) << "\r\n"
+        socket.flush
+        status_code_password, _ = smtp_responce("AUTH")
+        if status_code_password == "235"
           @logger.info("Authentication success with #{login_id} / ********")
           true
         else
           false
         end
       else
-        @logger.error("AUTH PLAIN command can not be used without TLS")
         false
       end
     else
+      false
+    end
+  end
+
+  private def smtp_auth_plain(login_id : String, login_password : String)
+    credential = Base64.strict_encode("\0#{login_id}\0#{login_password}")
+    status_code, _ = smtp_command("AUTH", "PLAIN #{credential}")
+    if status_code == "235"
+      @logger.info("Authentication success with #{login_id} / ********")
       true
+    else
+      false
     end
   end
 
@@ -270,9 +312,7 @@ class EMail::Client
   end
 
   def close_socket
-    if _socket = @socket
-      _socket.close unless _socket.closed?
-    end
+    @socket.try(&.close)
     @socket = nil
   end
 end
