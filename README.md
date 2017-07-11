@@ -197,6 +197,13 @@ attach "写真.jpg"
 
 For the simplifying the implementation, the mail message and all attached data will be encoded by Base64, even when that includes only ascii characters.
 
+## TODO
+
+- [ ] support AUTH LOGIN
+- [ ] support AUTH CRAM-MD5
+- [ ] support HTML e-Mail
+- [ ] performance tuning
+
 ## Contributors
 
 - [arcage](https://github.com/arcage) ʕ·ᴥ·ʔAKJ - creator, maintainer
