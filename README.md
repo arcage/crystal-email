@@ -1,14 +1,14 @@
 # EMail for Crystal
 
-Simple e-Mail sending library for the **Cristal** language([https://crystal-lang.org/](https://crystal-lang.org/)).
+Simple e-mail sending library for the **Crystal**([https://crystal-lang.org/](https://crystal-lang.org/)).
 
 You can:
 
-- construct e-Mail with a plain text message, HTML message and/or some attachment files.
+- construct e-mail with a plain text message, HTML message and/or some attachment files.
 - include resources(e.g. images) used in HTML e-Mail message.
-- set multiple recipients to e-Mail.
-- use multibyte characters(only UTF-8) in e-Mail.
-- send e-Mail by using local or remote SMTP server.
+- set multiple recipients to e-mail.
+- use multibyte characters(only UTF-8) in e-mail.
+- send e-mail by using local or remote SMTP server.
 - use TLS connection by `STARTTLS` command.
 - use SMTP-AUTH by `AUTH PLAIN` and `AUTH LOGIN` when using TLS.
 
@@ -101,13 +101,13 @@ You can add some option arguments to `EMail.send`.
 
 - `on_failed : EMail::Client::OnFailedProc` (Default: None)
 
-    Set callback function to be called when sending e-Mail is failed while in SMTP session. It will be called with e-Mail message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
+    Set callback function to be called when sending e-mail is failed while in SMTP session. It will be called with e-mail message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
 
     `EMail::Client::OnFailedProc` is an alias of the Proc type `EMail::Message, Array(String) ->`.
 
 - `use_tls : Bool` (Default: `false`)
 
-    Try to use `STARTTLS` command to send e-Mail with TLS encryption.
+    Try to use `STARTTLS` command to send e-mail with TLS encryption.
 
 - `auth : Tuple(String, String)` (Default: None)
 
@@ -217,7 +217,7 @@ For the simplifying the implementation, the mail message and all attached data w
 
 - [x] ~~support AUTH LOGIN~~
 - [ ] support AUTH CRAM-MD5
-- [x] ~~support HTML e-Mail~~
+- [x] ~~support HTML e-mail~~
 - [ ] performance tuning
 
 ## Contributors
