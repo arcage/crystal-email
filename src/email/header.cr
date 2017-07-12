@@ -44,7 +44,7 @@ abstract class EMail::Header
 
   @name : String
 
-  def initialize(field_name : ::String)
+  def initialize(field_name : String)
     raise Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
     @name = field_name.split("-").map(&.capitalize).join("-")
   end
@@ -95,7 +95,7 @@ abstract class EMail::Header
       @list.size
     end
 
-    def add(mail_address : ::String, sender_name : ::String? = nil)
+    def add(mail_address : String, sender_name : String? = nil)
       @list << Address.new(mail_address, sender_name)
     end
 
@@ -119,7 +119,7 @@ abstract class EMail::Header
       @addr.not_nil!
     end
 
-    def set(mail_address : ::String, sender_name : ::String? = nil)
+    def set(mail_address : String, sender_name : String? = nil)
       @addr = Address.new(mail_address, sender_name)
     end
 
@@ -131,7 +131,7 @@ abstract class EMail::Header
   class Date < Header
     RFC2822_FORMAT = "%a, %d %b %Y %T %z"
 
-    @timestamp : ::Time? = nil
+    @timestamp : Time? = nil
 
     def initialize
       super("Date")
@@ -151,13 +151,13 @@ abstract class EMail::Header
   end
 
   class Unstructured < Header
-    @text : ::String = ""
+    @text : String = ""
 
     private def body
       @text
     end
 
-    def set(body_text : ::String)
+    def set(body_text : String)
       @text = body_text
     end
   end
@@ -173,52 +173,56 @@ abstract class EMail::Header
   end
 
   class ContentType < Header
-    @mime_type : ::String
-    @charset : ::String? = nil
-    @file_name : ::String? = nil
+    @mime_type : String
+    @options : Hash(String, String)
+    @charset : String? = nil
+    @file_name : String? = nil
 
-    def initialize(@mime_type : ::String)
+    def initialize(@mime_type : String, @options = Hash(String, String).new)
       super("Content-Type")
     end
 
-    def set_mime_type(mime_type : ::String)
+    def set_option(name : String, value : String)
+      @options[name] = value
+    end
+
+    def set_mime_type(mime_type : String)
       @mime_type = mime_type
     end
 
-    def set_charset(charset : ::String)
-      @charset = charset
+    def set_charset(charset : String)
+      @options["charset"] = charset
     end
 
-    def set_fname(file_name : ::String)
-      @file_name = file_name
+    def set_fname(file_name : String)
+      @options["file_name"] = file_name
     end
 
-    private def body
-      body_text = "#{@mime_type};"
-      if _charset = @charset
-        body_text += " charset=#{_charset};"
-      end
-      if _fname = @file_name
-        body_text += " name=\""
-        encoded_fname, _ = Header.base64_encode(_fname, 6)
-        body_text += "#{encoded_fname.strip.gsub(/\n +/, " ")}\""
-      end
-      body_text
-    end
-  end
-
-  class ContentTypeMultipartMixed < Header
-    def initialize(@boundary : ::String)
-      super("Content-Type")
+    def set_boundary(boundary : String)
+      @options["boundary"] = boundary
     end
 
     private def body
-      "multipart/mixied; boundary=\"#{@boundary}\""
+      String.build do |body_text|
+        body_text << "#{@mime_type};"
+        if charset = @options["charset"]?
+          body_text << " charset=#{charset};"
+        end
+        if fname = @options["file_name"]?
+          body_text << " name=\""
+          encoded_fname, _ = Header.base64_encode(fname, 6)
+          body_text << "#{encoded_fname.strip.gsub(/\n +/, " ")}\";"
+        end
+        if boundary = @options["boundary"]?
+          body_text << " boundary="
+          body_text << "\"#{boundary}\";"
+        end
+      end
     end
   end
 
   class ContentTransferEncoding < Header
-    def initialize(@encoding : ::String)
+    def initialize(@encoding : String)
       super("Content-Transfer-Encoding")
     end
 
@@ -228,9 +232,9 @@ abstract class EMail::Header
   end
 
   class ContentDisposition < Header
-    @file_name : ::String
+    @file_name : String
 
-    def initialize(@file_name : ::String)
+    def initialize(@file_name : String)
       super("Content-Disposition")
     end
 
@@ -239,7 +243,7 @@ abstract class EMail::Header
       body_text += encoded_fname(@file_name)
     end
 
-    private def encoded_fname(file_name : ::String)
+    private def encoded_fname(file_name : String)
       encoded_lines = [] of String
       fname_chars = Char::Reader.new(file_name)
       encoded_line = " filename*#{encoded_lines.size}*=UTF-8''"
@@ -255,6 +259,12 @@ abstract class EMail::Header
       end
       encoded_lines << encoded_line + ";" unless encoded_line =~ /\=\z/
       encoded_lines.join
+    end
+  end
+
+  class ContentID < SingleAddress
+    def initialize
+      super("Content-Id")
     end
   end
 end

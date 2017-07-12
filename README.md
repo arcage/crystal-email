@@ -95,7 +95,7 @@ You can add some option arguments to `EMail.send`.
 
 - `auth : Tuple(String, String)` (Default: None)
 
-    Set login id and password to use `AUTH PLAIN` command: e.g. `{"login_id", "password"}`.
+    Set login id and password to use `AUTH PLAIN` or `AUTH LOGIN` command: e.g. `{"login_id", "password"}`.
 
     This option must be use with `ust_tls: true`.
 
