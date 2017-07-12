@@ -10,7 +10,7 @@ require "./email/*"
 module EMail
   DEFAULT_SMTP_PORT = 25
 
-  def self.send(host : ::String, port : ::Int32 = DEFAULT_SMTP_PORT, **option)
+  def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **option)
     client = Client.new(host, port)
     mail = Message.new
     with mail yield
