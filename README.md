@@ -2,19 +2,19 @@
 
 Simple e-Mail sending library for the **Cristal** language([https://crystal-lang.org/](https://crystal-lang.org/)).
 
-You can do:
+You can:
 
-- constructing e-Mail with a text message and/or some attachment files.
-- setting multiple recipients to e-Mail.
-- using multibyte characters(only UTF-8) in e-Mail.
-- sending e-Mail by using local or remote SMTP server.
-- using TLS connection by `STARTTLS` command.
-- using SMTP-AUTH by `AUTH PLAIN` and `AUTH LOGIN` when using TLS.
+- construct e-Mail with a plain text message, HTML message and/or some attachment files.
+- include resources(e.g. images) used in HTML e-Mail message.
+- set multiple recipients to e-Mail.
+- use multibyte characters(only UTF-8) in e-Mail.
+- send e-Mail by using local or remote SMTP server.
+- use TLS connection by `STARTTLS` command.
+- use SMTP-AUTH by `AUTH PLAIN` and `AUTH LOGIN` when using TLS.
 
-You can not do:
+You can not:
 
-- constructing multipart/alternative contents.
-- using ESMTP features except those mentioned above.
+- use ESMTP features except those mentioned above.
 
 ## Installation
 
@@ -47,14 +47,30 @@ EMail.send("your.mx.server.name", 25) do
   return_path   "return@your.mail"
   envelope_from "enverope_from@your.mail"
 
-  # required at least one `message` or `attach`
+  # required at least one `message`, `message_html` or `attach`
   message  <<-EOM
-      Message body of the mail.
+    Message body of the mail.
 
-      --
-      Your Signature
-      EOM
-  attache "./attachment.docx" # [*]
+    --
+    Your Signature
+    EOM
+
+  attache "./attachment.docx"                            # [*]
+
+  # HTML e-Mail support
+  # `message_resource` works as same as `attach`, expect it requires `cid:` argument.
+  message_html <<-EOM
+    <html>
+    <body>
+    <h1>Message body of the mail.</h1>
+    <img src="cid:logo@some.domain">
+    <footer>
+    Your Signature    
+    </footer>
+    </body>
+    </html>
+    EOM
+  message_resource "./logo.png", cid: "logo@some.domain" # [*]
 end
 ```
 
@@ -95,7 +111,7 @@ You can add some option arguments to `EMail.send`.
 
 - `auth : Tuple(String, String)` (Default: None)
 
-    Set login id and password to use `AUTH PLAIN` command: e.g. `{"login_id", "password"}`.
+    Set login id and password to use `AUTH PLAIN` or `AUTH LOGIN` command: e.g. `{"login_id", "password"}`.
 
     This option must be use with `ust_tls: true`.
 
@@ -161,7 +177,7 @@ Optionally, you can add mailbox name to `#from`, `#to`, `#cc`, `#bcc` or `#reply
 from "your@mail.addr", "Your Name"
 ```
 
-For attachment file, you can designate another file name for recipient.
+For attachment files and message resources, you can designate another file name for recipient.
 
 ```crystal
 attach "attachment.txt", file_name: "other_name.txt"
@@ -173,7 +189,7 @@ You can designate mime type of the attachment file explicitly. By default, the m
 attach "attachment", mime_type: "text/plain"
 ```
 
-You can use readable `IO` object instead of the file path. In this case, the 2nd argument(`file_name`) is required. (The `mime_type` argument is also acceptable.)
+You can use readable `IO` object instead of the file path. In this case, the `file_name` argument is required. (The `mime_type` argument is also acceptable.)
 
 ```
 attach some_io, file_name: "other_name.txt"
@@ -201,7 +217,7 @@ For the simplifying the implementation, the mail message and all attached data w
 
 - [x] ~~support AUTH LOGIN~~
 - [ ] support AUTH CRAM-MD5
-- [ ] support HTML e-Mail
+- [x] ~~support HTML e-Mail~~
 - [ ] performance tuning
 
 ## Contributors

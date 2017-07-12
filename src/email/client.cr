@@ -1,5 +1,5 @@
 class EMail::Client
-  alias OnFailedProc = Message, ::Array(::String) ->
+  alias OnFailedProc = Message, Array(String) ->
 
   # :nodoc:
   LOG_FORMATTER = Logger::Formatter.new do |severity, datetime, progname, message, io|
@@ -14,35 +14,35 @@ class EMail::Client
 
   getter command_history
 
-  @host : ::String
-  @port : ::Int32
-  @logger : ::Logger
+  @host : String
+  @port : Int32
+  @logger : Logger
   {% if flag?(:without_openssl) %}
-    @socket : ::TCPSocket? = nil
+    @socket : TCPSocket? = nil
   {% else %}
-    @socket : ::TCPSocket | OpenSSL::SSL::Socket::Client | Nil = nil
+    @socket : TCPSocket | OpenSSL::SSL::Socket::Client | Nil = nil
   {% end %}
-  @helo_domain : ::String? = nil
-  @command_history = [] of ::String
+  @helo_domain : String? = nil
+  @command_history = [] of String
   @on_failed : OnFailedProc? = nil
   @use_tls = false
-  @login_credential : ::Tuple(String, String)? = nil
+  @login_credential : Tuple(String, String)? = nil
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
   # Createss smtp client object.
-  def initialize(@host : ::String, @port : ::Int32 = DEFAULT_SMTP_PORT)
-    @logger = logger_setting(::STDOUT, "EMail_Client", ::Logger::INFO)
+  def initialize(@host : String, @port : Int32 = DEFAULT_SMTP_PORT)
+    @logger = logger_setting(::STDOUT, "EMail_Client", Logger::INFO)
   end
 
-  private def logger_setting(io : IO, progname : ::String, level : ::Logger::Severity)
-    logger = ::Logger.new(io)
+  private def logger_setting(io : IO, progname : String, level : Logger::Severity)
+    logger = Logger.new(io)
     logger.progname = progname
     logger.formatter = LOG_FORMATTER
     logger.level = level
     logger
   end
 
-  def auth=(login_credential : Tuple(::String, ::String))
+  def auth=(login_credential : Tuple(::String, String))
     @login_credential = login_credential
   end
 
@@ -55,16 +55,16 @@ class EMail::Client
     @use_tls = use_tls
   end
 
-  def log_level=(level : ::Logger::Severity)
+  def log_level=(level : Logger::Severity)
     @logger.level = level
   end
 
-  def client_name=(client_name : ::String)
+  def client_name=(client_name : String)
     raise Error::ClientError.new("Invalid client name \"#{client_name}\"") if client_name.empty? || client_name =~ /[^\w]/
     @logger.progname = client_name
   end
 
-  def helo_domain=(domain : ::String)
+  def helo_domain=(domain : String)
     raise Error::ClientError.new("Invalid HELO domain \"#{domain}\"") unless domain =~ DOMAIN_FORMAT
     @helo_domain = domain
   end
@@ -113,8 +113,7 @@ class EMail::Client
   private def send_mail(mail : Message)
     mail_from = mail.mail_from
     recipients = mail.recipients
-    sent = smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
-    if sent
+    if sent = smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
       @logger.info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
       @logger.error("Failed sending message for some reason")
@@ -125,19 +124,7 @@ class EMail::Client
     sent
   end
 
-  private def smtp_session
-    status_code, _ = smtp_responce("CONN")
-    sent = if status_code == "220"
-             yield
-           else
-             false
-           end
-    smtp_quit
-    close_socket
-    sent
-  end
-
-  private def smtp_command(command : ::String, parameter : String? = nil)
+  private def smtp_command(command : String, parameter : String? = nil)
     command_and_parameter = command
     command_and_parameter += " " + parameter if parameter
     @command_history << command_and_parameter
@@ -147,9 +134,9 @@ class EMail::Client
     smtp_responce(command)
   end
 
-  private def smtp_responce(command : ::String)
+  private def smtp_responce(command : String)
     status_code = ""
-    status_messages = [] of ::String
+    status_messages = [] of String
     while (line = socket.gets)
       @command_history << line
       if line =~ /\A(\d{3})((( |-)(.*))?)\z/
@@ -175,6 +162,18 @@ class EMail::Client
       @logger.debug(logging_message)
     end
     {status_code, status_messages}
+  end
+
+  private def smtp_session
+    status_code, _ = smtp_responce("CONN")
+    sent = if status_code == "220"
+             yield
+           else
+             false
+           end
+    smtp_quit
+    close_socket
+    sent
   end
 
   private def smtp_helo
@@ -279,7 +278,7 @@ class EMail::Client
     status_code == "250"
   end
 
-  private def smtp_rcpt(recipients : ::Array(Address))
+  private def smtp_rcpt(recipients : Array(Address))
     succeed = true
     recipients.each do |recipient|
       status_code, status_message = smtp_command("RCPT", "TO:<#{recipient.addr}>")
@@ -288,7 +287,7 @@ class EMail::Client
     succeed
   end
 
-  private def smtp_data(mail_data : ::String)
+  private def smtp_data(mail_data : String)
     status_code, _ = smtp_command("DATA")
     if status_code == "354"
       @logger.debug("--> Sending mail data")
@@ -305,7 +304,7 @@ class EMail::Client
     smtp_command("QUIT")
   end
 
-  private def fatal_error(error : ::Exception)
+  private def fatal_error(error : Exception)
     logging_message = error.message.try(&.gsub(/\s+/, " ")).to_s + "(#{error.class})"
     @logger.fatal(logging_message)
     exit(1)
