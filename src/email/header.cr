@@ -66,10 +66,10 @@ abstract class EMail::Header
     while (body_part = splited_body.shift?)
       if body_part =~ FIELD_BODY
         unless offset + body_part.size < LINE_LENGTH
-          io << "\n"
+          io << '\n'
           offset = 0
         end
-        io << " #{body_part}"
+        io << ' ' << body_part
         offset += body_part.size + 1
       else
         encoded_part, offset = Header.base64_encode(body_part, offset)
@@ -163,20 +163,18 @@ abstract class EMail::Header
   end
 
   class MimeVersion < Header
-    def initialize
+    def initialize(@version : String = "1.0")
       super("Mime-Version")
     end
 
     private def body
-      "1.0"
+      @version
     end
   end
 
   class ContentType < Header
     @mime_type : String
     @options : Hash(String, String)
-    @charset : String? = nil
-    @file_name : String? = nil
 
     def initialize(@mime_type : String, @options = Hash(String, String).new)
       super("Content-Type")
@@ -204,18 +202,17 @@ abstract class EMail::Header
 
     private def body
       String.build do |body_text|
-        body_text << "#{@mime_type};"
+        body_text << @mime_type << ';'
         if charset = @options["charset"]?
-          body_text << " charset=#{charset};"
+          body_text << " charset=" << charset << ';'
         end
         if fname = @options["file_name"]?
           body_text << " name=\""
           encoded_fname, _ = Header.base64_encode(fname, 6)
-          body_text << "#{encoded_fname.strip.gsub(/\n +/, " ")}\";"
+          body_text << encoded_fname.strip.gsub(/\n +/, ' ') << "\";"
         end
         if boundary = @options["boundary"]?
-          body_text << " boundary="
-          body_text << "\"#{boundary}\";"
+          body_text << " boundary=\"" << boundary << "\";"
         end
       end
     end
@@ -239,8 +236,9 @@ abstract class EMail::Header
     end
 
     private def body
-      body_text = "attachment; "
-      body_text += encoded_fname(@file_name)
+      String.build do |body_text|
+        body_text << "attachment; " << encoded_fname(@file_name)
+      end
     end
 
     private def encoded_fname(file_name : String)

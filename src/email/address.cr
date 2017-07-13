@@ -13,25 +13,25 @@ class EMail::Address
     mail_address
   end
 
-  def self.valid_name!(sender_name : String?)
-    if sender_name
-      raise Error::AddressError.new("#{sender_name.inspect} is invalid as a sender name") if sender_name =~ /[\r\n]/
+  def self.valid_name!(mailbox_name : String?)
+    if mailbox_name
+      raise Error::AddressError.new("#{mailbox_name.inspect} is invalid as a sender name") if mailbox_name =~ /[\r\n]/
     end
-    sender_name
+    mailbox_name
   end
 
   @addr : String
   @name : String? = nil
 
-  def initialize(mail_address : String, sender_name : String? = nil)
+  def initialize(mail_address : String, mailbox_name : String? = nil)
     @addr = Address.valid_address!(mail_address)
-    @name = Address.valid_name!(sender_name)
+    @name = Address.valid_name!(mailbox_name)
   end
 
   def to_s(io : IO)
-    if sender_name = @name
-      io << sender_name
-      io << " <" << @addr << ">"
+    if mailbox_name = @name
+      io << mailbox_name
+      io << " <" << @addr << '>'
     else
       io << @addr
     end
