@@ -4,6 +4,7 @@ abstract class EMail::Content
   @data : String = ""
   @content_type : Header::ContentType
   @other_headers = Array(Header).new
+  @content_transfer_encoding = Header::ContentTransferEncoding.new("7bit")
 
   # :nodoc:
   def initialize(@mime_type : String)
@@ -14,13 +15,18 @@ abstract class EMail::Content
     [content_type, content_transfer_encoding] + @other_headers
   end
 
-  private def read_data(io : IO)
+  private def encode_data(str : String)
+    encode_data(IO::Memory.new(str))
+  end
+
+  private def encode_data(io : IO)
+    @content_transfer_encoding.set("base64")
     buf = Bytes.new(54)
     lines = [] of String
     while ((bytes = io.read(buf)) > 0)
       lines << Base64.strict_encode(buf[0, bytes])
     end
-    lines.join("\n")
+    lines.join('\n')
   end
 
   private def content_type
@@ -28,7 +34,7 @@ abstract class EMail::Content
   end
 
   private def content_transfer_encoding
-    Header::ContentTransferEncoding.new("base64")
+    @content_transfer_encoding
   end
 
   def data(with_header : Bool = false)
@@ -51,25 +57,29 @@ abstract class EMail::Content
     @data.empty?
   end
 
-  class TextPlain < Content
-    def initialize
-      super("text/plain")
+  class TextContent < Content
+    def initialize(text_type : String)
+      super("text/#{text_type}")
       @content_type.set_charset("UTF-8")
     end
 
-    def message=(message_body : String)
-      @data = read_data(::IO::Memory.new(message_body))
-    end
-  end
-
-  class TextHTML < Content
-    def initialize
-      super("text/html")
-      @content_type.set_charset("UTF-8")
+    def data=(message_body : String)
+      encoded = !message_body.ascii_only? || message_body.split(/\r?\n/).map(&.size).max > 998
+      @data = (encoded ? encode_data(message_body) : message_body)
     end
 
-    def message=(message_body : String)
-      @data = read_data(::IO::Memory.new(message_body))
+    private def line_validate(message_body : String)
+      String.build do |str|
+        message_body.split(/\r?\n/) do |line|
+          while line.size > 990
+            str << line[0, 990]
+            str << "!\n"
+            line = line[990, (line.size - 990)]
+          end
+          str << line
+          str << '\n'
+        end
+      end
     end
   end
 
@@ -100,7 +110,7 @@ abstract class EMail::Content
         content_id.set (file_id)
         @other_headers << content_id
       end
-      @data = read_data(io)
+      @data = encode_data(io)
     end
   end
 
@@ -129,10 +139,6 @@ abstract class EMail::Content
       super("multipart/#{multipart_type}")
       @boundary = Multipart.boundary
       @content_type.set_boundary(@boundary)
-    end
-
-    private def content_transfer_encoding
-      Header::ContentTransferEncoding.new("7bit")
     end
 
     def add(content : Content)
