@@ -223,6 +223,10 @@ abstract class EMail::Header
       super("Content-Transfer-Encoding")
     end
 
+    def set(encoding : String)
+      @encoding = encoding
+    end
+
     private def body
       @encoding
     end

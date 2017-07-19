@@ -31,7 +31,7 @@ class EMail::Client
 
   # Createss smtp client object.
   def initialize(@host : String, @port : Int32 = DEFAULT_SMTP_PORT)
-    @logger = logger_setting(::STDOUT, "EMail_Client", Logger::INFO)
+    @logger = logger_setting(STDOUT, "EMail_Client", Logger::INFO)
   end
 
   private def logger_setting(io : IO, progname : String, level : Logger::Severity)
@@ -42,7 +42,7 @@ class EMail::Client
     logger
   end
 
-  def auth=(login_credential : Tuple(::String, String))
+  def auth=(login_credential : Tuple(String, String))
     @login_credential = login_credential
   end
 

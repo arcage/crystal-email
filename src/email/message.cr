@@ -13,8 +13,8 @@ class EMail::Message
     mime_version: Header::MimeVersion.new,
   }
 
-  @body = Content::TextPlain.new
-  @body_html = Content::TextHTML.new
+  @body = Content::TextContent.new("plain")
+  @body_html = Content::TextContent.new("html")
   @body_resources = Hash(String, Content::AttachmentFile).new
   @attachments = Array(Content::AttachmentFile).new
   @envelope_from : Address? = nil
@@ -65,7 +65,7 @@ class EMail::Message
   end
 
   def data
-    to_s.gsub(/\r?\n/, "\r\n") + "\r\n.\r\n"
+    to_s.gsub(/\r?\n/, "\r\n").gsub(/\r\n\./, "\r\n..") + "\r\n.\r\n"
   end
 
   def has_text_message?
@@ -149,15 +149,15 @@ class EMail::Message
     @headers.each_value do |header|
       io << header << '\n' unless header.name == "Bcc" || header.empty?
     end
-    io << body_content.to_s.gsub(/\r\n\./, "\r\n..")
+    io << body_content
   end
 
   def message(message_body : String)
-    @body.message = message_body
+    @body.data = message_body
   end
 
   def message_html(message_body : String)
-    @body_html.message = message_body
+    @body_html.data = message_body
   end
 
   # :nodoc:
