@@ -55,7 +55,7 @@ EMail.send("your.mx.server.name", 25) do
     Your Signature
     EOM
 
-  attache "./attachment.docx"                            # [*]
+  attach "./attachment.docx"                            # [*]
 
   # HTML e-Mail support
   # `message_resource` works almost same as `attach`, expect it requires `cid:` argument.
