@@ -149,7 +149,7 @@ class EMail::Message
     @headers.each_value do |header|
       io << header << '\n' unless header.name == "Bcc" || header.empty?
     end
-    io << body_content
+    io << body_content.to_s.gsub(/\r\n\./, "\r\n..")
   end
 
   def message(message_body : String)
