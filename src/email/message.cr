@@ -43,12 +43,12 @@ class EMail::Message
   end
 
   def message_resource(file_path : String, cid : String, file_name : String? = nil, mime_type : String? = nil)
-    raise Error::DupulicateCidError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = Content::AttachmentFile.new(file_path, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
   def message_resource(io : IO, cid : String, file_name : String, mime_type : String? = nil)
-    raise Error::DupulicateCidError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = Content::AttachmentFile.new(io, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
@@ -117,7 +117,7 @@ class EMail::Message
   def message_content
     if message_has_resource?
       content = Content::Multipart.new("related")
-      content.add message_text_content
+      content << message_text_content
       @body_resources.each_value do |resource|
         content << resource
       end
@@ -147,9 +147,9 @@ class EMail::Message
   def to_s(io : IO)
     validate!
     @headers.each_value do |header|
-      io << header << "\n" unless header.name == "Bcc" || header.empty?
+      io << header << '\n' unless header.name == "Bcc" || header.empty?
     end
-    io << body_content
+    io << body_content.to_s.gsub(/\r\n\./, "\r\n..")
   end
 
   def message(message_body : String)

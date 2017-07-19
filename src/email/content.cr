@@ -35,9 +35,9 @@ abstract class EMail::Content
     String.build do |io|
       if with_header
         headers.each do |header|
-          io << header << "\n" unless header.empty?
+          io << header << '\n' unless header.empty?
         end
-        io << "\n"
+        io << '\n'
       end
       io << @data
     end
@@ -113,7 +113,7 @@ abstract class EMail::Content
         boundary_string = String.build do |str|
           str << "Multipart_Boundary_"
           str << Time.now.epoch_ms
-          str << "_"
+          str << '_'
           str << rand(UInt32::MAX)
           str << "--"
         end
@@ -148,13 +148,13 @@ abstract class EMail::Content
       String.build do |io|
         if with_header
           headers.each do |header|
-            io << header << "\n" unless header.empty?
+            io << header << '\n' unless header.empty?
           end
-          io << "\n"
+          io << '\n'
         end
         @contents.each do |content|
-          io << "\n--" << @boundary << "\n"
-          io << content << "\n"
+          io << "\n--" << @boundary << '\n'
+          io << content << '\n'
         end
         io << "\n--" << @boundary
       end

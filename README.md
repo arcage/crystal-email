@@ -4,13 +4,13 @@ Simple e-mail sending library for the **Crystal**([https://crystal-lang.org/](ht
 
 You can:
 
-- construct e-mail with a plain text message, HTML message and/or some attachment files.
-- include resources(e.g. images) used in HTML e-Mail message.
-- set multiple recipients to e-mail.
-- use multibyte characters(only UTF-8) in e-mail.
-- send e-mail by using local or remote SMTP server.
+- construct an e-mail with a plain text message, a HTML message and/or some attachment files.
+- include resources(e.g. images) used in the HTML message.
+- set multiple recipients to the e-mail.
+- use multibyte characters(only UTF-8) in the e-mail.
+- send the e-mail by using local or remote SMTP server.
 - use TLS connection by `STARTTLS` command.
-- use SMTP-AUTH by `AUTH PLAIN` and `AUTH LOGIN` when using TLS.
+- use SMTP-AUTH by `AUTH PLAIN` or `AUTH LOGIN` when using TLS.
 
 You can not:
 
@@ -58,7 +58,7 @@ EMail.send("your.mx.server.name", 25) do
   attache "./attachment.docx"                            # [*]
 
   # HTML e-Mail support
-  # `message_resource` works as same as `attach`, expect it requires `cid:` argument.
+  # `message_resource` works almost same as `attach`, expect it requires `cid:` argument.
   message_html <<-EOM
     <html>
     <body>
@@ -87,7 +87,7 @@ You can add some option arguments to `EMail.send`.
 
     Set log level for SMTP session.
 
-    - `Logger::Severity::DEBUG` : logging all smtp commands and responses.
+    - `Logger::Severity::DEBUG` : logging all SMTP commands and responses.
     - `Logger::Severity::ERROR` : logging only events stem from some errors.
     - `EMail::Client::NO_LOGGING`(`Logger::Severity::UNKOWN`) : no events will be logged.
 
@@ -95,7 +95,7 @@ You can add some option arguments to `EMail.send`.
 
     Set `progname` of the internal `Logger` object. It is also used as a part of _Message-Id_ header.
 
-- `helo_domain : String` (Default: `"[" + lcoal_ip_addr + "]"`)
+- `helo_domain : String` (Default: `"[" + local_ip_addr + "]"`)
 
     Set the parameter string for SMTP `EHLO`(or `HELO`) command.
 
@@ -177,13 +177,13 @@ Optionally, you can add mailbox name to `#from`, `#to`, `#cc`, `#bcc` or `#reply
 from "your@mail.addr", "Your Name"
 ```
 
-For attachment files and message resources, you can designate another file name for recipient.
+For attachment files and message resources, you can designate another file name for the recipient.
 
 ```crystal
 attach "attachment.txt", file_name: "other_name.txt"
 ```
 
-You can designate mime type of the attachment file explicitly. By default, the mime type of the attachment file will be inferred from the extension of that file: e.g. ".txt" => "text/plain"
+You can designate mime type of the file explicitly. By default, it will be inferred from the extension of that file: e.g. ".txt" => "text/plain"
 
 ```crystal
 attach "attachment", mime_type: "text/plain"
@@ -199,7 +199,7 @@ UTF-8 string can be used as follows:
 
 - mail message
 - part of header body(when it can be multibyte)
-- name of attachment file
+- name of attachment files or message resources
 
 ```crystal
 subject "メールサブジェクト"

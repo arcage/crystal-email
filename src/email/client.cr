@@ -104,8 +104,8 @@ class EMail::Client
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
-      io << "<" << timestamp.epoch_ms << "." << Process.pid
-      io << "." << @logger.progname << "@" << @helo_domain << ">"
+      io << '<' << timestamp.epoch_ms << '.' << Process.pid
+      io << '.' << @logger.progname << '@' << @helo_domain << '>'
     }
     mail.validate!
   end
@@ -305,7 +305,7 @@ class EMail::Client
   end
 
   private def fatal_error(error : Exception)
-    logging_message = error.message.try(&.gsub(/\s+/, " ")).to_s + "(#{error.class})"
+    logging_message = error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})"
     @logger.fatal(logging_message)
     exit(1)
   end
