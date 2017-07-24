@@ -211,7 +211,9 @@ message <<-EOM
 attach "写真.jpg"
 ```
 
-For the simplifying the implementation, the mail message and all attached data will be encoded by Base64, even when that includes only ascii characters.
+Attachment files and message resources are always encoded by Base64.
+
+E-mail messages(text plain message and html message) will be encoded when thay have non-ascii characters or lines that is longer than 998 bytes.
 
 ## TODO
 
