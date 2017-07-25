@@ -37,15 +37,19 @@ abstract class EMail::Content
     @content_transfer_encoding
   end
 
+  def data(io : IO, with_header : Bool)
+    if with_header
+      headers.each do |header|
+        io << header << '\n' unless header.empty?
+      end
+      io << '\n'
+    end
+    io << @data
+  end
+
   def data(with_header : Bool = false)
     String.build do |io|
-      if with_header
-        headers.each do |header|
-          io << header << '\n' unless header.empty?
-        end
-        io << '\n'
-      end
-      io << @data
+      data(io, with_header)
     end
   end
 

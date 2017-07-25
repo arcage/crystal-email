@@ -145,7 +145,6 @@ class EMail::Message
   end
 
   def to_s(io : IO)
-    validate!
     @headers.each_value do |header|
       io << header << '\n' unless header.name == "Bcc" || header.empty?
     end

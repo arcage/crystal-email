@@ -1,14 +1,14 @@
 # EMail for Crystal
 
-Simple e-mail sending library for the **Crystal**([https://crystal-lang.org/](https://crystal-lang.org/)).
+Simple email sending library for the **Crystal**([https://crystal-lang.org/](https://crystal-lang.org/)).
 
 You can:
 
-- construct an e-mail with a plain text message, a HTML message and/or some attachment files.
+- construct an email with a plain text message, a HTML message and/or some attachment files.
 - include resources(e.g. images) used in the HTML message.
-- set multiple recipients to the e-mail.
-- use multibyte characters(only UTF-8) in the e-mail.
-- send the e-mail by using local or remote SMTP server.
+- set multiple recipients to the email.
+- use multibyte characters(only UTF-8) in the email.
+- send the email by using local or remote SMTP server.
 - use TLS connection by `STARTTLS` command.
 - use SMTP-AUTH by `AUTH PLAIN` or `AUTH LOGIN` when using TLS.
 
@@ -57,7 +57,7 @@ EMail.send("your.mx.server.name", 25) do
 
   attach "./attachment.docx"                            # [*]
 
-  # HTML e-Mail support
+  # HTML email support
   # `message_resource` works almost same as `attach`, expect it requires `cid:` argument.
   message_html <<-EOM
     <html>
@@ -79,6 +79,7 @@ This code will output log entries to `STDOUT` as follows:
 ```text
 2016/11/11 12:15:58 [EMail_Client/7412] INFO Start TCP session to your.mx.server.name:25
 2016/11/11 12:15:58 [EMail_Client/7412] INFO Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
+2016/11/11 12:15:58 [EMail_Client/7412] INFO Close TCP session to smtp.gmail.com:587
 ```
 
 You can add some option arguments to `EMail.send`.
@@ -101,13 +102,13 @@ You can add some option arguments to `EMail.send`.
 
 - `on_failed : EMail::Client::OnFailedProc` (Default: None)
 
-    Set callback function to be called when sending e-mail is failed while in SMTP session. It will be called with e-mail message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
+    Set callback function to be called when sending email is failed while in SMTP session. It will be called with email message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
 
     `EMail::Client::OnFailedProc` is an alias of the Proc type `EMail::Message, Array(String) ->`.
 
 - `use_tls : Bool` (Default: `false`)
 
-    Try to use `STARTTLS` command to send e-mail with TLS encryption.
+    Try to use `STARTTLS` command to send email with TLS encryption.
 
 - `auth : Tuple(String, String)` (Default: None)
 
@@ -167,6 +168,7 @@ This will output:
 2016/11/11 12:35:48 [MailBot/7918] DEBUG --> QUIT
 2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- QUIT 221 2.0.0 Bye
 2016/11/11 12:35:48 [MailBot/7918] INFO Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
+2016/11/11 12:35:48 [MailBot/7918] INFO Close TCP session to smtp.gmail.com:587
 ```
 
 ### `EMail::Message` object(default receiver of the block for `EMail.send`)
@@ -213,13 +215,50 @@ attach "写真.jpg"
 
 Attachment files and message resources are always encoded by Base64.
 
-E-mail messages(text plain message and html message) will be encoded when thay have non-ascii characters or lines that is longer than 998 bytes.
+Email messages(text plain message and html message) will be encoded when they have non-ascii characters or lines that is longer than 998 bytes.
+
+## Concurrent sending
+
+You can send prepared messages concurrently by using multiple connections, since v0.2.0 .
+
+```crystal
+# Concurrent sending example
+
+rcpt_list = ["a@some.domain", "b@some.domain", "c@some.domain", "d@some.domain"]
+
+messages = rcpts_list.map do |rcpt_to|
+  mail = EMail::Message.new
+  mail.from    "your@mail.addr"
+  mail.to      rcpt_to
+  mail.subject "Concurrent email sending"
+  mail.message "message to #{rcpt_to}"
+  mail
+end
+
+# create email sender object
+sender = EMail::Sender.new("your.mx.server.name", 25)
+
+# set messages to sender
+sender << messages
+
+# start sending with concurrently 3 connections
+sender.start(3)
+```
+
+You can:
+- set same options as `EMail.send` to `EMail::Sender.new`.
+- give `Array(EMail::Message)` or `EMail::Message` object to `EMail::Sender#<<`.
+- set 2 arguments to `EMail::Sender#start`.
+    - 1st one is "number of connections" that specify how many connections are used to send messages concurrently.(required)
+    - 2nd one is "messages per connection" that specify how many messages are sent by one connection.(optional: default is 100)
+
+_Note: Setting too large "number of connections" or "messages per connection" will place a heavy load on the SMTP server or occupy its resources. Especially if the SMTP server is not yours, you should choice these parameters more carefully._
 
 ## TODO
 
 - [x] ~~support AUTH LOGIN~~
 - [ ] support AUTH CRAM-MD5
-- [x] ~~support HTML e-mail~~
+- [x] ~~support HTML email~~
 - [ ] performance tuning
 
 ## Contributors
