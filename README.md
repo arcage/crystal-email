@@ -235,7 +235,6 @@ By using `EMail::Sender` object, you can concurrently send multiple messages by 
 
 rcpt_list = ["a@some.domain", "b@some.domain", "c@some.domain", "d@some.domain"]
 
-
 # create email sender object
 sender = EMail::Sender.new("your.mx.server.name", 25)
 
