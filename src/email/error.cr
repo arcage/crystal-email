@@ -8,4 +8,6 @@ class EMail::Error < Exception
   class ClientError < Error; end
 
   class MessageError < Error; end
+
+  class SenderError < Error; end
 end

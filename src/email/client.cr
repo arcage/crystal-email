@@ -17,60 +17,38 @@ class EMail::Client
   @host : String
   @port : Int32
   @logger : Logger
+  @started : Bool = false
+  @first_send : Bool = true
   {% if flag?(:without_openssl) %}
     @socket : TCPSocket? = nil
   {% else %}
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client | Nil = nil
   {% end %}
-  @helo_domain : String? = nil
+  @helo_domain : String?
   @command_history = [] of String
-  @on_failed : OnFailedProc? = nil
+  @on_failed : OnFailedProc?
   @use_tls = false
-  @login_credential : Tuple(String, String)? = nil
+  @auth : Tuple(String, String)? = nil
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
   # Createss smtp client object.
-  def initialize(@host : String, @port : Int32 = DEFAULT_SMTP_PORT)
-    @logger = logger_setting(STDOUT, "EMail_Client", Logger::INFO)
-  end
-
-  private def logger_setting(io : IO, progname : String, level : Logger::Severity)
-    logger = Logger.new(io)
-    logger.progname = progname
-    logger.formatter = LOG_FORMATTER
-    logger.level = level
-    logger
-  end
-
-  def auth=(login_credential : Tuple(String, String))
-    @login_credential = login_credential
-  end
-
-  def use_tls=(use_tls : Bool)
+  def initialize(@host : String, @port : Int32,
+                 client_name : String, log_level : Logger::Severity,
+                 @helo_domain : String?, @on_failed : OnFailedProc?,
+                 @use_tls : Bool, @auth : Tuple(String, String)?, log_io : IO)
+    raise Error::ClientError.new("Invalid client name \"#{client_name}\"") if client_name.empty? || client_name =~ /[^\w]/
+    if helo_domain = @helo_domain
+      raise Error::ClientError.new("Invalid HELO domain \"#{helo_domain}\"") unless helo_domain =~ DOMAIN_FORMAT
+    end
     {% if flag?(:without_openssl) %}
-      if use_tls
+      if @use_tls
         raise Error::ClientError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       end
     {% end %}
-    @use_tls = use_tls
-  end
-
-  def log_level=(level : Logger::Severity)
-    @logger.level = level
-  end
-
-  def client_name=(client_name : String)
-    raise Error::ClientError.new("Invalid client name \"#{client_name}\"") if client_name.empty? || client_name =~ /[^\w]/
+    @logger = Logger.new(log_io)
     @logger.progname = client_name
-  end
-
-  def helo_domain=(domain : String)
-    raise Error::ClientError.new("Invalid HELO domain \"#{domain}\"") unless domain =~ DOMAIN_FORMAT
-    @helo_domain = domain
-  end
-
-  def on_failed=(on_failed : OnFailedProc)
-    @on_failed = on_failed
+    @logger.formatter = LOG_FORMATTER
+    @logger.level = log_level
   end
 
   private def socket
@@ -81,26 +59,31 @@ class EMail::Client
     end
   end
 
-  def send(mail : Message)
+  def start
     ready_to_send
-    sent = smtp_session {
-      valid_mail = mail_validate!(mail)
-      send_mail(valid_mail)
-    }
-    sent
+    status_code, _ = smtp_responce("CONN")
+    if status_code == "220" && smtp_helo && smtp_starttls && smtp_auth
+      @started = true
+      with self yield
+      @started = false
+    else
+      @logger.error("Failed in connecting for some reason")
+    end
+    smtp_quit
+    close_socket
+    @logger.info("Close session to #{@host}:#{@port}")
   rescue ex : Error
     close_socket
     fatal_error(ex)
   end
 
   private def ready_to_send
-    @command_history.clear
     @socket = TCPSocket.new(@host, @port)
     @helo_domain ||= "[#{socket.as(TCPSocket).local_address.address}]"
     @logger.info("Start TCP session to #{@host}:#{@port}")
   end
 
-  private def mail_validate!(mail : Message)
+  private def mail_validate!(mail : Message) : Message
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
@@ -110,10 +93,12 @@ class EMail::Client
     mail.validate!
   end
 
-  private def send_mail(mail : Message)
+  def send(mail : Message)
+    @command_history.clear
+    mail = mail_validate!(mail)
     mail_from = mail.mail_from
     recipients = mail.recipients
-    if sent = smtp_helo && smtp_starttls && smtp_auth && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
+    if smtp_rset && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
       @logger.info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
       @logger.error("Failed sending message for some reason")
@@ -121,7 +106,6 @@ class EMail::Client
         on_failed.call(mail, @command_history)
       end
     end
-    sent
   end
 
   private def smtp_command(command : String, parameter : String? = nil)
@@ -164,18 +148,6 @@ class EMail::Client
     {status_code, status_messages}
   end
 
-  private def smtp_session
-    status_code, _ = smtp_responce("CONN")
-    sent = if status_code == "220"
-             yield
-           else
-             false
-           end
-    smtp_quit
-    close_socket
-    sent
-  end
-
   private def smtp_helo
     status_code, status_messages = smtp_command("EHLO", @helo_domain)
     if status_code == "250"
@@ -214,10 +186,8 @@ class EMail::Client
   end
 
   private def smtp_auth
-    login_credential = @login_credential
-    if login_credential
-      login_id = login_credential[0]
-      login_password = login_credential[1]
+    if login_credential = @auth
+      login_id, login_password = login_credential
       if socket.is_a?(OpenSSL::SSL::Socket::Client)
         if @esmtp_commands["AUTH"].includes?("PLAIN")
           smtp_auth_plain(login_id, login_password)
@@ -270,6 +240,16 @@ class EMail::Client
       true
     else
       false
+    end
+  end
+
+  private def smtp_rset
+    if @first_send
+      @first_send = false
+      true
+    else
+      status_code, _ = smtp_command("RSET")
+      status_code == "250"
     end
   end
 

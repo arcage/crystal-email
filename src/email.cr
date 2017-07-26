@@ -10,20 +10,11 @@ require "./email/*"
 module EMail
   DEFAULT_SMTP_PORT = 25
 
-  def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **option)
-    client = Client.new(host, port)
-    mail = Message.new
-    with mail yield
-    mail.validate!
-    {% for opt in %i(log_level client_name helo_domain on_failed use_tls auth) %}
-      if {{opt.id}} = option[{{opt}}]?
-        client.{{opt.id}} = {{opt.id}}
-      end
-    {% end %}
-    client.send(mail)
-  rescue
-    if client
-      client.close_socket
+  def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **options)
+    message = Message.new
+    with message yield
+    Sender.new(host, port, **options).start do
+      enqueue message
     end
   end
 end
