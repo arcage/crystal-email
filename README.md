@@ -240,7 +240,7 @@ sender = EMail::Sender.new("your.mx.server.name", 25)
 
 # start sending emails with concurrently 3 connections
 sender.start(number_of_connections: 3) do
-  rcpts_list.map do |rcpt_to|
+  rcpts_list.each do |rcpt_to|
     mail = EMail::Message.new
     mail.from    "your@mail.addr"
     mail.to      rcpt_to
