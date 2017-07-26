@@ -93,7 +93,7 @@ class EMail::Client
     mail.validate!
   end
 
-  private def send(mail : Message)
+  def send(mail : Message)
     @command_history.clear
     mail = mail_validate!(mail)
     mail_from = mail.mail_from

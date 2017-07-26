@@ -13,9 +13,8 @@ module EMail
   def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **options)
     message = Message.new
     with message yield
-    sender = Sender.new(host, port, **options)
-    sender << message
-    sender.start(1)
+    Sender.new(host, port, **options).start do
+      enqueue message
+    end
   end
-
 end

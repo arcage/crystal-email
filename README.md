@@ -29,6 +29,8 @@ dependencies:
 ## Usage
 
 ```crystal
+# send simple 1 message
+
 require "email"
 
 EMail.send("your.mx.server.name", 25) do
@@ -116,6 +118,10 @@ You can add some option arguments to `EMail.send`.
 
     This option must be use with `ust_tls: true`.
 
+- `log_io : IO` (Default: `STDOUT`)
+
+    Change logging output from STDOUT. It must be writable.
+
 ```crystal
 # example with option arguments
 
@@ -125,20 +131,23 @@ on_failed = EMail::Client::OnFailedProc.new do |mail, command_history|
   puts command_history.join("\n")
 end
 
-EMail.send("your.mx.server.name", 587,
-           log_level:   Logger::Severity::DEBUG,
-           client_name: "MailBot",
-           helo_domain: "your.host.fqdn",
-           on_failed:   on_failed,
-           use_tls: true,
-           auth: {"your_id", "your_password"}) do
+File.open("./sendamil.log", "w") do |log_file
+  EMail.send("your.mx.server.name", 587,
+             log_level:   Logger::Severity::DEBUG,
+             client_name: "MailBot",
+             helo_domain: "your.host.fqdn",
+             on_failed:   on_failed,
+             use_tls: true,
+             auth: {"your_id", "your_password"},
+             log_io: log_file) do
 
-  # same as above
+    # same as above
 
+  end
 end
 ```
 
-This will output:
+This will output to `./sendmail.log` file :
 
 ```text
 2016/11/11 12:35:48 [MailBot/7918] INFO Start TCP session to your.mx.server.name:587
@@ -217,42 +226,41 @@ Attachment files and message resources are always encoded by Base64.
 
 Email messages(text plain message and html message) will be encoded when they have non-ascii characters or lines that is longer than 998 bytes.
 
-## Concurrent sending
+## `EMail::Sender`(Concurrent sending)
 
-You can send prepared messages concurrently by using multiple connections, since v0.2.0 .
+By using `EMail::Sender` object, you can concurrently send multiple messages by multiple connections.
 
 ```crystal
 # Concurrent sending example
 
 rcpt_list = ["a@some.domain", "b@some.domain", "c@some.domain", "d@some.domain"]
 
-messages = rcpts_list.map do |rcpt_to|
-  mail = EMail::Message.new
-  mail.from    "your@mail.addr"
-  mail.to      rcpt_to
-  mail.subject "Concurrent email sending"
-  mail.message "message to #{rcpt_to}"
-  mail
-end
 
 # create email sender object
 sender = EMail::Sender.new("your.mx.server.name", 25)
 
-# set messages to sender
-sender << messages
-
-# start sending with concurrently 3 connections
-sender.start(3)
+# start sending emails with concurrently 3 connections
+sender.start(number_of_connections: 3, messages_per_connection: 100) do
+  rcpts_list.map do |rcpt_to|
+    mail = EMail::Message.new
+    mail.from    "your@mail.addr"
+    mail.to      rcpt_to
+    mail.subject "Concurrent email sending"
+    mail.message "message to #{rcpt_to}"
+    # enqueue the email to sender
+    enqueue mail
+  end
+end
 ```
 
 You can:
 - set same options as `EMail.send` to `EMail::Sender.new`.
-- give `Array(EMail::Message)` or `EMail::Message` object to `EMail::Sender#<<`.
+- give `Array(EMail::Message)` or `EMail::Message` object to `EMail::Sender#enqueue`.
 - set 2 arguments to `EMail::Sender#start`.
-    - 1st one is "number of connections" that specify how many connections are used to send messages concurrently.(required)
-    - 2nd one is "messages per connection" that specify how many messages are sent by one connection.(optional: default is 100)
+    - 1st one is `number_of_connections` that specify how many connections are used to send messages concurrently.(Default: `1`)
+    - 2nd one is `messages_per_connection` that specify how many messages are sent by one connection.(Default: `100`)
 
-_Note: Setting too large "number of connections" or "messages per connection" will place a heavy load on the SMTP server or occupy its resources. Especially if the SMTP server is not yours, you should choice these parameters more carefully._
+**Note: Setting too large `number_of_connections` or `messages_per_connection` will place heavy loads on the SMTP server or occupy its resources. When the SMTP server is not yours, you should choice these parameters very carefully.**
 
 ## TODO
 
