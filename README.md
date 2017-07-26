@@ -131,7 +131,7 @@ on_failed = EMail::Client::OnFailedProc.new do |mail, command_history|
   puts command_history.join("\n")
 end
 
-File.open("./sendamil.log", "w") do |log_file
+File.open("./sendamil.log", "w") do |log_file|
   EMail.send("your.mx.server.name", 587,
              log_level:   Logger::Severity::DEBUG,
              client_name: "MailBot",
