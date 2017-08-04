@@ -1,7 +1,8 @@
+# Utility object for concurrent email sending.
 class EMail::Sender
   @queue : Array(Message) = Array(Message).new
-  @clients : Array(Client) = Array(Client).new
-  @client_count : Int32 = 0
+  @connections : Array(Fiber) = Array(Fiber).new
+  @connection_count : Int32 = 0
   @server_host : String
   @server_port : Int32
   @client_name : String
@@ -44,7 +45,7 @@ class EMail::Sender
     spawn_sender
     with self yield
     @finished = true
-    until @queue.empty? && @clients.empty?
+    until @queue.empty? && @connections.empty?
       Fiber.yield
     end
   end
@@ -52,7 +53,7 @@ class EMail::Sender
   private def spawn_sender
     spawn do
       until @finished && @queue.empty?
-        spawn_client if !@queue.empty? && @clients.size < @number_of_connections
+        spawn_client if !@queue.empty? && @connections.size < @number_of_connections
         Fiber.yield
       end
     end
@@ -60,15 +61,15 @@ class EMail::Sender
 
   private def spawn_client
     spawn do
+      @connections << Fiber.current
       message = @queue.shift?
-      until message.nil?
-        client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@client_count}")
+      while message
+        client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@connection_count}")
         client = Client.new(@server_host, @server_port,
           client_name: client_name, log_level: @log_level,
           helo_domain: @helo_domain, on_failed: @on_failed,
           use_tls: @use_tls, auth: @auth, log_io: @log_io)
-        @clients << client
-        @client_count += 1
+        @connection_count += 1
         client.start do
           sent_messages = 0
           while message && sent_messages < @messages_per_connection
@@ -78,8 +79,8 @@ class EMail::Sender
             message = @queue.shift?
           end
         end
-        @clients.delete(client)
       end
+      @connections.delete(Fiber.current)
     end
   end
 end
