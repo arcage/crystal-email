@@ -23,7 +23,7 @@ class EMail::Message
     raise Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
     raise Error::MessageError.new("Message has no From address.") if @headers[:from].empty?
     raise Error::MessageError.new("Message has no To addresses.") if @headers[:to].empty?
-    raise Error::MessageError.new("Message has no contents.") if @body.empty? && @attachments.empty?
+    raise Error::MessageError.new("Message has no contents.") if @body.empty? && @body_html.empty? && @attachments.empty?
     raise Error::MessageError.new("Message has related resoures, but no text message") if message_has_resource? && !has_message?
     if @headers[:sender].empty? && @headers[:from].size > 1
       sender @headers[:from].list.first

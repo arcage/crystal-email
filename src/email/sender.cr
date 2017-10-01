@@ -1,7 +1,8 @@
+# Utility object for concurrent email sending.
 class EMail::Sender
   @queue : Array(Message) = Array(Message).new
-  @clients : Array(Client) = Array(Client).new
-  @client_count : Int32 = 0
+  @connections : Array(Fiber) = Array(Fiber).new
+  @connection_count : Int32 = 0
   @server_host : String
   @server_port : Int32
   @client_name : String
@@ -13,9 +14,10 @@ class EMail::Sender
   @log_io : IO
   @finished : Bool = false
   @number_of_connections : Int32 = 1
-  @messages_per_connection : Int32 = 100
+  @messages_per_connection : Int32 = 10
+  @connection_interval : Int32 = 200
 
-  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT,
+  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT,  *,
                  @client_name = "EMail_Client", @log_level = Logger::INFO,
                  @helo_domain = nil, @on_failed = nil,
                  @use_tls = false, @auth = nil, @log_io = STDOUT)
@@ -32,19 +34,23 @@ class EMail::Sender
     end
   end
 
-  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil)
+  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil, connection_interval : Int32? = nil)
     if number_of_connections
       @number_of_connections = number_of_connections
     end
     if messages_per_connection
       @messages_per_connection = messages_per_connection
     end
+    if connection_interval
+      @connection_interval = connection_interval
+    end
     raise Error::SenderError.new("Number of connections must be 1 or greater") if @number_of_connections < 1
     raise Error::SenderError.new("Messages per connection must be 1 or greater") if @messages_per_connection < 1
+    raise Error::SenderError.new("Connection interval must be 0 or greater") if @connection_interval < 0
     spawn_sender
     with self yield
     @finished = true
-    until @queue.empty? && @clients.empty?
+    until @queue.empty? && @connections.empty?
       Fiber.yield
     end
   end
@@ -52,7 +58,7 @@ class EMail::Sender
   private def spawn_sender
     spawn do
       until @finished && @queue.empty?
-        spawn_client if !@queue.empty? && @clients.size < @number_of_connections
+        spawn_client if !@queue.empty? && @connections.size < @number_of_connections
         Fiber.yield
       end
     end
@@ -60,15 +66,15 @@ class EMail::Sender
 
   private def spawn_client
     spawn do
+      @connections << Fiber.current
       message = @queue.shift?
-      until message.nil?
-        client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@client_count}")
+      while message
+        client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@connection_count}")
         client = Client.new(@server_host, @server_port,
           client_name: client_name, log_level: @log_level,
           helo_domain: @helo_domain, on_failed: @on_failed,
           use_tls: @use_tls, auth: @auth, log_io: @log_io)
-        @clients << client
-        @client_count += 1
+        @connection_count += 1
         client.start do
           sent_messages = 0
           while message && sent_messages < @messages_per_connection
@@ -78,8 +84,9 @@ class EMail::Sender
             message = @queue.shift?
           end
         end
-        @clients.delete(client)
+        sleep(@connection_interval.milliseconds) if @connection_interval > 0
       end
+      @connections.delete(Fiber.current)
     end
   end
 end
