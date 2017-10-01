@@ -14,9 +14,10 @@ class EMail::Sender
   @log_io : IO
   @finished : Bool = false
   @number_of_connections : Int32 = 1
-  @messages_per_connection : Int32 = 100
+  @messages_per_connection : Int32 = 10
+  @connection_interval : Int32 = 200
 
-  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT,
+  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT,  *,
                  @client_name = "EMail_Client", @log_level = Logger::INFO,
                  @helo_domain = nil, @on_failed = nil,
                  @use_tls = false, @auth = nil, @log_io = STDOUT)
@@ -33,15 +34,19 @@ class EMail::Sender
     end
   end
 
-  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil)
+  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil, connection_interval : Int32? = nil)
     if number_of_connections
       @number_of_connections = number_of_connections
     end
     if messages_per_connection
       @messages_per_connection = messages_per_connection
     end
+    if connection_interval
+      @connection_interval = connection_interval
+    end
     raise Error::SenderError.new("Number of connections must be 1 or greater") if @number_of_connections < 1
     raise Error::SenderError.new("Messages per connection must be 1 or greater") if @messages_per_connection < 1
+    raise Error::SenderError.new("Connection interval must be 0 or greater") if @connection_interval < 0
     spawn_sender
     with self yield
     @finished = true
@@ -79,6 +84,7 @@ class EMail::Sender
             message = @queue.shift?
           end
         end
+        sleep(@connection_interval.milliseconds) if @connection_interval > 0
       end
       @connections.delete(Fiber.current)
     end

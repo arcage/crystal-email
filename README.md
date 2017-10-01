@@ -257,7 +257,7 @@ You can:
 - give `Array(EMail::Message)` or `EMail::Message` object to `EMail::Sender#enqueue`.
 - set 2 arguments to `EMail::Sender#start`.
     - 1st one is `number_of_connections` that specify how many connections are used to send messages concurrently.(Default: `1`)
-    - 2nd one is `messages_per_connection` that specify how many messages are sent by one connection.(Default: `100`)
+    - 2nd one is `messages_per_connection` that specify how many messages are sent by one connection.(Default: `10`)
 
 **Note: Setting too large `number_of_connections` or `messages_per_connection` will place heavy loads on the SMTP server or occupy its resources. When the SMTP server is not yours, you should choice these parameters very carefully.**
 

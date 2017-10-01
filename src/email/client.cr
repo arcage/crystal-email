@@ -32,7 +32,7 @@ class EMail::Client
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
   # Createss smtp client object.
-  def initialize(@host : String, @port : Int32,
+  def initialize(@host : String, @port : Int32, *,
                  client_name : String, log_level : Logger::Severity,
                  @helo_domain : String?, @on_failed : OnFailedProc?,
                  @use_tls : Bool, @auth : Tuple(String, String)?, log_io : IO)
