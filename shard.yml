@@ -1,9 +1,9 @@
 name: email
-version: 0.2.1
+version: 0.2.2
 
 authors:
   - ʕ·ᴥ·ʔAKJ <arcage@denchu.org>
 
-crystal: 0.23.0
+crystal: 0.23.1
 
 license: MIT

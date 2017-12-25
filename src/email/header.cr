@@ -61,20 +61,20 @@ abstract class EMail::Header
     header_body = body
     raise Error::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
     io << @name << ":"
-    splited_body = header_body.split(/\s+/)
     offset = @name.size + 1
-    while (body_part = splited_body.shift?)
-      if body_part =~ FIELD_BODY
+    if header_body =~ FIELD_BODY
+      splited_body = header_body.split(/\s+/)
+      while (body_part = splited_body.shift?)
         unless offset + body_part.size < LINE_LENGTH
           io << '\n'
           offset = 0
         end
         io << ' ' << body_part
         offset += body_part.size + 1
-      else
-        encoded_part, offset = Header.base64_encode(body_part, offset)
-        io << encoded_part
       end
+    else
+      encoded_part, offset = Header.base64_encode(header_body, offset)
+      io << encoded_part
     end
   end
 
