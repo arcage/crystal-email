@@ -20,7 +20,7 @@ abstract class EMail::Header
     encoded_line = ""
     src_chars = Char::Reader.new(src_string)
     until src_chars.current_char == '\u{0}'
-      encoded_size = ((encoded_line.bytesize + src_chars.current_char_width).to_f / 6 * 8).ceil
+      encoded_size = (((((encoded_line.bytesize + src_chars.current_char_width).to_f * 8 / 6).ceil) / 4).ceil * 4).to_i
       if offset + ENCODE_DEFINITION_SIZE + encoded_size > LINE_LENGTH
         if encoded_line.empty?
           encoded_lines << ""
