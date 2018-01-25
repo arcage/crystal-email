@@ -6,21 +6,32 @@ class EMail::Sender
   @server_host : String
   @server_port : Int32
   @client_name : String
-  @log_level : Logger::Severity
   @helo_domain : String?
   @on_failed : Client::OnFailedProc?
   @use_tls : Bool
   @auth : Tuple(String, String)?
-  @log_io : IO
+  @logger : Logger
   @finished : Bool = false
   @number_of_connections : Int32 = 1
   @messages_per_connection : Int32 = 10
   @connection_interval : Int32 = 200
 
-  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT,  *,
-                 @client_name = "EMail_Client", @log_level = Logger::INFO,
-                 @helo_domain = nil, @on_failed = nil,
-                 @use_tls = false, @auth = nil, @log_io = STDOUT)
+  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT, *,
+                 @client_name = "EMail_Client", @helo_domain = nil, @on_failed = nil,
+                 @use_tls = false, @auth = nil,
+                 @logger : Logger)
+  end
+
+  def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
+                 client_name : String? = "EMail_Client", helo_domain : String? = nil, on_failed : Client::OnFailedProc? = nil,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil,
+                 log_io : IO? = nil, log_progname : String? = nil,
+                 log_formatter : Logger::Formatter? = nil,
+                 log_level : Logger::Severity? = nil)
+    logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
+    initialize(server_host, server_port,
+               client_name: client_name, helo_domain: helo_domain, on_failed: on_failed,
+               use_tls: use_tls, auth: auth, logger: logger)
   end
 
   def enqueue(message : Message)
@@ -71,9 +82,8 @@ class EMail::Sender
       while message
         client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@connection_count}")
         client = Client.new(@server_host, @server_port,
-          client_name: client_name, log_level: @log_level,
-          helo_domain: @helo_domain, on_failed: @on_failed,
-          use_tls: @use_tls, auth: @auth, log_io: @log_io)
+          client_name: client_name, helo_domain: @helo_domain, on_failed: @on_failed,
+          use_tls: @use_tls, auth: @auth, logger: @logger)
         @connection_count += 1
         client.start do
           sent_messages = 0

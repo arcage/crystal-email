@@ -1,21 +1,33 @@
 class EMail::Client
   alias OnFailedProc = Message, Array(String) ->
 
-  # :nodoc:
   LOG_FORMATTER = Logger::Formatter.new do |severity, datetime, progname, message, io|
     io << datetime.to_s("%Y/%m/%d %T") << " [" << progname << "/" << Process.pid << "] "
     io << severity << " " << message
   end
-
-  NO_LOGGING = Logger::Severity::UNKNOWN
+  LOG_PROGNAME = "crystal-email"
+  NO_LOGGING   = Logger::Severity::UNKNOWN
 
   # :nodoc:
   DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
+
+  def self.create_default_logger(log_io : IO? = nil,
+                                 log_progname : String? = nil,
+                                 log_formatter : Logger::Formatter? = nil,
+                                 log_level : Logger::Severity? = nil)
+    log_io ||= STDOUT
+    logger = Logger.new(log_io)
+    logger.progname = log_progname || EMail::Client::LOG_PROGNAME
+    logger.formatter = log_formatter || EMail::Client::LOG_FORMATTER
+    logger.level = log_level || Logger::INFO
+    logger
+  end
 
   getter command_history
 
   @host : String
   @port : Int32
+  @name : String
   @logger : Logger
   @started : Bool = false
   @first_send : Bool = true
@@ -33,10 +45,9 @@ class EMail::Client
 
   # Createss smtp client object.
   def initialize(@host : String, @port : Int32, *,
-                 client_name : String, log_level : Logger::Severity,
-                 @helo_domain : String?, @on_failed : OnFailedProc?,
-                 @use_tls : Bool, @auth : Tuple(String, String)?, log_io : IO)
-    raise Error::ClientError.new("Invalid client name \"#{client_name}\"") if client_name.empty? || client_name =~ /[^\w]/
+                 client_name @name : String, @helo_domain : String?, @on_failed : OnFailedProc?,
+                 @use_tls : Bool, @auth : Tuple(String, String)?, @logger : Logger)
+    raise Error::ClientError.new("Invalid client name \"#{@name}\"") if @name.empty? || @name =~ /[^\w]/
     if helo_domain = @helo_domain
       raise Error::ClientError.new("Invalid HELO domain \"#{helo_domain}\"") unless helo_domain =~ DOMAIN_FORMAT
     end
@@ -45,10 +56,6 @@ class EMail::Client
         raise Error::ClientError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       end
     {% end %}
-    @logger = Logger.new(log_io)
-    @logger.progname = client_name
-    @logger.formatter = LOG_FORMATTER
-    @logger.level = log_level
   end
 
   private def socket
@@ -67,20 +74,25 @@ class EMail::Client
       with self yield
       @started = false
     else
-      @logger.error("Failed in connecting for some reason")
+      log_error("Failed in connecting for some reason")
     end
     smtp_quit
     close_socket
-    @logger.info("Close session to #{@host}:#{@port}")
+    log_info("Close session to #{@host}:#{@port}")
   rescue ex : Error
     close_socket
     fatal_error(ex)
   end
 
+  def logger(new_logger : Logger)
+    @logger = new_logger
+    self
+  end
+
   private def ready_to_send
     @socket = TCPSocket.new(@host, @port)
     @helo_domain ||= "[#{socket.as(TCPSocket).local_address.address}]"
-    @logger.info("Start TCP session to #{@host}:#{@port}")
+    log_info("Start TCP session to #{@host}:#{@port}")
   end
 
   private def mail_validate!(mail : Message) : Message
@@ -88,7 +100,7 @@ class EMail::Client
     mail.date timestamp
     mail.message_id String.build { |io|
       io << '<' << timestamp.epoch_ms << '.' << Process.pid
-      io << '.' << @logger.progname << '@' << @helo_domain << '>'
+      io << '.' << @name << '@' << @helo_domain << '>'
     }
     mail.validate!
   end
@@ -99,9 +111,9 @@ class EMail::Client
     mail_from = mail.mail_from
     recipients = mail.recipients
     if smtp_rset && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
-      @logger.info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
+      log_info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
     else
-      @logger.error("Failed sending message for some reason")
+      log_error("Failed sending message for some reason")
       if on_failed = @on_failed
         on_failed.call(mail, @command_history)
       end
@@ -112,7 +124,7 @@ class EMail::Client
     command_and_parameter = command
     command_and_parameter += " " + parameter if parameter
     @command_history << command_and_parameter
-    @logger.debug("--> #{command_and_parameter}")
+    log_debug("--> #{command_and_parameter}")
     socket << command_and_parameter << "\r\n"
     socket.flush
     smtp_responce(command)
@@ -141,9 +153,9 @@ class EMail::Client
     logging_message = "<-- #{command} #{status_code} #{status_message}"
     case status_code[0]
     when '4', '5'
-      @logger.error(logging_message)
+      log_error(logging_message)
     else
-      @logger.debug(logging_message)
+      log_debug(logging_message)
     end
     {status_code, status_messages}
   end
@@ -168,12 +180,12 @@ class EMail::Client
       status_code, _ = smtp_command("STARTTLS")
       if (status_code == "220")
         {% if flag?(:without_openssl) %}
-          @logger.error("TLS is disabled because `-D without_openssl` was passed at compile time")
+          log_error("TLS is disabled because `-D without_openssl` was passed at compile time")
           false
         {% else %}
           tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), sync_close: true, hostname: @host)
           tls_socket.sync = false
-          @logger.info("Start TLS session")
+          log_info("Start TLS session")
           @socket = tls_socket
           smtp_helo
         {% end %}
@@ -194,11 +206,11 @@ class EMail::Client
         elsif @esmtp_commands["AUTH"].includes?("LOGIN")
           smtp_auth_login(login_id, login_password)
         else
-          @logger.error("cannot found supported authentication methods")
+          log_error("cannot found supported authentication methods")
           false
         end
       else
-        @logger.error("AUTH command cannot be used without TLS")
+        log_error("AUTH command cannot be used without TLS")
         false
       end
     else
@@ -209,17 +221,17 @@ class EMail::Client
   private def smtp_auth_login(login_id : String, login_password : String)
     status_code, _ = smtp_command("AUTH", "LOGIN")
     if status_code == "334"
-      @logger.debug("--> Sending login id")
+      log_debug("--> Sending login id")
       socket << Base64.strict_encode(login_id) << "\r\n"
       socket.flush
       status_code_id, _ = smtp_responce("AUTH")
       if status_code_id == "334"
-        @logger.debug("--> Sending login password")
+        log_debug("--> Sending login password")
         socket << Base64.strict_encode(login_password) << "\r\n"
         socket.flush
         status_code_password, _ = smtp_responce("AUTH")
         if status_code_password == "235"
-          @logger.info("Authentication success with #{login_id} / ********")
+          log_info("Authentication success with #{login_id} / ********")
           true
         else
           false
@@ -236,7 +248,7 @@ class EMail::Client
     credential = Base64.strict_encode("\0#{login_id}\0#{login_password}")
     status_code, _ = smtp_command("AUTH", "PLAIN #{credential}")
     if status_code == "235"
-      @logger.info("Authentication success with #{login_id} / ********")
+      log_info("Authentication success with #{login_id} / ********")
       true
     else
       false
@@ -270,7 +282,7 @@ class EMail::Client
   private def smtp_data(mail_data : String)
     status_code, _ = smtp_command("DATA")
     if status_code == "354"
-      @logger.debug("--> Sending mail data")
+      log_debug("--> Sending mail data")
       socket << mail_data
       socket.flush
       status_code, _ = smtp_responce("DATA")
@@ -286,12 +298,34 @@ class EMail::Client
 
   private def fatal_error(error : Exception)
     logging_message = error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})"
-    @logger.fatal(logging_message)
+    log_fatal(logging_message)
     exit(1)
   end
 
   def close_socket
     @socket.try(&.close)
     @socket = nil
+  end
+
+  private def log_format(message : String)
+    String.build do |str|
+      str << '[' << @name << "] " << message
+    end
+  end
+
+  private def log_debug(message : String)
+    @logger.debug(log_format(message))
+  end
+
+  private def log_info(message : String)
+    @logger.info(log_format(message))
+  end
+
+  private def log_error(message : String)
+    @logger.error(log_format(message))
+  end
+
+  private def log_fatal(message : String)
+    @logger.fatal(log_format(message))
   end
 end
