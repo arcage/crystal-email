@@ -79,20 +79,12 @@ end
 This code will output log entries to `STDOUT` as follows:
 
 ```text
-2016/11/11 12:15:58 [EMail_Client/7412] INFO Start TCP session to your.mx.server.name:25
-2016/11/11 12:15:58 [EMail_Client/7412] INFO Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
-2016/11/11 12:15:58 [EMail_Client/7412] INFO Close TCP session to smtp.gmail.com:587
+2018/01/25 20:35:09 [crystal-email/12347] INFO [EMail_Client] Start TCP session to your.mx.server.name:25
+2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
+2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Close TCP session to your.mx.server.name:25
 ```
 
 You can add some option arguments to `EMail.send`.
-
-- `log_level : Logger::Severity` (Default: `Logger::Severity::INFO`)
-
-    Set log level for SMTP session.
-
-    - `Logger::Severity::DEBUG` : logging all SMTP commands and responses.
-    - `Logger::Severity::ERROR` : logging only events stem from some errors.
-    - `EMail::Client::NO_LOGGING`(`Logger::Severity::UNKOWN`) : no events will be logged.
 
 - `client_name : String` (Default: `"EMail_Client"`)
 
@@ -118,9 +110,36 @@ You can add some option arguments to `EMail.send`.
 
     This option must be use with `ust_tls: true`.
 
-- `log_io : IO` (Default: `STDOUT`)
+- Logger option 1
 
-    Change logging output from STDOUT. It must be writable.
+    Use external Logger instance.
+
+    - `logger : Logger`
+
+- Logger option 2
+
+    Use default logger setting with some options.
+
+    - `log_io : IO` (Default: `STDOUT`)
+
+        Change logging output from STDOUT. It must be writable.
+
+    - `log_level : Logger::Severity` (Default: `Logger::Severity::INFO`)
+
+        Set log level for SMTP session.
+
+        - `Logger::Severity::DEBUG` : logging all SMTP commands and responses.
+        - `Logger::Severity::ERROR` : logging only events stem from some errors.
+        - `EMail::Client::NO_LOGGING`(`Logger::Severity::UNKOWN`) : no events will be logged.
+
+    - `log_progname : String` (Default: `"crystal-email"`)
+
+        Set logger progname.
+
+    - `log_formatter : Logger::Formatter` (Default: `EMail::Client::LOG_FORMATTER`)
+
+**NOTE: You can specify only one of Logger option 1 or 2.**
+
 
 ```crystal
 # example with option arguments
@@ -132,17 +151,18 @@ on_failed = EMail::Client::OnFailedProc.new do |mail, command_history|
 end
 
 File.open("./sendamil.log", "w") do |log_file|
+  logger = Logger.new(log_file)
+  logger.level = Logger::Severity::DEBUG
+
   EMail.send("your.mx.server.name", 587,
-             log_level:   Logger::Severity::DEBUG,
              client_name: "MailBot",
              helo_domain: "your.host.fqdn",
              on_failed:   on_failed,
              use_tls: true,
              auth: {"your_id", "your_password"},
-             log_io: log_file) do
+             logger: logger) do
 
     # same as above
-
   end
 end
 ```
@@ -150,34 +170,34 @@ end
 This will output to `./sendmail.log` file :
 
 ```text
-2016/11/11 12:35:48 [MailBot/7918] INFO Start TCP session to your.mx.server.name:587
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- CONN 220 unknown ESMTP
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> EHLO your.host.fqdn
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / STARTTLS / ENHANCEDSTATUSCODES / 8BITMIME / DSN
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> STARTTLS
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- STARTTLS 220 2.0.0 Ready to start TLS
-2016/11/11 12:35:48 [MailBot/7918] INFO Start TLS session
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> EHLO your.host.fqdn
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / AUTH PLAIN LOGIN / ENHANCEDSTATUSCODES / 8BITMIME / DSN
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> AUTH PLAIN AHlvdXJfaWQAeW91cl9wYXNzd29yZA==
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- AUTH 235 2.0.0 Authentication successful
-2016/11/11 12:35:48 [MailBot/7918] INFO Authentication success with your_id / ********
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> MAIL FROM:<enverope_from@your.mail>
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- MAIL 250 2.1.0 Ok
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> RCPT TO:<to@some.domain>
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- RCPT 250 2.1.5 Ok
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> RCPT TO:<cc@some.domain>
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- RCPT 250 2.1.5 Ok
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> RCPT TO:<bcc@some.domain>
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- RCPT 250 2.1.5 Ok
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> DATA
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- DATA 354 End data with <CR><LF>.<CR><LF>
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> Sending mail data
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- DATA 250 2.0.0 Ok: queued as 42C5428260
-2016/11/11 12:35:48 [MailBot/7918] DEBUG --> QUIT
-2016/11/11 12:35:48 [MailBot/7918] DEBUG <-- QUIT 221 2.0.0 Bye
-2016/11/11 12:35:48 [MailBot/7918] INFO Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
-2016/11/11 12:35:48 [MailBot/7918] INFO Close TCP session to smtp.gmail.com:587
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Start TCP session to your.mx.server.name:587
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- CONN 220 unknown ESMTP
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> EHLO your.host.fqdn
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / STARTTLS / ENHANCEDSTATUSCODES / 8BITMIME / DSN
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> STARTTLS
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- STARTTLS 220 2.0.0 Ready to start TLS
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Start TLS session
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> EHLO your.host.fqdn
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / AUTH LOGIN PLAIN / ENHANCEDSTATUSCODES / 8BITMIME / DSN
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> AUTH PLAIN AHlvdXJfaWQAeW91cl9wYXNzd29yZA==
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- AUTH 235 2.7.0 Authentication successful
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Authentication success with your_id / ********
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> MAIL FROM:<enverope_from@your.mail>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- MAIL 250 2.1.0 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<to@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<cc@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<bcc@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> DATA
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- DATA 354 End data with <CR><LF>.<CR><LF>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> Sending mail data
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- DATA 250 2.0.0 Ok: queued as 856D46004CC6
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> QUIT
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- QUIT 221 2.0.0 Bye
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Close session to your.mx.server.name:587
 ```
 
 ### `EMail::Message` object(default receiver of the block for `EMail.send`)
