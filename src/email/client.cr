@@ -84,11 +84,6 @@ class EMail::Client
     fatal_error(ex)
   end
 
-  def logger(new_logger : Logger)
-    @logger = new_logger
-    self
-  end
-
   private def ready_to_send
     @socket = TCPSocket.new(@host, @port)
     @helo_domain ||= "[#{socket.as(TCPSocket).local_address.address}]"
