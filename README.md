@@ -101,6 +101,12 @@ You can add some option arguments to `EMail.send`.
 
     `EMail::Client::OnFailedProc` is an alias of the Proc type `EMail::Message, Array(String) ->`.
 
+- `on_fatal_error : EMail::Client::OnFatalErrorProc` (Default: None)
+
+    Set callback function to be calld when an exception is raised during SMTP hanling. It will be called with the raised Exception instance.
+
+    `EMail::Client::OnFatalErrorProc` is an alias of the Proc type `Exception ->`.
+
 - `use_tls : Bool` (Default: `false`)
 
     Try to use `STARTTLS` command to send email with TLS encryption.
