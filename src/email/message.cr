@@ -20,11 +20,11 @@ class EMail::Message
   @envelope_from : Address? = nil
 
   def validate!
-    raise Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
-    raise Error::MessageError.new("Message has no From address.") if @headers[:from].empty?
-    raise Error::MessageError.new("Message has no To addresses.") if @headers[:to].empty?
-    raise Error::MessageError.new("Message has no contents.") if @body.empty? && @body_html.empty? && @attachments.empty?
-    raise Error::MessageError.new("Message has related resoures, but no text message") if message_has_resource? && !has_message?
+    raise EMail::Error::MessageError.new("Message has no subject.") if @headers[:subject].empty?
+    raise EMail::Error::MessageError.new("Message has no From address.") if @headers[:from].empty?
+    raise EMail::Error::MessageError.new("Message has no To addresses.") if @headers[:to].empty?
+    raise EMail::Error::MessageError.new("Message has no contents.") if @body.empty? && @body_html.empty? && @attachments.empty?
+    raise EMail::Error::MessageError.new("Message has related resoures, but no text message") if message_has_resource? && !has_message?
     if @headers[:sender].empty? && @headers[:from].size > 1
       sender @headers[:from].list.first
     end
@@ -43,12 +43,12 @@ class EMail::Message
   end
 
   def message_resource(file_path : String, cid : String, file_name : String? = nil, mime_type : String? = nil)
-    raise Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise EMail::Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = Content::AttachmentFile.new(file_path, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
   def message_resource(io : IO, cid : String, file_name : String, mime_type : String? = nil)
-    raise Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise EMail::Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = Content::AttachmentFile.new(io, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
@@ -110,7 +110,7 @@ class EMail::Message
     elsif has_html_message?
       @body_html
     else
-      raise Error::MessageError.new("Message doesn't have both of text and html message.")
+      raise EMail::Error::MessageError.new("Message doesn't have both of text and html message.")
     end
   end
 

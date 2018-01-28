@@ -1,5 +1,6 @@
 class EMail::Client
   alias OnFailedProc = Message, Array(String) ->
+  alias OnFatalErrorProc = Exception ->
 
   LOG_FORMATTER = Logger::Formatter.new do |severity, datetime, progname, message, io|
     io << datetime.to_s("%Y/%m/%d %T") << " [" << progname << "/" << Process.pid << "] "
@@ -7,6 +8,7 @@ class EMail::Client
   end
   LOG_PROGNAME = "crystal-email"
   NO_LOGGING   = Logger::Severity::UNKNOWN
+  DEFAULT_NAME = "EMail_Client"
 
   # :nodoc:
   DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
@@ -38,31 +40,47 @@ class EMail::Client
   {% end %}
   @helo_domain : String?
   @command_history = [] of String
-  @on_failed : OnFailedProc?
-  @use_tls = false
-  @auth : Tuple(String, String)? = nil
+  @on_failed : EMail::Client::OnFailedProc?
+  @on_fatal_error : EMail::Client::OnFatalErrorProc?
+  @use_tls : Bool
+  @auth : Tuple(String, String)?
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
-  # Createss smtp client object.
-  def initialize(@host : String, @port : Int32, *,
-                 client_name @name : String, @helo_domain : String?, @on_failed : OnFailedProc?,
-                 @use_tls : Bool, @auth : Tuple(String, String)?, @logger : Logger)
-    raise Error::ClientError.new("Invalid client name \"#{@name}\"") if @name.empty? || @name =~ /[^\w]/
+  # Creates smtp client object.
+  def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *,
+                 client_name @name = EMail::Client::DEFAULT_NAME, @helo_domain = nil,
+                 @on_failed = nil, @on_fatal_error = nil,
+                 @use_tls = false, @auth = nil, logger : Logger? = nil)
+    raise EMail::Error::ClientError.new("Invalid client name \"#{@name}\"") if @name.empty? || @name =~ /[^\w]/
     if helo_domain = @helo_domain
-      raise Error::ClientError.new("Invalid HELO domain \"#{helo_domain}\"") unless helo_domain =~ DOMAIN_FORMAT
+      raise EMail::Error::ClientError.new("Invalid HELO domain \"#{helo_domain}\"") unless helo_domain =~ DOMAIN_FORMAT
     end
+    @logger = logger || EMail::Client.create_default_logger
     {% if flag?(:without_openssl) %}
       if @use_tls
-        raise Error::ClientError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
+        raise EMail::Error::ClientError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       end
     {% end %}
+  end
+
+  def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
+                 client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
+                 on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil,
+                 log_io : IO? = nil, log_progname : String? = nil,
+                 log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
+    logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
+    initialize(server_host, server_port,
+      client_name: client_name, helo_domain: helo_domain,
+      on_failed: on_failed, on_fatal_error: on_fatal_error,
+      use_tls: use_tls, auth: auth, logger: logger)
   end
 
   private def socket
     if _socket = @socket
       _socket
     else
-      raise Error::ClientError.new("Client socket not opened.")
+      raise EMail::Error::ClientError.new("Client socket not opened.")
     end
   end
 
@@ -77,11 +95,10 @@ class EMail::Client
       log_error("Failed in connecting for some reason")
     end
     smtp_quit
+  rescue error
+    fatal_error(error)
+  ensure
     close_socket
-    log_info("Close session to #{@host}:#{@port}")
-  rescue ex : Error
-    close_socket
-    fatal_error(ex)
   end
 
   private def ready_to_send
@@ -101,6 +118,7 @@ class EMail::Client
   end
 
   def send(mail : Message)
+    raise EMail::Error::ClientError.new("Email client has not been started") unless @started
     @command_history.clear
     mail = mail_validate!(mail)
     mail_from = mail.mail_from
@@ -141,7 +159,7 @@ class EMail::Client
           break
         end
       else
-        raise Error::ClientError.new("Invalid responce \"#{line}\" received.")
+        raise EMail::Error::ClientError.new("Invalid responce \"#{line}\" received.")
       end
     end
     status_message = status_messages.join(" / ")
@@ -291,15 +309,19 @@ class EMail::Client
     smtp_command("QUIT")
   end
 
-  private def fatal_error(error : Exception)
-    logging_message = error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})"
-    log_fatal(logging_message)
-    exit(1)
+  def close_socket
+    if _socket = @socket
+      _socket.close
+      log_info("Close session to #{@host}:#{@port}")
+    end
+    @socket = nil
   end
 
-  def close_socket
-    @socket.try(&.close)
-    @socket = nil
+  def fatal_error(error : Exception)
+    log_fatal(error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})")
+    if on_fatal_error = @on_fatal_error
+      on_fatal_error.call(error)
+    end
   end
 
   private def log_format(message : String)

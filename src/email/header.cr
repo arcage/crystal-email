@@ -45,7 +45,7 @@ abstract class EMail::Header
   @name : String
 
   def initialize(field_name : String)
-    raise Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
+    raise EMail::Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
     @name = field_name.split("-").map(&.capitalize).join("-")
   end
 
@@ -59,7 +59,7 @@ abstract class EMail::Header
 
   def to_s(io : IO)
     header_body = body
-    raise Error::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
+    raise EMail::Error::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
     io << @name << ":"
     offset = @name.size + 1
     if header_body =~ FIELD_BODY

@@ -11,6 +11,7 @@ You can:
 - send the email by using local or remote SMTP server.
 - use TLS connection by `STARTTLS` command.
 - use SMTP-AUTH by `AUTH PLAIN` or `AUTH LOGIN` when using TLS.
+- send multiple emails concurrently by using multiple smtp connections.
 
 You can not:
 
@@ -88,7 +89,7 @@ You can add some option arguments to `EMail.send`.
 
 - `client_name : String` (Default: `"EMail_Client"`)
 
-    Set `progname` of the internal `Logger` object. It is also used as a part of _Message-Id_ header.
+    Set the client name. It is used as a part of _Message-Id_ header.
 
 - `helo_domain : String` (Default: `"[" + local_ip_addr + "]"`)
 
@@ -137,6 +138,8 @@ You can add some option arguments to `EMail.send`.
         Set logger progname.
 
     - `log_formatter : Logger::Formatter` (Default: `EMail::Client::LOG_FORMATTER`)
+
+        Set log formatter.
 
 **NOTE: You can specify only one of Logger option 1 or 2.**
 
