@@ -7,7 +7,8 @@ class EMail::Sender
   @server_port : Int32
   @client_name : String
   @helo_domain : String?
-  @on_failed : Client::OnFailedProc?
+  @on_failed : EMail::Client::OnFailedProc?
+  @on_fatal_error : EMail::Client::OnFatalErrorProc?
   @use_tls : Bool
   @auth : Tuple(String, String)?
   @logger : Logger
@@ -17,25 +18,27 @@ class EMail::Sender
   @connection_interval : Int32 = 200
 
   def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT, *,
-                 @client_name = "EMail_Client", @helo_domain = nil, @on_failed = nil,
+                 @client_name = EMail::Client::DEFAULT_NAME, @helo_domain = nil,
+                 @on_failed = nil, @on_fatal_error = nil,
                  @use_tls = false, @auth = nil,
                  @logger : Logger)
   end
 
   def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
-                 client_name : String? = "EMail_Client", helo_domain : String? = nil, on_failed : Client::OnFailedProc? = nil,
+                 client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
+                 on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
                  use_tls : Bool = false, auth : Tuple(String, String)? = nil,
                  log_io : IO? = nil, log_progname : String? = nil,
-                 log_formatter : Logger::Formatter? = nil,
-                 log_level : Logger::Severity? = nil)
+                 log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
     logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
     initialize(server_host, server_port,
-               client_name: client_name, helo_domain: helo_domain, on_failed: on_failed,
-               use_tls: use_tls, auth: auth, logger: logger)
+      client_name: client_name, helo_domain: helo_domain,
+      on_failed: on_failed, on_fatal_error: on_fatal_error,
+      use_tls: use_tls, auth: auth, logger: logger)
   end
 
   def enqueue(message : Message)
-    @queue << message
+    @queue << message.validate!
     Fiber.yield
   end
 
@@ -55,9 +58,9 @@ class EMail::Sender
     if connection_interval
       @connection_interval = connection_interval
     end
-    raise Error::SenderError.new("Number of connections must be 1 or greater") if @number_of_connections < 1
-    raise Error::SenderError.new("Messages per connection must be 1 or greater") if @messages_per_connection < 1
-    raise Error::SenderError.new("Connection interval must be 0 or greater") if @connection_interval < 0
+    raise EMail::Error::SenderError.new("Number of connections must be 1 or greater") if @number_of_connections < 1
+    raise EMail::Error::SenderError.new("Messages per connection must be 1 or greater") if @messages_per_connection < 1
+    raise EMail::Error::SenderError.new("Connection interval must be 0 or greater") if @connection_interval < 0
     spawn_sender
     with self yield
     @finished = true
@@ -80,9 +83,10 @@ class EMail::Sender
       @connections << Fiber.current
       message = @queue.shift?
       while message
-        client_name = @client_name + (@number_of_connections == 1 ? "" : "_#{@connection_count}")
+        client_name = @client_name + (@connection_count == 0 ? "" : "_#{@connection_count}")
         client = Client.new(@server_host, @server_port,
-          client_name: client_name, helo_domain: @helo_domain, on_failed: @on_failed,
+          client_name: client_name, helo_domain: @helo_domain,
+          on_failed: @on_failed, on_fatal_error: @on_fatal_error,
           use_tls: @use_tls, auth: @auth, logger: @logger)
         @connection_count += 1
         client.start do

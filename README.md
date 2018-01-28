@@ -11,6 +11,7 @@ You can:
 - send the email by using local or remote SMTP server.
 - use TLS connection by `STARTTLS` command.
 - use SMTP-AUTH by `AUTH PLAIN` or `AUTH LOGIN` when using TLS.
+- send multiple emails concurrently by using multiple smtp connections.
 
 You can not:
 
@@ -88,7 +89,7 @@ You can add some option arguments to `EMail.send`.
 
 - `client_name : String` (Default: `"EMail_Client"`)
 
-    Set `progname` of the internal `Logger` object. It is also used as a part of _Message-Id_ header.
+    Set the client name. It is used as a part of _Message-Id_ header.
 
 - `helo_domain : String` (Default: `"[" + local_ip_addr + "]"`)
 
@@ -99,6 +100,12 @@ You can add some option arguments to `EMail.send`.
     Set callback function to be called when sending email is failed while in SMTP session. It will be called with email message object that tried to send, and SMTP command and response history. In this function, you can do something to handle errors: e.g. "_investigating the causes of the fail_", "_notifying you of the fail_", and so on.
 
     `EMail::Client::OnFailedProc` is an alias of the Proc type `EMail::Message, Array(String) ->`.
+
+- `on_fatal_error : EMail::Client::OnFatalErrorProc` (Default: None)
+
+    Set callback function to be calld when an exception is raised during SMTP hanling. It will be called with the raised Exception instance.
+
+    `EMail::Client::OnFatalErrorProc` is an alias of the Proc type `Exception ->`.
 
 - `use_tls : Bool` (Default: `false`)
 
@@ -138,6 +145,8 @@ You can add some option arguments to `EMail.send`.
 
     - `log_formatter : Logger::Formatter` (Default: `EMail::Client::LOG_FORMATTER`)
 
+        Set log formatter.
+
 **NOTE: You can specify only one of Logger option 1 or 2.**
 
 
@@ -170,34 +179,34 @@ end
 This will output to `./sendmail.log` file :
 
 ```text
-I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Start TCP session to your.mx.server.name:587
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- CONN 220 unknown ESMTP
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> EHLO your.host.fqdn
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / STARTTLS / ENHANCEDSTATUSCODES / 8BITMIME / DSN
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> STARTTLS
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- STARTTLS 220 2.0.0 Ready to start TLS
-I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Start TLS session
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> EHLO your.host.fqdn
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / AUTH LOGIN PLAIN / ENHANCEDSTATUSCODES / 8BITMIME / DSN
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> AUTH PLAIN AHlvdXJfaWQAeW91cl9wYXNzd29yZA==
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- AUTH 235 2.7.0 Authentication successful
-I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Authentication success with your_id / ********
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> MAIL FROM:<enverope_from@your.mail>
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- MAIL 250 2.1.0 Ok
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<to@some.domain>
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<cc@some.domain>
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> RCPT TO:<bcc@some.domain>
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- RCPT 250 2.1.5 Ok
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> DATA
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- DATA 354 End data with <CR><LF>.<CR><LF>
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> Sending mail data
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- DATA 250 2.0.0 Ok: queued as 856D46004CC6
-I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] --> QUIT
-D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [EMail_Client] <-- QUIT 221 2.0.0 Bye
-I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [EMail_Client] Close session to your.mx.server.name:587
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [MailBot] Start TCP session to your.mx.server.name:587
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- CONN 220 unknown ESMTP
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> EHLO your.host.fqdn
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / STARTTLS / ENHANCEDSTATUSCODES / 8BITMIME / DSN
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> STARTTLS
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- STARTTLS 220 2.0.0 Ready to start TLS
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [MailBot] Start TLS session
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> EHLO your.host.fqdn
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- EHLO 250 your.mx.server.name / PIPELINING / SIZE 51380224 / ETRN / AUTH LOGIN PLAIN / ENHANCEDSTATUSCODES / 8BITMIME / DSN
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> AUTH PLAIN AHlvdXJfaWQAeW91cl9wYXNzd29yZA==
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- AUTH 235 2.7.0 Authentication successful
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [MailBot] Authentication success with your_id / ********
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> MAIL FROM:<enverope_from@your.mail>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- MAIL 250 2.1.0 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> RCPT TO:<to@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> RCPT TO:<cc@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> RCPT TO:<bcc@some.domain>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- RCPT 250 2.1.5 Ok
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> DATA
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- DATA 354 End data with <CR><LF>.<CR><LF>
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> Sending mail data
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- DATA 250 2.0.0 Ok: queued as 856D46004CC6
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [MailBot] Successfully sent a message from <enverope_from@your.mail> to 3 recipient(s)
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] --> QUIT
+D, [2018-01-25 20:52:13 +09:00 #12741] DEBUG -- : [MailBot] <-- QUIT 221 2.0.0 Bye
+I, [2018-01-25 20:52:13 +09:00 #12741]  INFO -- : [MailBot] Close session to your.mx.server.name:587
 ```
 
 ### `EMail::Message` object(default receiver of the block for `EMail.send`)
