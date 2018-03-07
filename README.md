@@ -1,6 +1,6 @@
 # EMail for Crystal
 
-Simple email sending library for the **Crystal**([https://crystal-lang.org/](https://crystal-lang.org/)).
+Simple email sending library for the [Crystal programming language](https://crystal-lang.org).
 
 You can:
 
