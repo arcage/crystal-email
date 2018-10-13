@@ -113,7 +113,7 @@ You can add some option arguments to `EMail.send`.
 
 - `openssl_verification_mode : String` (Default: `nil`)
 
-    You can select OpenSSL verification mode. Valid values are `"client_once", "fail_if_no_peer_cert", "none", "peer"`
+    You can select OpenSSL verification mode. Valid values are `client_once`, `fail_if_no_peer_cert`, `none` and `peer`.
     For Example use `"none"` to start `tls` connection with mail server which uses self-signed certificates.
 
 - `auth : Tuple(String, String)` (Default: None)
