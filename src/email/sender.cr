@@ -10,7 +10,7 @@ class EMail::Sender
   @on_failed : EMail::Client::OnFailedProc?
   @on_fatal_error : EMail::Client::OnFatalErrorProc?
   @use_tls : Bool
-  @openssl_verify_mode : String?
+  @openssl_verify_mode : OpenSSL::SSL::VerifyMode?
   @auth : Tuple(String, String)?
   @logger : Logger
   @finished : Bool = false
@@ -28,7 +28,7 @@ class EMail::Sender
   def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
                  client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
                  on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : String? = nil,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                  log_io : IO? = nil, log_progname : String? = nil,
                  log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
     logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)

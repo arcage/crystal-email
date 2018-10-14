@@ -11,13 +11,7 @@ class EMail::Client
   DEFAULT_NAME = "EMail_Client"
 
   # :nodoc:
-  DOMAIN_FORMAT              = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
-  OPENSSL_VERIFICATION_MODES = {
-    "client_once"          => OpenSSL::SSL::VerifyMode::CLIENT_ONCE,
-    "fail_if_no_peer_cert" => OpenSSL::SSL::VerifyMode::FAIL_IF_NO_PEER_CERT,
-    "none"                 => OpenSSL::SSL::VerifyMode::NONE,
-    "peer"                 => OpenSSL::SSL::VerifyMode::PEER,
-  }
+  DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
 
   def self.create_default_logger(log_io : IO? = nil,
                                  log_progname : String? = nil,
@@ -49,7 +43,7 @@ class EMail::Client
   @on_failed : EMail::Client::OnFailedProc?
   @on_fatal_error : EMail::Client::OnFatalErrorProc?
   @use_tls : Bool
-  @openssl_verify_mode : String?
+  @openssl_verify_mode : OpenSSL::SSL::VerifyMode?
   @auth : Tuple(String, String)?
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
 
@@ -73,7 +67,7 @@ class EMail::Client
   def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
                  client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
                  on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : String? = nil,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                  log_io : IO? = nil, log_progname : String? = nil,
                  log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
     logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
@@ -204,10 +198,8 @@ class EMail::Client
           false
         {% else %}
           tls_context = OpenSSL::SSL::Context::Client.new
-          if !@openssl_verify_mode.nil? && OPENSSL_VERIFICATION_MODES.keys.index(@openssl_verify_mode.to_s)
-            tls_context.verify_mode = OPENSSL_VERIFICATION_MODES[@openssl_verify_mode.to_s]
-          else
-            log_error("Not a valid openssl_verification_mode. Allowed modes: #{OPENSSL_VERIFICATION_MODES.keys}")
+          if !@openssl_verify_mode.nil?
+            tls_context.verify_mode = @openssl_verify_mode.not_nil!
           end
           tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), tls_context, sync_close: true, hostname: @host)
           tls_socket.sync = false
