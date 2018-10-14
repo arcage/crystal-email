@@ -113,7 +113,7 @@ You can add some option arguments to `EMail.send`.
 
 - `openssl_verification_mode : String` (Default: `nil`)
 
-    You can select OpenSSL verification mode. Its value is `OpenSSL::SSL::VerifyMode` enum. See (OpenSSL::SSL::VerifyMode)[https://crystal-lang.org/api/0.26.1/OpenSSL/SSL/VerifyMode.html].
+    You can select OpenSSL verification mode. Its value is `OpenSSL::SSL::VerifyMode` enum. See [OpenSSL::SSL::VerifyMode](https://crystal-lang.org/api/0.26.1/OpenSSL/SSL/VerifyMode.html).
     For Example use `:none` to start `tls` connection with mail server which uses self-signed certificates.
 
 - `auth : Tuple(String, String)` (Default: None)
