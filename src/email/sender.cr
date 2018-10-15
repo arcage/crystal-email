@@ -20,7 +20,7 @@ class EMail::Sender
 
   def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT, *,
                  @client_name = EMail::Client::DEFAULT_NAME, @helo_domain = nil,
-                 @use_tls = false, @auth = nil, @openssl_verify_mode = :peer,
+                 @use_tls = false, @auth = nil, @openssl_verify_mode = OpenSSL::SSL::VerifyMode::PEER,
                  @on_failed = nil, @on_fatal_error = nil,
                  @logger : Logger)
   end
@@ -28,7 +28,7 @@ class EMail::Sender
   def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
                  client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
                  on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode = :peer,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode = OpenSSL::SSL::VerifyMode::PEER,
                  log_io : IO? = nil, log_progname : String? = nil,
                  log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
     logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)

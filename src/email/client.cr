@@ -50,7 +50,7 @@ class EMail::Client
   # Creates smtp client object.
   def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *,
                  client_name @name = EMail::Client::DEFAULT_NAME, @helo_domain = nil,
-                 @on_failed = nil, @on_fatal_error = nil, @openssl_verify_mode = :peer,
+                 @on_failed = nil, @on_fatal_error = nil, @openssl_verify_mode = OpenSSL::SSL::VerifyMode::PEER,
                  @use_tls = false, @auth = nil, logger : Logger? = nil)
     raise EMail::Error::ClientError.new("Invalid client name \"#{@name}\"") if @name.empty? || @name =~ /[^\w]/
     if helo_domain = @helo_domain
@@ -67,13 +67,14 @@ class EMail::Client
   def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
                  client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
                  on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode = :peer,
+                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode = OpenSSL::SSL::VerifyMode::PEER,
                  log_io : IO? = nil, log_progname : String? = nil,
                  log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
     logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
     initialize(server_host, server_port,
       client_name: client_name, helo_domain: helo_domain,
       on_failed: on_failed, on_fatal_error: on_fatal_error,
+      openssl_verify_mode: openssl_verify_mode,
       use_tls: use_tls, auth: auth, logger: logger)
   end
 
