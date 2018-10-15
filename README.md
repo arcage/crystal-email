@@ -111,6 +111,11 @@ You can add some option arguments to `EMail.send`.
 
     Try to use `STARTTLS` command to send email with TLS encryption.
 
+- `openssl_verification_mode : OpenSSL::SSL::VerifyMode` (Default: `:peer`)
+
+    You can select OpenSSL verification mode. See [OpenSSL::SSL::VerifyMode](https://crystal-lang.org/api/0.26.1/OpenSSL/SSL/VerifyMode.html).
+    For Example use `:none` to start `tls` connection with mail server which uses self-signed certificates.
+
 - `auth : Tuple(String, String)` (Default: None)
 
     Set login id and password to use `AUTH PLAIN` or `AUTH LOGIN` command: e.g. `{"login_id", "password"}`.
