@@ -113,7 +113,7 @@ class EMail::Client
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
-      io << '<' << timestamp.epoch_ms << '.' << Process.pid
+      io << '<' << timestamp.to_unix_ms << '.' << Process.pid
       io << '.' << @name << '@' << @helo_domain << '>'
     }
     mail.validate!

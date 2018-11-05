@@ -8,6 +8,7 @@ require "uri"
 require "./email/*"
 
 module EMail
+  VERSION = "0.3.1"
   DEFAULT_SMTP_PORT = 25
 
   def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **options)
