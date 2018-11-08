@@ -38,9 +38,9 @@ EMail.send("your.mx.server.name", 25) do
   # [*] : useable multiple times
 
   # required
-  subject  "Subject of the mail"
-  from     "your@mail.addr" # [*]
-  to       "to@some.domain" # [*]
+  subject       "Subject of the mail"
+  from          "your@mail.addr" # [*]
+  to            "to@some.domain" # [*]
 
   # optional
   cc            "cc@some.domain"     # [*]
@@ -49,6 +49,9 @@ EMail.send("your.mx.server.name", 25) do
   sender        "sender@your.mail"
   return_path   "return@your.mail"
   envelope_from "enverope_from@your.mail"
+
+  # custom headers specified by header name and value
+  custom_header "X-Header-Name", "custom header value" # [*]
 
   # required at least one `message`, `message_html` or `attach`
   message  <<-EOM
