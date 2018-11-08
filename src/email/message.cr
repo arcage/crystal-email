@@ -214,5 +214,5 @@ class EMail::Message
   add_address :to
   add_address :cc
   add_address :bcc
-  add_address :repry_to
+  add_address :reply_to
 end
