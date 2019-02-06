@@ -100,7 +100,11 @@ class EMail::Client
   rescue error
     fatal_error(error)
   ensure
-    close_socket
+    begin
+      close_socket
+    rescue error
+      fatal_error(error)
+    end
   end
 
   private def ready_to_send
