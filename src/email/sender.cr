@@ -1,41 +1,38 @@
 # Utility object for concurrent email sending.
 class EMail::Sender
+  @config : EMail::Client::Config
   @queue : Array(Message) = Array(Message).new
   @connections : Array(Fiber) = Array(Fiber).new
-  @connection_count : Int32 = 0
-  @server_host : String
-  @server_port : Int32
-  @client_name : String
-  @helo_domain : String?
-  @on_failed : EMail::Client::OnFailedProc?
-  @on_fatal_error : EMail::Client::OnFatalErrorProc?
-  @use_tls : Bool
-  @openssl_verify_mode : OpenSSL::SSL::VerifyMode
-  @auth : Tuple(String, String)?
-  @logger : Logger
+  @connection_count : UInt32 = 0
+  @started : Bool = false
   @finished : Bool = false
   @number_of_connections : Int32 = 1
   @messages_per_connection : Int32 = 10
   @connection_interval : Int32 = 200
 
-  def initialize(@server_host, @server_port = EMail::DEFAULT_SMTP_PORT, *,
-                 @client_name = EMail::Client::DEFAULT_NAME, @helo_domain = nil,
-                 @use_tls = false, @auth = nil, @openssl_verify_mode = OpenSSL::SSL::VerifyMode::PEER,
-                 @on_failed = nil, @on_fatal_error = nil,
-                 @logger : Logger)
+  def initialize(@config)
   end
 
-  def initialize(server_host : String, server_port : Int32 = EMail::DEFAULT_SMTP_PORT, *,
-                 client_name : String = EMail::Client::DEFAULT_NAME, helo_domain : String? = nil,
-                 on_failed : EMail::Client::OnFailedProc? = nil, on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                 use_tls : Bool = false, auth : Tuple(String, String)? = nil, openssl_verify_mode : OpenSSL::SSL::VerifyMode = OpenSSL::SSL::VerifyMode::PEER,
-                 log_io : IO? = nil, log_progname : String? = nil,
-                 log_formatter : Logger::Formatter? = nil, log_level : Logger::Severity? = nil)
-    logger = EMail::Client.create_default_logger(log_io, log_progname, log_formatter, log_level)
-    initialize(server_host, server_port,
-      client_name: client_name, helo_domain: helo_domain,
-      on_failed: on_failed, on_fatal_error: on_fatal_error, use_tls: use_tls,
-      auth: auth, openssl_verify_mode: openssl_verify_mode, logger: logger)
+  def initialize(*args, **named_args)
+    initialize(EMail::Client::Config.create(*args, **named_args))
+  end
+
+  def number_of_connections=(new_value : Int32)
+    raise EMail::Error::SenderError.new("Parameters cannot be set after start sending") if @started
+    raise EMail::Error::SenderError.new("Number of connections must be 1 or greater(given: #{new_value})") if new_value < 1
+    @number_of_connections = new_value
+  end
+
+  def messages_per_connection=(new_value : Int32)
+    raise EMail::Error::SenderError.new("Parameters cannot be set after start sending") if @started
+    raise EMail::Error::SenderError.new("Messages per connection must be 1 or greater(given: #{new_value})") if new_value < 1
+    @messages_per_connection = new_value
+  end
+
+  def connection_interval=(new_interval : Int32)
+    raise EMail::Error::SenderError.new("Parameters cannot be set after start sending") if @started
+    raise EMail::Error::SenderError.new("Connection interval must be 0 or greater(given: #{new_interval})") if new_interval < 0
+    @connection_interval = new_interval
   end
 
   def enqueue(message : Message)
@@ -49,19 +46,8 @@ class EMail::Sender
     end
   end
 
-  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil, connection_interval : Int32? = nil)
-    if number_of_connections
-      @number_of_connections = number_of_connections
-    end
-    if messages_per_connection
-      @messages_per_connection = messages_per_connection
-    end
-    if connection_interval
-      @connection_interval = connection_interval
-    end
-    raise EMail::Error::SenderError.new("Number of connections must be 1 or greater") if @number_of_connections < 1
-    raise EMail::Error::SenderError.new("Messages per connection must be 1 or greater") if @messages_per_connection < 1
-    raise EMail::Error::SenderError.new("Connection interval must be 0 or greater") if @connection_interval < 0
+  def start
+    @started = true
     spawn_sender
     with self yield
     @finished = true
@@ -85,10 +71,7 @@ class EMail::Sender
       message = @queue.shift?
       while message
         client_name = @client_name + (@connection_count == 0 ? "" : "_#{@connection_count}")
-        client = Client.new(@server_host, @server_port,
-          client_name: client_name, helo_domain: @helo_domain,
-          openssl_verify_mode: @openssl_verify_mode, auth: @auth, logger: @logger,
-          on_failed: @on_failed, on_fatal_error: @on_fatal_error, use_tls: @use_tls)
+        client = Client.new(@config)
         @connection_count += 1
         client.start do
           sent_messages = 0

@@ -11,10 +11,22 @@ module EMail
   VERSION           = "0.3.3"
   DEFAULT_SMTP_PORT = 25
 
-  def self.send(host : String, port : Int32 = DEFAULT_SMTP_PORT, **options)
+  # :nodoc:
+  DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
+
+  def self.send(config : EMail::Client::Config)
     message = Message.new
     with message yield
-    EMail::Client.new(host, port, **options).start do
+    EMail::Client.new(config).start do
+      send(message)
+    end
+  end
+
+  def self.send(*args, **named_args, &block)
+    config = EMail::Client::Config.create(*args, **named_args)
+    message = Message.new
+    with message yield
+    EMail::Client.new(config).start do
       send(message)
     end
   end
