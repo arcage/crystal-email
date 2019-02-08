@@ -14,6 +14,7 @@ class EMail::Client
   {% end %}
   @command_history = [] of String
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
+  property number : Int32?
 
   # Creates smtp client object.
   def initialize(@config)
@@ -284,7 +285,9 @@ class EMail::Client
 
   private def log_format(message : String)
     String.build do |str|
-      str << '[' << @config.name << "] " << message
+      str << '[' << @config.name
+      str << '_' << @number if @number
+      str << "] " << message
     end
   end
 

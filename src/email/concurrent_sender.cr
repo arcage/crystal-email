@@ -1,9 +1,9 @@
 # Utility object for concurrent email sending.
-class EMail::Sender
+class EMail::ConcurrentSender
   @config : EMail::Client::Config
   @queue : Array(Message) = Array(Message).new
   @connections : Array(Fiber) = Array(Fiber).new
-  @connection_count : UInt32 = 0
+  @connection_count : Int32 = 0
   @started : Bool = false
   @finished : Bool = false
   @number_of_connections : Int32 = 1
@@ -70,9 +70,9 @@ class EMail::Sender
       @connections << Fiber.current
       message = @queue.shift?
       while message
-        client_name = @client_name + (@connection_count == 0 ? "" : "_#{@connection_count}")
-        client = Client.new(@config)
         @connection_count += 1
+        client = Client.new(@config)
+        client.number = @connection_count
         client.start do
           sent_messages = 0
           while message && sent_messages < @messages_per_connection
@@ -87,4 +87,8 @@ class EMail::Sender
       @connections.delete(Fiber.current)
     end
   end
+end
+
+module EMail
+  alias Sender = EMail::ConcurrentSender
 end
