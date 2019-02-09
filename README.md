@@ -74,7 +74,7 @@ You can set some connection settings to `EMail::Client::Config` object.
 
 That can make SMTP connection to use TLS / SMTP AUTH, or output more detailed log message.
 
-See [EMail::Client::Config](https://arcage.github.com/crystal-email/EMail/Client/Config.html) for more details.
+See [EMail::Client::Config](https://www.denchu.org/crystal-email/EMail/Client/Config.html) for more details.
 
 ### Email message
 
@@ -82,7 +82,7 @@ You can set more email headers to `EMail::Message` object.
 
 And, you can also send emails including attachment files, HTML message, and/or resource files related message body(e.g. image file for HTML message).
 
-See [EMail::Message](https://arcage.github.com/crystal-email/EMail/Message.html) for more details.
+See [EMail::Message](https://www.denchu.org/crystal-email/EMail/Message.html) for more details.
 
 ### Concurrent sending
 
@@ -119,7 +119,7 @@ sender.start do
 end
 ```
 
-See [EMail::ConcurrentSender](https://arcage.github.com/crystal-email/EMail/ConcurrentSender.html) for more details.
+See [EMail::ConcurrentSender](https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html) for more details.
 
 ## Contributors
 
