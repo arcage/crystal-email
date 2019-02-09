@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.1">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../";
+</script>
+
+  <meta id="repository-name" content="github.com/arcage/crystal-email">
+  <title>EMail::Message - github.com/arcage/crystal-email</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail" data-name="email">
+      <a href="../EMail.html">EMail</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
+      <a href="../EMail/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/Config" data-name="email::client::config">
+      <a href="../EMail/Client/Config.html">Config</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFailedProc" data-name="email::client::onfailedproc">
+      <a href="../EMail/Client/OnFailedProc.html">OnFailedProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFatalErrorProc" data-name="email::client::onfatalerrorproc">
+      <a href="../EMail/Client/OnFatalErrorProc.html">OnFatalErrorProc</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/ConcurrentSender" data-name="email::concurrentsender">
+      <a href="../EMail/ConcurrentSender.html">ConcurrentSender</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
+      <a href="../EMail/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
+      <a href="../EMail/Error/AddressError.html">AddressError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientConfigError" data-name="email::error::clientconfigerror">
+      <a href="../EMail/Error/ClientConfigError.html">ClientConfigError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientError" data-name="email::error::clienterror">
+      <a href="../EMail/Error/ClientError.html">ClientError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ContentError" data-name="email::error::contenterror">
+      <a href="../EMail/Error/ContentError.html">ContentError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/HeaderError" data-name="email::error::headererror">
+      <a href="../EMail/Error/HeaderError.html">HeaderError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/MessageError" data-name="email::error::messageerror">
+      <a href="../EMail/Error/MessageError.html">MessageError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/SenderError" data-name="email::error::sendererror">
+      <a href="../EMail/Error/SenderError.html">SenderError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/arcage/crystal-email/EMail/Message" data-name="email::message">
+      <a href="../EMail/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Sender" data-name="email::sender">
+      <a href="../EMail/Sender.html">Sender</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> EMail::Message
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../EMail/Message.html">EMail::Message</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>Email message object.</p>
+
+<h3>Minimal email with plain text message.</h3>
+
+<pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+
+<span class="c"># Email headers</span>
+email.from <span class="s">&quot;your_addr@example.com&quot;</span>
+email.to <span class="s">&quot;to@example.com&quot;</span>
+email.subject <span class="s">&quot;Subject of the mail&quot;</span>
+
+<span class="c"># Email plain text email body</span>
+email.message <span class="s">&lt;&lt;-EOM
+  Message body of the mail.
+
+  --
+  Your Signature
+  EOM</span></code></pre>
+
+<p>You can set following preset headers and your own <code><a href="../EMail/Message.html#custom_header%28name%3AString%2Cvalue%3AString%29-instance-method">#custom_header</a></code>s:</p>
+
+<ul><li>[*][!] <code><a href="../EMail/Message.html#from%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#from</a></code></li><li>[*][?] <code><a href="../EMail/Message.html#to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#to</a></code></li><li>[*][?] <code><a href="../EMail/Message.html#cc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#cc</a></code></li><li>[*][?] <code><a href="../EMail/Message.html#bcc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#bcc</a></code></li><li>[*] <code><a href="../EMail/Message.html#reply_to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#reply_to</a></code></li><li><code><a href="../EMail/Message.html#return_path%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#return_path</a></code></li><li><code><a href="../EMail/Message.html#sender%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#sender</a></code></li><li><code><a href="../EMail/Message.html#envelope_from%28mail_address%3AString%29-instance-method">#envelope_from</a></code></li><li>[!] <code><a href="../EMail/Message.html#subject%28header_body%3AString%29-instance-method">#subject</a></code></li></ul>
+
+<p><em>[!] required.</em></p>
+
+<p><em>[*] usable multiple times.</em></p>
+
+<p><em>[?] required at least one recipient.</em></p>
+
+<h3>Set custom header</h3>
+
+<pre><code class="language-crystal">email.custom_header <span class="s">&quot;X-Mailer&quot;</span>, <span class="s">&quot;Your APP Name&quot;</span></code></pre>
+
+<h3>Set mailbox name with email address</h3>
+
+<pre><code class="language-crystal">email.from <span class="s">&quot;your_addr@example.com&quot;</span>, <span class="s">&quot;your name&quot;</span></code></pre>
+
+<p>Also, <code><a href="../EMail/Message.html#to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#to</a></code>, <code><a href="../EMail/Message.html#cc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#cc</a></code>, <code><a href="../EMail/Message.html#bcc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#bcc</a></code>, etc...</p>
+
+<h3>HTML email with altanative plain text message.</h3>
+
+<pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+
+<span class="c"># Email headers</span>
+email.from <span class="s">&quot;your_addr@example.com&quot;</span>
+email.to <span class="s">&quot;to@example.com&quot;</span>
+email.subject <span class="s">&quot;Subject of the mail&quot;</span>
+
+<span class="c"># Email plain text email body</span>
+email.message <span class="s">&lt;&lt;-EOM
+  Message body of the mail.
+
+  --
+  Your Signature
+  EOM</span>
+
+<span class="c"># Email HTML email body</span>
+email.message_html <span class="s">&lt;&lt;-EOM
+  &lt;html&gt;
+  &lt;body&gt;
+  &lt;h1&gt;Subject of the mail&lt;h1&gt;
+  &lt;p&gt;Message body of the mail.&lt;/p&gt;
+  &lt;footer&gt;
+  Your Signature
+  &lt;/footer&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+  EOM</span></code></pre>
+
+<h3>Attache files</h3>
+
+<pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+
+<span class="c"># Email headers</span>
+email.from <span class="s">&quot;your_addr@example.com&quot;</span>
+email.to <span class="s">&quot;to@example.com&quot;</span>
+email.subject <span class="s">&quot;Subject of the mail&quot;</span>
+
+<span class="c"># Email plain text email body</span>
+email.message <span class="s">&lt;&lt;-EOM
+  Message body of the mail.
+
+  --
+  Your Signature
+  EOM</span>
+
+<span class="c"># Attach file to email</span>
+email.attach <span class="s">&quot;./photo.jpeg&quot;</span></code></pre>
+
+<h4>Set alternative file name for recipient</h4>
+
+<pre><code class="language-crystal">email.attach <span class="s">&quot;./photo.jpeg&quot;</span>, file_name: <span class="s">&quot;last_year.jpeg&quot;</span></code></pre>
+
+<h4>Set specific MIME type</h4>
+
+<pre><code class="language-crystal">email.attach <span class="s">&quot;./data&quot;</span>, mime_type: <span class="s">&quot;text/csv&quot;</span></code></pre>
+
+<h4>Read attachment file data from IO</h4>
+
+<pre><code class="language-crystal">email.attach io, file_name: <span class="s">&quot;photo.jpeg&quot;</span></code></pre>
+
+<p>In this case, <code>file_name</code> argument is required.</p>
+
+<h3>Add message resouces</h3>
+
+<pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+
+<span class="c"># Email headers</span>
+email.from <span class="s">&quot;your_addr@example.com&quot;</span>
+email.to <span class="s">&quot;to@example.com&quot;</span>
+email.subject <span class="s">&quot;Subject of the mail&quot;</span>
+
+<span class="c"># Email plain text email body</span>
+email.message <span class="s">&lt;&lt;-EOM
+  Message body of the mail.
+
+  --
+  Your Signature
+  EOM</span>
+
+<span class="c"># Email HTML email body</span>
+email.message_html <span class="s">&lt;&lt;-EOM
+  &lt;html&gt;
+  &lt;body&gt;
+  &lt;img src=&quot;cid:logo@some.domain&quot;&gt;
+  &lt;h1&gt;Subject of the mail&lt;h1&gt;
+  &lt;p&gt;Message body of the mail.&lt;/p&gt;
+  &lt;footer&gt;
+  Your Signature
+  &lt;/footer&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+  EOM</span>
+
+<span class="c"># Add message resource</span>
+email.message_resource <span class="s">&quot;./logo.png&quot;</span>, cid: <span class="s">&quot;logo@some.domain&quot;</span></code></pre>
+
+<p><code><a href="../EMail/Message.html#message_resource%28file_path%3AString%2Ccid%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#message_resource</a></code> is lmost same as <code><a href="../EMail/Message.html#attach%28file_path%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#attach</a></code> expect it requires <code>cid</code> argument.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L163" target="_blank">
+        email/message.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#attach%28file_path%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#attach</strong>(file_path : String, file_name : String? = <span class="n">nil</span>, mime_type : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Attache the file from given file path.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#attach%28io%3AIO%2Cfile_name%3AString%2Cmime_type%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#attach</strong>(io : IO, file_name : String, mime_type : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Attache the file read from given IO.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#bcc%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#bcc</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Bcc"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#bcc%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#bcc</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Bcc"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#cc%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#cc</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Cc"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#cc%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#cc</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Cc"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#custom_header%28name%3AString%2Cvalue%3AString%29-instance-method" class="signature"><strong>#custom_header</strong>(name : String, value : String)</a>
+        
+          <div class="summary"><p>Set cuntome header you want to set to the message.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#envelope_from%28mail_address%3AString%29-instance-method" class="signature"><strong>#envelope_from</strong>(mail_address : String)</a>
+        
+          <div class="summary"><p>Set envelope from address.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#from%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#from</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"From"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#from%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#from</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"From"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message%28message_body%3AString%29-instance-method" class="signature"><strong>#message</strong>(message_body : String)</a>
+        
+          <div class="summary"><p>Set plain text message body.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message_html%28message_body%3AString%29-instance-method" class="signature"><strong>#message_html</strong>(message_body : String)</a>
+        
+          <div class="summary"><p>Set html text message body.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message_id%28header_body%3AString%29-instance-method" class="signature"><strong>#message_id</strong>(header_body : String)</a>
+        
+          <div class="summary"><p>Set <strong>"Message-Id"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message_resource%28file_path%3AString%2Ccid%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#message_resource</strong>(file_path : String, cid : String, file_name : String? = <span class="n">nil</span>, mime_type : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add message resource file, such as images or stylesheets for the html message, from given file path.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message_resource%28io%3AIO%2Ccid%3AString%2Cfile_name%3AString%2Cmime_type%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#message_resource</strong>(io : IO, cid : String, file_name : String, mime_type : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add message resource file, such as images or stylesheets for the html message, read from given IO.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reply_to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#reply_to</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Reply-To"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reply_to%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#reply_to</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"Reply-To"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#return_path%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#return_path</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Set email address to <strong>"Return-Path"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#return_path%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#return_path</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Set email address to <strong>"Return-Path"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#sender%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#sender</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Set email address to <strong>"Sender"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#sender%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#sender</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Set email address to <strong>"Sender"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#subject%28header_body%3AString%29-instance-method" class="signature"><strong>#subject</strong>(header_body : String)</a>
+        
+          <div class="summary"><p>Set <strong>"Subject"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#to</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"To"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to%28mail_address%3AEMail%3A%3AAddress%29-instance-method" class="signature"><strong>#to</strong>(mail_address : EMail::Address)</a>
+        
+          <div class="summary"><p>Add email address to <strong>"To"</strong> header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_s%28io%3AIO%29-instance-method" class="signature"><strong>#to_s</strong>(io : IO)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="attach(file_path:String,file_name:String?=nil,mime_type:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>attach</strong>(file_path : String, file_name : String? = <span class="n">nil</span>, mime_type : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#attach%28file_path%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Attache the file from given file path.</p>
+
+<p>You can set another <code>file_name</code> for recipients and sprcific <code>mime_type</code>.
+By default, MIME type will be inferred from extname of the file name.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L333" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="attach(io:IO,file_name:String,mime_type:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>attach</strong>(io : IO, file_name : String, mime_type : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#attach%28io%3AIO%2Cfile_name%3AString%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Attache the file read from given IO.</p>
+
+<p>In this case, <code>file_name</code> argument is required.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L340" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="bcc(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>bcc</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#bcc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Bcc"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L418" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="bcc(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>bcc</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#bcc%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Bcc"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L418" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="cc(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>cc</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#cc%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Cc"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L417" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="cc(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>cc</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#cc%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Cc"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L417" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="custom_header(name:String,value:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>custom_header</strong>(name : String, value : String)
+
+        <a class="method-permalink" href="#custom_header%28name%3AString%2Cvalue%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set cuntome header you want to set to the message.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L361" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="envelope_from(mail_address:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>envelope_from</strong>(mail_address : String)
+
+        <a class="method-permalink" href="#envelope_from%28mail_address%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set envelope from address.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L212" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="from(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>from</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#from%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"From"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L415" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="from(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>from</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#from%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"From"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L415" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message(message_body:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>message</strong>(message_body : String)
+
+        <a class="method-permalink" href="#message%28message_body%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set plain text message body.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L320" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message_html(message_body:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>message_html</strong>(message_body : String)
+
+        <a class="method-permalink" href="#message_html%28message_body%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set html text message body.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L325" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message_id(header_body:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>message_id</strong>(header_body : String)
+
+        <a class="method-permalink" href="#message_id%28header_body%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set <strong>"Message-Id"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L384" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message_resource(file_path:String,cid:String,file_name:String?=nil,mime_type:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>message_resource</strong>(file_path : String, cid : String, file_name : String? = <span class="n">nil</span>, mime_type : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#message_resource%28file_path%3AString%2Ccid%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add message resource file, such as images or stylesheets for the html message, from given file path.</p>
+
+<p>Almost same as <code><a href="../EMail/Message.html#attach%28file_path%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#attach</a></code> expect this require <code>cid</code> argument.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L347" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message_resource(io:IO,cid:String,file_name:String,mime_type:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>message_resource</strong>(io : IO, cid : String, file_name : String, mime_type : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#message_resource%28io%3AIO%2Ccid%3AString%2Cfile_name%3AString%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add message resource file, such as images or stylesheets for the html message, read from given IO.</p>
+
+<p>Almost same as <code><a href="../EMail/Message.html#attach%28file_path%3AString%2Cfile_name%3AString%3F%3Dnil%2Cmime_type%3AString%3F%3Dnil%29-instance-method">#attach</a></code> expect this require <code>cid</code> argument.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L355" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reply_to(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>reply_to</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#reply_to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Reply-To"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L419" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reply_to(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>reply_to</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#reply_to%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"Reply-To"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L419" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="return_path(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>return_path</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#return_path%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set email address to <strong>"Return-Path"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L400" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="return_path(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>return_path</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#return_path%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set email address to <strong>"Return-Path"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L400" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="sender(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>sender</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#sender%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set email address to <strong>"Sender"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L399" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="sender(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>sender</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#sender%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set email address to <strong>"Sender"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L399" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="subject(header_body:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>subject</strong>(header_body : String)
+
+        <a class="method-permalink" href="#subject%28header_body%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set <strong>"Subject"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L383" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to(mail_address:String,sender_name:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>to</strong>(mail_address : String, sender_name : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#to%28mail_address%3AString%2Csender_name%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"To"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L416" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to(mail_address:EMail::Address)-instance-method">
+      <div class="signature">
+        
+        def <strong>to</strong>(mail_address : EMail::Address)
+
+        <a class="method-permalink" href="#to%28mail_address%3AEMail%3A%3AAddress%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Add email address to <strong>"To"</strong> header.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L416" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_s(io:IO)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>(io : IO)
+
+        <a class="method-permalink" href="#to_s%28io%3AIO%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/996054d104982bc40d9dfeb8fdfbb653b2dc855f/src/email/message.cr#L308" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
