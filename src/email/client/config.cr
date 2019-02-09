@@ -37,7 +37,7 @@ class EMail::Client
   #
   # # Set email client name.
   # # Default: "EMail_Client"
-  # config.helo_domain = "your.host.example.com"
+  # config.name = "your_app_name"
   #
   # # Use TLS to send email
   # config.use_tls
@@ -65,6 +65,9 @@ class EMail::Client
   # config.on_fatal_error = EMail::Client::OnFatalErrorProc.new do |error|
   #   puts error
   # end
+  #
+  # # Set connection timeout to 1 sec.
+  # config.connect_timeout = 1
   # ```
   #
   # ### Debug log

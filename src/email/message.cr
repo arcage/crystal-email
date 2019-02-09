@@ -37,6 +37,11 @@
 #
 # _[?] required at least one recipient._
 #
+# ### Set custom header
+#
+# ```crystal
+# email.custom_header "X-Mailer", "Your APP Name"
+# ```
 # ### Set mailbox name with email address
 #
 # ```crystal

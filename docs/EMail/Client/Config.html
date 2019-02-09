@@ -163,7 +163,7 @@ config.helo_domain <span class="o">=</span> <span class="s">&quot;your.host.exam
 
 <span class="c"># Set email client name.</span>
 <span class="c"># Default: &quot;EMail_Client&quot;</span>
-config.helo_domain <span class="o">=</span> <span class="s">&quot;your.host.example.com&quot;</span>
+config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</span>
 
 <span class="c"># Use TLS to send email</span>
 config.use_tls
@@ -190,7 +190,10 @@ config.on_failed <span class="o">=</span> <span class="t">EMail</span><span clas
 <span class="c"># Default: nil</span>
 config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">OnFatalErrorProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>error<span class="o">|</span>
   puts error
-<span class="k">end</span></code></pre>
+<span class="k">end</span>
+
+<span class="c"># Set connection timeout to 1 sec.</span>
+config.connect_timeout <span class="o">=</span> <span class="n">1</span></code></pre>
 
 <h3>Debug log</h3>
 
@@ -218,7 +221,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L82" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L85" target="_blank">
         email/client/config.cr
       </a>
     
@@ -510,7 +513,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L172" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -539,7 +542,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L140" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -562,7 +565,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L214" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L217" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -580,7 +583,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L219" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L222" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -598,7 +601,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L95" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -618,7 +621,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L203" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -636,7 +639,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L120" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -654,7 +657,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L231" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -672,7 +675,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L117" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -690,7 +693,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L231" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -708,7 +711,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L95" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L98" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -728,7 +731,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L178" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L181" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -746,7 +749,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -764,7 +767,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -782,7 +785,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L98" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L101" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -800,7 +803,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -820,7 +823,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -840,7 +843,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L107" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,7 +863,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L108" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -880,7 +883,7 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -901,7 +904,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -922,7 +925,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -940,7 +943,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -958,7 +961,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -976,7 +979,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L123" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -994,7 +997,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L231" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1015,7 +1018,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L209" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L212" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1033,7 +1036,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L224" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1051,7 +1054,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L184" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L187" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1069,7 +1072,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L193" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L196" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1087,7 +1090,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,7 +1108,7 @@ For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connect
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/19514e5ce5af377ceab793799d94cd37107de94d/src/email/client/config.cr#L231" target="_blank">View source</a>]
         
       </div>
     </div>
