@@ -58,9 +58,14 @@ class EMail::Client
   end
 
   private def ready_to_send
-    @socket = TCPSocket.new(@config.host, @config.port)
-
     log_info("Start TCP session to #{@config.host}:#{@config.port}")
+    @socket = TCPSocket.new(@config.host, @config.port, @config.dns_timeout, @config.connect_timeout)
+    if read_timeout = @config.read_timeout
+      @socket.as(TCPSocket).read_timeout = read_timeout
+    end
+    if write_timeout = @config.write_timeout
+      @socket.as(TCPSocket).write_timeout = write_timeout
+    end
   end
 
   private def mail_validate!(mail : Message) : Message

@@ -21,9 +21,19 @@ abstract class EMail::Content
 
   private def encode_data(io : IO)
     @content_transfer_encoding.set("base64")
-    buf = Bytes.new(54)
+    line_size = 54
+    buf = Bytes.new(line_size)
     lines = [] of String
     while ((bytes = io.read(buf)) > 0)
+      unless bytes == line_size
+        rest_buf = Bytes.new(line_size - bytes)
+        if (rest_bytes = io.read(rest_buf)) > 0
+          (0..rest_bytes - 1).each do |i|
+            buf[bytes + i] = rest_buf[i]
+          end
+          bytes += rest_bytes
+        end
+      end
       lines << Base64.strict_encode(buf[0, bytes])
     end
     lines.join('\n')

@@ -47,6 +47,23 @@ class EMail::ConcurrentSender
   end
 
   def start
+    raise EMail::Error::SenderError.new("Email sending is already started") if @started
+    @started = true
+    spawn_sender
+    with self yield
+    @finished = true
+    until @queue.empty? && @connections.empty?
+      Fiber.yield
+    end
+    @started = false
+    @finished = false
+  end
+
+  def start(number_of_connections : Int32? = nil, messages_per_connection : Int32? = nil, connection_interval : Int32? = nil)
+    raise EMail::Error::SenderError.new("Email sending is already started") if @started
+    self.number_of_connections = number_of_connections if number_of_connections
+    self.messages_per_connection = messages_per_connection if messages_per_connection
+    self.connection_interval = connection_interval if connection_interval
     @started = true
     spawn_sender
     with self yield

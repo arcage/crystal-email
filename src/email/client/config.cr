@@ -10,8 +10,8 @@ class EMail::Client
   NO_LOGGING   = Logger::Severity::UNKNOWN
   DEFAULT_NAME = "EMail_Client"
 
-  def self.create_default_logger : Logger
-    logger = Logger.new(STDOUT)
+  def self.create_default_logger(log_io : IO = STDOUT) : Logger
+    logger = Logger.new(log_io)
     logger.progname = EMail::Client::LOG_PROGNAME
     logger.formatter = EMail::Client::LOG_FORMATTER
     logger.level = Logger::INFO
@@ -29,13 +29,22 @@ class EMail::Client
     @tls = false
     property openssl_verify_mode = OpenSSL::SSL::VerifyMode::PEER
     @auth : NamedTuple(id: String, password: String)?
+    getter dns_timeout : Int32?
+    getter connect_timeout : Int32?
+    getter read_timeout : Int32?
+    getter write_timeout : Int32?
 
     def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
                     client_name name = nil, helo_domain = nil,
                     on_failed : EMail::Client::OnFailedProc? = nil,
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
                     openssl_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
-                    use_tls : Bool? = nil, auth : Tuple(String, String)? = nil, logger : Logger? = nil)
+                    use_tls : Bool? = nil, auth : Tuple(String, String)? = nil,
+                    logger : Logger? = nil,
+                    log_io : IO? = nil, log_level : Logger::Severity? = nil,
+                    log_progname : String? = nil, log_formatter : Logger::Formatter? = nil,
+                    dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
+                    read_timeout : Int32? = nil, write_timeout : Int32? = nil)
       config = new(host, port)
       config.name = name if name
       config.helo_domain = helo_domain if helo_domain
@@ -44,7 +53,19 @@ class EMail::Client
       config.openssl_verify_mode = openssl_verify_mode if openssl_verify_mode
       config.use_tls if use_tls
       config.use_auth(auth[0], auth[1]) if auth
-      config.logger = logger if logger
+      if logger
+        raise EMail::Error::ClientConfigError.new("Cannot set `logger` and `log_*` at the same time.") if log_io || log_level || log_progname || log_formatter
+        config.logger = logger if logger
+      else
+        config.logger = create_default_logger(log_io) if log_io
+        config.logger.level = log_level if log_level
+        config.logger.progname = log_progname if log_progname
+        config.logger.formatter = log_formatter if log_formatter
+      end
+      config.dns_timeout = dns_timeout if dns_timeout
+      config.connect_timeout = connect_timeout if connect_timeout
+      config.read_timeout = read_timeout if read_timeout
+      config.write_timeout = write_timeout if write_timeout
       config
     end
 
@@ -52,13 +73,13 @@ class EMail::Client
     end
 
     def helo_domain=(new_domain : String)
-      raise EMail::Error::ClientError.new("Invalid HELO domain \"#{helo_domain}\"") unless new_domain =~ DOMAIN_FORMAT
+      raise EMail::Error::ClientConfigError.new("Invalid HELO domain \"#{helo_domain}\"") unless new_domain =~ DOMAIN_FORMAT
       @helo_domain = new_domain
     end
 
     def use_tls(tls_port : Int32? = nil)
       {% if flag?(:without_openssl) %}
-      raise EMail::Error::ClientError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
+      raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       {% end %}
       @port = tls_port if tls_port
       @tls = true
@@ -69,7 +90,7 @@ class EMail::Client
     end
 
     def name=(new_name : String)
-      raise EMail::Error::ClientError.new("Invalid client name \"#{new_name}\"") if new_name.empty? || new_name =~ /\W/
+      raise EMail::Error::ClientConfigError.new("Invalid client name \"#{new_name}\"") if new_name.empty? || new_name =~ /\W/
       @name = new_name
     end
 
@@ -88,5 +109,12 @@ class EMail::Client
     def use_auth?
       !@auth.nil?
     end
+
+    {% for name in ["dns", "connect", "read", "write"] %}
+    def {{name.id}}_timeout=(sec : Int32)
+      raise EMail::Error::ClientConfigError.new("{{name.id}}_timeout must be greater than 0.") unless sec > 0
+      @{{name.id}}_timeout = sec
+    end
+    {% end %}
   end
 end

@@ -22,7 +22,7 @@ module EMail
     end
   end
 
-  def self.send(*args, **named_args, &block)
+  def self.send(*args, **named_args)
     config = EMail::Client::Config.create(*args, **named_args)
     message = Message.new
     with message yield

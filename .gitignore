@@ -1,4 +1,5 @@
-/doc/
+.DS_Store
+/docs/
 /libs/
 /lib/
 /.crystal/
