@@ -1,5 +1,8 @@
+# :nodoc:
 class EMail::Address
+  # email address
   getter addr
+  # mailbox name
   getter name
 
   # :nodoc:
@@ -8,11 +11,13 @@ class EMail::Address
   # :nodoc:
   NAME_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~ \t]+\z/
 
+  # raise `EMail::Error::AddressError` when the given email address is invalid.
   def self.valid_address!(mail_address : String)
     raise EMail::Error::AddressError.new("#{mail_address.inspect} is invalid as a mail address.") unless mail_address =~ ADDRESS_FORMAT
     mail_address
   end
 
+  # raise `EMail::Error::AddressError` when the given mailbox name is invalid.
   def self.valid_name!(mailbox_name : String?)
     if mailbox_name
       raise EMail::Error::AddressError.new("#{mailbox_name.inspect} is invalid as a sender name") if mailbox_name =~ /[\r\n]/

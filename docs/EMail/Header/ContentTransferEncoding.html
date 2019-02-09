@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.1">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/arcage/crystal-email">
+  <title>EMail::Header::ContentTransferEncoding - github.com/arcage/crystal-email</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail" data-name="email">
+      <a href="../../EMail.html">EMail</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Address" data-name="email::address">
+      <a href="../../EMail/Address.html">Address</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
+      <a href="../../EMail/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/Config" data-name="email::client::config">
+      <a href="../../EMail/Client/Config.html">Config</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFailedProc" data-name="email::client::onfailedproc">
+      <a href="../../EMail/Client/OnFailedProc.html">OnFailedProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFatalErrorProc" data-name="email::client::onfatalerrorproc">
+      <a href="../../EMail/Client/OnFatalErrorProc.html">OnFatalErrorProc</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/ConcurrentSender" data-name="email::concurrentsender">
+      <a href="../../EMail/ConcurrentSender.html">ConcurrentSender</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
+      <a href="../../EMail/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
+      <a href="../../EMail/Error/AddressError.html">AddressError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientConfigError" data-name="email::error::clientconfigerror">
+      <a href="../../EMail/Error/ClientConfigError.html">ClientConfigError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientError" data-name="email::error::clienterror">
+      <a href="../../EMail/Error/ClientError.html">ClientError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ContentError" data-name="email::error::contenterror">
+      <a href="../../EMail/Error/ContentError.html">ContentError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/HeaderError" data-name="email::error::headererror">
+      <a href="../../EMail/Error/HeaderError.html">HeaderError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/MessageError" data-name="email::error::messageerror">
+      <a href="../../EMail/Error/MessageError.html">MessageError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/SenderError" data-name="email::error::sendererror">
+      <a href="../../EMail/Error/SenderError.html">SenderError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail/Header" data-name="email::header">
+      <a href="../../EMail/Header.html">Header</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/AddressList" data-name="email::header::addresslist">
+      <a href="../../EMail/Header/AddressList.html">AddressList</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/ContentDisposition" data-name="email::header::contentdisposition">
+      <a href="../../EMail/Header/ContentDisposition.html">ContentDisposition</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/ContentID" data-name="email::header::contentid">
+      <a href="../../EMail/Header/ContentID.html">ContentID</a>
+      
+    </li>
+  
+  <li class=" current" data-id="github.com/arcage/crystal-email/EMail/Header/ContentTransferEncoding" data-name="email::header::contenttransferencoding">
+      <a href="../../EMail/Header/ContentTransferEncoding.html">ContentTransferEncoding</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/ContentType" data-name="email::header::contenttype">
+      <a href="../../EMail/Header/ContentType.html">ContentType</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/Date" data-name="email::header::date">
+      <a href="../../EMail/Header/Date.html">Date</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/MimeVersion" data-name="email::header::mimeversion">
+      <a href="../../EMail/Header/MimeVersion.html">MimeVersion</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/SingleAddress" data-name="email::header::singleaddress">
+      <a href="../../EMail/Header/SingleAddress.html">SingleAddress</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Header/Unstructured" data-name="email::header::unstructured">
+      <a href="../../EMail/Header/Unstructured.html">Unstructured</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Message" data-name="email::message">
+      <a href="../../EMail/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Sender" data-name="email::sender">
+      <a href="../../EMail/Sender.html">Sender</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> EMail::Header::ContentTransferEncoding
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../EMail/Header/ContentTransferEncoding.html">EMail::Header::ContentTransferEncoding</a></li><li class="superclass"><a href="../../EMail/Header.html">EMail::Header</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p><strong>Content-Trandfer-Encoding</strong> Header</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/header.cr#L257" target="_blank">
+        email/header.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28encoding%3AString%29-class-method" class="signature"><strong>.new</strong>(encoding : String)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#set%28encoding%3AString%29-instance-method" class="signature"><strong>#set</strong>(encoding : String)</a>
+        
+          <div class="summary"><p>Set endoding.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+  <h3>Instance methods inherited from class <code><a href="../../EMail/Header.html">EMail::Header</a></code></h3>
+  
+  
+    <a href="../../EMail/Header.html#empty%3F-instance-method" class="tooltip">
+      <span>empty?</span>
+    empty?</a>, 
+    
+  
+    <a href="../../EMail/Header.html#name%3AString-instance-method" class="tooltip">
+      <span>name : String</span>
+    name</a>, 
+    
+  
+    <a href="../../EMail/Header.html#to_s%28io%3AIO%29-instance-method" class="tooltip">
+      <span>to_s(io : IO)</span>
+    to_s</a>
+    
+  
+
+
+    
+
+  <h3>Constructor methods inherited from class <code><a href="../../EMail/Header.html">EMail::Header</a></code></h3>
+  
+  
+    <a href="../../EMail/Header.html#new%28field_name%3AString%29-class-method" class="tooltip">
+      <span>new(field_name : String)</span>
+    new</a>
+    
+  
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(encoding:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(encoding : String)
+
+        <a class="method-permalink" href="#new%28encoding%3AString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/header.cr#L258" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="set(encoding:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>set</strong>(encoding : String)
+
+        <a class="method-permalink" href="#set%28encoding%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set endoding.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/header.cr#L263" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

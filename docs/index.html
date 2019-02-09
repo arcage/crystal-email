@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.1">
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "";
+</script>
+
+  <meta id="repository-name" content="github.com/arcage/crystal-email">
+  <title>README - github.com/arcage/crystal-email</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail" data-name="email">
+      <a href="EMail.html">EMail</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
+      <a href="EMail/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/Config" data-name="email::client::config">
+      <a href="EMail/Client/Config.html">Config</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFailedProc" data-name="email::client::onfailedproc">
+      <a href="EMail/Client/OnFailedProc.html">OnFailedProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFatalErrorProc" data-name="email::client::onfatalerrorproc">
+      <a href="EMail/Client/OnFatalErrorProc.html">OnFatalErrorProc</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/ConcurrentSender" data-name="email::concurrentsender">
+      <a href="EMail/ConcurrentSender.html">ConcurrentSender</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
+      <a href="EMail/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
+      <a href="EMail/Error/AddressError.html">AddressError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientConfigError" data-name="email::error::clientconfigerror">
+      <a href="EMail/Error/ClientConfigError.html">ClientConfigError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientError" data-name="email::error::clienterror">
+      <a href="EMail/Error/ClientError.html">ClientError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ContentError" data-name="email::error::contenterror">
+      <a href="EMail/Error/ContentError.html">ContentError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/HeaderError" data-name="email::error::headererror">
+      <a href="EMail/Error/HeaderError.html">HeaderError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/MessageError" data-name="email::error::messageerror">
+      <a href="EMail/Error/MessageError.html">MessageError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/SenderError" data-name="email::error::sendererror">
+      <a href="EMail/Error/SenderError.html">SenderError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Message" data-name="email::message">
+      <a href="EMail/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Sender" data-name="email::sender">
+      <a href="EMail/Sender.html">Sender</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1>EMail for Crystal</h1>
+
+<p>Simple email sending library for the <a href="https://crystal-lang.org" target="_blank">Crystal programming language</a>.</p>
+
+<p>You can:</p>
+
+<ul><li>construct an email with a plain text message, a HTML message and/or some attachment files.</li><li>include resources(e.g. images) used in the HTML message.</li><li>set multiple recipients to the email.</li><li>use multibyte characters(only UTF-8) in the email.</li><li>send the email by using local or remote SMTP server.</li><li>use TLS connection by <code>STARTTLS</code> command.</li><li>use SMTP-AUTH by <code>AUTH PLAIN</code> or <code>AUTH LOGIN</code> when using TLS.</li><li>send multiple emails concurrently by using multiple smtp connections.</li></ul>
+
+<p>You can not:</p>
+
+<ul><li>use ESMTP features except those mentioned above.</li></ul>
+
+<h2>Installation</h2>
+
+<p>First, add the dependency to your <code>shard.yml</code>:</p>
+
+<pre><code class="language-yaml">dependencies:
+  email:
+    github: arcage/crystal-email</code></pre>
+
+<p>Then, run <code>shards install</code></p>
+
+<h2>Usage</h2>
+
+<p>To send a minimal email message:</p>
+
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;email&quot;</span>
+
+<span class="c"># Create email message</span>
+email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+email.from    <span class="s">&quot;your_addr@example.com&quot;</span>
+email.to      <span class="s">&quot;to@example.com&quot;</span>
+email.subject <span class="s">&quot;Subject of the mail&quot;</span>
+email.message <span class="s">&lt;&lt;-EOM
+  Message body of the mail.
+
+  --
+  Your Signature
+  EOM</span>
+
+<span class="c"># Set SMTP client configuration</span>
+config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.example.com&quot;</span>, <span class="n">25</span>)
+
+<span class="c"># Create SMTP client object</span>
+client <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>(config)
+
+client.start <span class="k">do</span>
+  <span class="c"># In this block, default receiver is client</span>
+  send(email)
+<span class="k">end</span></code></pre>
+
+<p>This code will output log entries to <code>STDOUT</code> as follows:</p>
+
+<pre><code class="language-text">2018/01/25 20:35:09 [crystal-email/12347] INFO [EMail_Client] Start TCP session to your.mx.example.com:25
+2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Successfully sent a message from &lt;your_addr@example.com> to 1 recipient(s)
+2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25</code></pre>
+
+<h3>Client configs</h3>
+
+<p>You can set some connection settings to <code><a href="EMail/Client/Config.html">EMail::Client::Config</a></code> object.</p>
+
+<p>That can make SMTP connection to use TLS / SMTP AUTH, or output more detailed log message.</p>
+
+<p>See <a href="https://arcage.github.com/crystal-email/EMail/Client/Config.html" target="_blank">EMail::Client::Config</a> for more details.</p>
+
+<h3>Email message</h3>
+
+<p>You can set more email headers to <code><a href="EMail/Message.html">EMail::Message</a></code> object.</p>
+
+<p>And, you can also send emails including attachment files, HTML message, and/or resource files related message body(e.g. image file for HTML message).</p>
+
+<p>See <a href="https://arcage.github.com/crystal-email/EMail/Message.html" target="_blank">EMail::Message</a> for more details.</p>
+
+<h3>Concurrent sending</h3>
+
+<p>By using <code><a href="EMail/ConcurrentSender.html">EMail::ConcurrentSender</a></code> object, you can concurrently send multiple messages by multiple connections.</p>
+
+<pre><code class="language-crystal">rcpt_list <span class="o">=</span> [<span class="s">&quot;a@example.com&quot;</span>, <span class="s">&quot;b@example.com&quot;</span>, <span class="s">&quot;c@example.com&quot;</span>, <span class="s">&quot;d@example.com&quot;</span>]
+
+<span class="c"># Set SMTP client configuration</span>
+config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.example.com&quot;</span>, <span class="n">25</span>)
+
+<span class="c"># Create concurrent sender object</span>
+sender <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">ConcurrentSender</span>.<span class="k">new</span>(config)
+
+<span class="c"># Sending emails with concurrently 3 connections.</span>
+sender.number_of_connections <span class="o">=</span> <span class="n">3</span>
+
+<span class="c"># Sending max 10 emails by 1 connection.</span>
+sender.messages_per_connection <span class="o">=</span> <span class="n">10</span>
+
+<span class="c"># Start email sending.</span>
+sender.start <span class="k">do</span>
+  <span class="c"># In this block, default receiver is sender</span>
+  rcpts_list.each <span class="k">do</span> <span class="o">|</span>rcpt_to<span class="o">|</span>
+    <span class="c"># Create email message</span>
+    mail <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
+    mail.from <span class="s">&quot;your_addr@example.com&quot;</span>
+    mail.to rcpt_to
+    mail.subject <span class="s">&quot;Concurrent email sending&quot;</span>
+    mail.message <span class="s">&quot;message to </span><span class="i">#{</span>rcpt_to<span class="i">}</span><span class="s">&quot;</span>
+    <span class="c"># Enqueue the email to sender</span>
+    enqueue mail
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<p>See <a href="https://arcage.github.com/crystal-email/EMail/ConcurrentSender.html" target="_blank">EMail::ConcurrentSender</a> for more details.</p>
+
+<h2>Contributors</h2>
+
+<ul><li><a href="https://github.com/arcage" target="_blank">arcage</a> ʕ·ᴥ·ʔAKJ - creator, maintainer</li></ul>
+</div>
+</body>
+</html>

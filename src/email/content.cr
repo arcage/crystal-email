@@ -1,4 +1,4 @@
-# Base class for a single e-Mail content part.
+# :nodoc:
 abstract class EMail::Content
   @mime_type : String
   @data : String = ""
@@ -11,6 +11,7 @@ abstract class EMail::Content
     @content_type = Header::ContentType.new(@mime_type)
   end
 
+  # Returns the list of email header of this content.
   def headers
     [content_type, content_transfer_encoding] + @other_headers
   end
@@ -47,6 +48,7 @@ abstract class EMail::Content
     @content_transfer_encoding
   end
 
+  # Write content data to `io`.
   def data(io : IO, with_header : Bool)
     if with_header
       headers.each do |header|
@@ -57,6 +59,7 @@ abstract class EMail::Content
     io << @data
   end
 
+  # Returns content data as String.
   def data(with_header : Bool = false)
     String.build do |io|
       data(io, with_header)
@@ -67,16 +70,22 @@ abstract class EMail::Content
     io << data(with_header: true)
   end
 
+  # Returns `true` when this content has no data.
   def empty?
     @data.empty?
   end
 
+  # :nodoc:
   class TextContent < Content
+    # Create content with given MIME subtype of text.
+    #
+    # When `text_typr` is `plain`, the Mediatype of this content is `text/plain`.
     def initialize(text_type : String)
       super("text/#{text_type}")
       @content_type.set_charset("UTF-8")
     end
 
+    # Set content text.
     def data=(message_body : String)
       encoded = !message_body.ascii_only? || message_body.split(/\r?\n/).map(&.size).max > 998
       @data = (encoded ? encode_data(message_body) : message_body)
@@ -97,6 +106,7 @@ abstract class EMail::Content
     end
   end
 
+  # :nodoc:
   class AttachmentFile < Content
     # :nodoc:
     NAME_TO_ENCODE = /[^\w\_\-\. ]/

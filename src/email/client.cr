@@ -1,9 +1,7 @@
 require "./client/*"
 
+# SMTP client object.
 class EMail::Client
-  getter command_history
-
-  @config : EMail::Client::Config
   @helo_domain : String?
   @started : Bool = false
   @first_send : Bool = true
@@ -14,17 +12,14 @@ class EMail::Client
   {% end %}
   @command_history = [] of String
   @esmtp_commands = Hash(String, Array(String)).new { |h, k| h[k] = Array(String).new }
+  # :nodoc:
   property number : Int32?
 
   # Creates smtp client object.
-  def initialize(@config)
+  def initialize(@config : EMail::Client::Config)
   end
 
-  def initialize(*args, **named_args)
-    initialize(EMail::Client::Config.create(*args, **named_args))
-  end
-
-  def helo_domain : String
+  private def helo_domain : String
     @helo_domain ||= @config.helo_domain || "[#{socket.as(TCPSocket).local_address.address}]"
   end
 
@@ -36,6 +31,9 @@ class EMail::Client
     end
   end
 
+  # Start SMTP session.
+  #
+  # In the block, the default receiver will is `self`.
   def start
     ready_to_send
     status_code, _ = smtp_responce("CONN")
@@ -68,17 +66,20 @@ class EMail::Client
     end
   end
 
-  private def mail_validate!(mail : Message) : Message
+  private def mail_validate!(mail : EMail::Message) : EMail::Message
     timestamp = Time.now
     mail.date timestamp
     mail.message_id String.build { |io|
       io << '<' << timestamp.to_unix_ms << '.' << Process.pid
-      io << '.' << @config.name << '@' << helo_domain << '>'
+      io << '.' << @config.client_name << '@' << helo_domain << '>'
     }
     mail.validate!
   end
 
-  def send(mail : Message)
+  # Send a email message
+  #
+  # You can call this only in the block of the `EMail::Client#start` method.
+  def send(mail : EMail::Message)
     raise EMail::Error::ClientError.new("Email client has not been started") unless @started
     @command_history.clear
     mail = mail_validate!(mail)
@@ -242,12 +243,12 @@ class EMail::Client
     end
   end
 
-  private def smtp_mail(mail_from : Address)
+  private def smtp_mail(mail_from : EMail::Address)
     status_code, _ = smtp_command("MAIL", "FROM:<#{mail_from.addr}>")
     status_code == "250"
   end
 
-  private def smtp_rcpt(recipients : Array(Address))
+  private def smtp_rcpt(recipients : Array(EMail::Address))
     succeed = true
     recipients.each do |recipient|
       status_code, status_message = smtp_command("RCPT", "TO:<#{recipient.addr}>")
@@ -273,7 +274,7 @@ class EMail::Client
     smtp_command("QUIT")
   end
 
-  def close_socket
+  private def close_socket
     if _socket = @socket
       _socket.close
       log_info("Close session to #{@config.host}:#{@config.port}")
@@ -281,7 +282,7 @@ class EMail::Client
     @socket = nil
   end
 
-  def fatal_error(error : Exception)
+  private def fatal_error(error : Exception)
     log_fatal(error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})")
     if on_fatal_error = @config.on_fatal_error
       on_fatal_error.call(error)
@@ -290,7 +291,7 @@ class EMail::Client
 
   private def log_format(message : String)
     String.build do |str|
-      str << '[' << @config.name
+      str << '[' << @config.client_name
       str << '_' << @number if @number
       str << "] " << message
     end

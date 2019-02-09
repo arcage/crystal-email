@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.27.1">
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../../";
+</script>
+
+  <meta id="repository-name" content="github.com/arcage/crystal-email">
+  <title>EMail::Client::Config - github.com/arcage/crystal-email</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="../../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail" data-name="email">
+      <a href="../../EMail.html">EMail</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
+      <a href="../../EMail/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/arcage/crystal-email/EMail/Client/Config" data-name="email::client::config">
+      <a href="../../EMail/Client/Config.html">Config</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFailedProc" data-name="email::client::onfailedproc">
+      <a href="../../EMail/Client/OnFailedProc.html">OnFailedProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/OnFatalErrorProc" data-name="email::client::onfatalerrorproc">
+      <a href="../../EMail/Client/OnFatalErrorProc.html">OnFatalErrorProc</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/ConcurrentSender" data-name="email::concurrentsender">
+      <a href="../../EMail/ConcurrentSender.html">ConcurrentSender</a>
+      
+    </li>
+  
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
+      <a href="../../EMail/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
+      <a href="../../EMail/Error/AddressError.html">AddressError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientConfigError" data-name="email::error::clientconfigerror">
+      <a href="../../EMail/Error/ClientConfigError.html">ClientConfigError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ClientError" data-name="email::error::clienterror">
+      <a href="../../EMail/Error/ClientError.html">ClientError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/ContentError" data-name="email::error::contenterror">
+      <a href="../../EMail/Error/ContentError.html">ContentError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/HeaderError" data-name="email::error::headererror">
+      <a href="../../EMail/Error/HeaderError.html">HeaderError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/MessageError" data-name="email::error::messageerror">
+      <a href="../../EMail/Error/MessageError.html">MessageError</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/SenderError" data-name="email::error::sendererror">
+      <a href="../../EMail/Error/SenderError.html">SenderError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Message" data-name="email::message">
+      <a href="../../EMail/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Sender" data-name="email::sender">
+      <a href="../../EMail/Sender.html">Sender</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> EMail::Client::Config
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../EMail/Client/Config.html">EMail::Client::Config</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>SMTP client settings.</p>
+
+<pre><code class="language-crystal"><span class="c"># Set the SMTP server FQDN(or IP address) and port.</span>
+config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.example.com&quot;</span>, <span class="n">587</span>)
+
+<span class="c"># Set domain name for SMTP HELO/EHLO command.</span>
+<span class="c"># Default: &quot;[#{IP address of client host}]&quot;</span>
+config.helo_domain <span class="o">=</span> <span class="s">&quot;your.host.example.com&quot;</span>
+
+<span class="c"># Set email client name.</span>
+<span class="c"># Default: &quot;EMail_Client&quot;</span>
+config.helo_domain <span class="o">=</span> <span class="s">&quot;your.host.example.com&quot;</span>
+
+<span class="c"># Use TLS to send email</span>
+config.use_tls
+
+<span class="c"># Set OpenSSL verification mode to skip certificate verification.</span>
+<span class="c"># Default: OpenSSL::SSL::VerifyMode::PEER</span>
+config.openssl_verify_mode <span class="o">=</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">VerifyMode</span><span class="t">::</span><span class="t">NONE</span>
+
+<span class="c"># Use SMTP AUTH for user authentication.</span>
+config.use_auth(<span class="s">&quot;id&quot;</span>, <span class="s">&quot;password&quot;</span>)
+
+<span class="c"># Use crystal default Logger object to output logs to STDOUT.</span>
+config.logger <span class="o">=</span> <span class="t">Logger</span>.<span class="k">new</span>(<span class="t">STDOUT</span>)
+
+<span class="c"># Set SMTP error handler.</span>
+<span class="c"># Default: nil</span>
+config.on_failed <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">OnFailedProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>mail, command_history<span class="o">|</span>
+  puts mail.data
+  puts <span class="s">&quot;&quot;</span>
+  puts command_history.join(<span class="s">&quot;\n&quot;</span>)
+<span class="k">end</span>
+
+<span class="c"># Set fatal error handler.</span>
+<span class="c"># Default: nil</span>
+config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">OnFatalErrorProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>error<span class="o">|</span>
+  puts error
+<span class="k">end</span></code></pre>
+
+<h3>Debug log</h3>
+
+<p>When you set the log level to <code>Logger::Severity::DEBUG</code>, you can see all of the SMTP commands and the resposes in the log entries.</p>
+
+<pre><code class="language-crystal">config.logger.level <span class="o">=</span> <span class="t">Logger</span><span class="t">::</span><span class="t">Severity</span><span class="t">::</span><span class="t">DEBUG</span></code></pre>
+
+<p>Debug log are very useful to check how SMTP session works.</p>
+
+<p>But, in the case of using SMTP AUTH, the debug log includes Base64 encoded user ID and passowrd. You should remenber that anyone can decode the authentication information from the debug log. And, you should use that very carefully.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L82" target="_blank">
+        email/client/config.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28host%2Cport%3DEMail%3A%3ADEFAULT_SMTP_PORT%29-class-method" class="signature"><strong>.new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Class Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#create%28host%2Cport%3DEMail%3A%3ADEFAULT_SMTP_PORT%2C%2A%2Cclient_name%3Dnil%2Chelo_domain%3Dnil%2Con_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F%3Dnil%2Con_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F%3Dnil%2Copenssl_verify_mode%3AOpenSSL%3A%3ASSL%3A%3AVerifyMode%3F%3Dnil%2Cuse_tls%3ABool%3F%3Dnil%2Cauth%3ATuple%28String%2CString%29%3F%3Dnil%2Clogger%3ALogger%3F%3Dnil%2Clog_io%3AIO%3F%3Dnil%2Clog_level%3ALogger%3A%3ASeverity%3F%3Dnil%2Clog_progname%3AString%3F%3Dnil%2Clog_formatter%3ALogger%3A%3AFormatter%3F%3Dnil%2Cdns_timeout%3AInt32%3F%3Dnil%2Cconnect_timeout%3AInt32%3F%3Dnil%2Cread_timeout%3AInt32%3F%3Dnil%2Cwrite_timeout%3AInt32%3F%3Dnil%29-class-method" class="signature"><strong>.create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : EMail::Client::OnFailedProc? = <span class="n">nil</span>, on_fatal_error : EMail::Client::OnFatalErrorProc? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Returns <code><a href="../../EMail/Client/Config.html">EMail::Client::Config</a></code> object with given settings.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#auth_id-instance-method" class="signature"><strong>#auth_id</strong></a>
+        
+          <div class="summary"><p>Returns authentication id when using SMTP AUTH.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#auth_password-instance-method" class="signature"><strong>#auth_password</strong></a>
+        
+          <div class="summary"><p>Returns authentication password when using SMTP AUTH.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#client_name%3AString-instance-method" class="signature"><strong>#client_name</strong> : String</a>
+        
+          <div class="summary"><p>Client name used in <strong>Message-Id</strong> header and log entry.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#client_name%3D%28new_name%3AString%29-instance-method" class="signature"><strong>#client_name=</strong>(new_name : String)</a>
+        
+          <div class="summary"><p>Client name used in <strong>Message-ID</strong> header and log entry.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#connect_timeout%3AInt32%3F-instance-method" class="signature"><strong>#connect_timeout</strong> : Int32?</a>
+        
+          <div class="summary"><p>CONNECT timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#connect_timeout%3D%28sec%3AInt32%29-instance-method" class="signature"><strong>#connect_timeout=</strong>(sec : Int32)</a>
+        
+          <div class="summary"><p>CONNECT timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dns_timeout%3AInt32%3F-instance-method" class="signature"><strong>#dns_timeout</strong> : Int32?</a>
+        
+          <div class="summary"><p>DNS timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dns_timeout%3D%28sec%3AInt32%29-instance-method" class="signature"><strong>#dns_timeout=</strong>(sec : Int32)</a>
+        
+          <div class="summary"><p>DNS timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#helo_domain%3AString%3F-instance-method" class="signature"><strong>#helo_domain</strong> : String?</a>
+        
+          <div class="summary"><p>Domain name for SMTP <strong>HELO</strong> / <strong>EHLO</strong> command.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#helo_domain%3D%28new_domain%3AString%29-instance-method" class="signature"><strong>#helo_domain=</strong>(new_domain : String)</a>
+        
+          <div class="summary"><p>Domain name for SMTP <strong>HELO</strong> or <strong>EHLO</strong> command.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#host%3AString-instance-method" class="signature"><strong>#host</strong> : String</a>
+        
+          <div class="summary"><p>SMTP server hostname or IP address.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#host%3D%28host%3AString%29-instance-method" class="signature"><strong>#host=</strong>(host : String)</a>
+        
+          <div class="summary"><p>SMTP server hostname or IP address.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#logger%3ALogger-instance-method" class="signature"><strong>#logger</strong> : Logger</a>
+        
+          <div class="summary"><p>Logger object for logging SMTP session.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#logger%3D%28logger%3ALogger%29-instance-method" class="signature"><strong>#logger=</strong>(logger : Logger)</a>
+        
+          <div class="summary"><p>Logger object for logging SMTP session.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F-instance-method" class="signature"><strong>#on_failed</strong> : EMail::Client::OnFailedProc?</a>
+        
+          <div class="summary"><p>Callback function to be called when the SMTP server returns <strong>4XX</strong> or <strong>5XX</strong> response.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_failed%3D%28on_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F%29-instance-method" class="signature"><strong>#on_failed=</strong>(on_failed : EMail::Client::OnFailedProc?)</a>
+        
+          <div class="summary"><p>Callback function to be called when the SMTP server returns <strong>4XX</strong> or <strong>5XX</strong> response.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F-instance-method" class="signature"><strong>#on_fatal_error</strong> : EMail::Client::OnFatalErrorProc?</a>
+        
+          <div class="summary"><p>Callback function to be calld when an exception is raised during SMTP session.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_fatal_error%3D%28on_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F%29-instance-method" class="signature"><strong>#on_fatal_error=</strong>(on_fatal_error : EMail::Client::OnFatalErrorProc?)</a>
+        
+          <div class="summary"><p>Callback function to be calld when an exception is raised during SMTP session.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#openssl_verify_mode%3ALibSSL%3A%3AVerifyMode-instance-method" class="signature"><strong>#openssl_verify_mode</strong> : LibSSL::VerifyMode</a>
+        
+          <div class="summary"><p>OpenSSL verification mode for the TLS connection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#openssl_verify_mode%3D%28openssl_verify_mode%29-instance-method" class="signature"><strong>#openssl_verify_mode=</strong>(openssl_verify_mode)</a>
+        
+          <div class="summary"><p>OpenSSL verification mode for the TLS connection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#port%3AInt32-instance-method" class="signature"><strong>#port</strong> : Int32</a>
+        
+          <div class="summary"><p>Port number of SMTP server.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#port%3D%28port%3AInt32%29-instance-method" class="signature"><strong>#port=</strong>(port : Int32)</a>
+        
+          <div class="summary"><p>Port number of SMTP server.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#read_timeout%3AInt32%3F-instance-method" class="signature"><strong>#read_timeout</strong> : Int32?</a>
+        
+          <div class="summary"><p>READ timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#read_timeout%3D%28sec%3AInt32%29-instance-method" class="signature"><strong>#read_timeout=</strong>(sec : Int32)</a>
+        
+          <div class="summary"><p>READ timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#use_auth%28id%2Cpassword%29-instance-method" class="signature"><strong>#use_auth</strong>(id, password)</a>
+        
+          <div class="summary"><p>Set the client to authenticate with SMTP <strong>AUTH</strong> command by using given id and password.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#use_auth%3F-instance-method" class="signature"><strong>#use_auth?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> when using SMTP AUTH.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#use_tls%28tls_port%3AInt32%3F%3Dnil%29-instance-method" class="signature"><strong>#use_tls</strong>(tls_port : Int32? = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#use_tls%3F%3ABool-instance-method" class="signature"><strong>#use_tls?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> when using TLS.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#write_timeout%3AInt32%3F-instance-method" class="signature"><strong>#write_timeout</strong> : Int32?</a>
+        
+          <div class="summary"><p>WRITE timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#write_timeout%3D%28sec%3AInt32%29-instance-method" class="signature"><strong>#write_timeout=</strong>(sec : Int32)</a>
+        
+          <div class="summary"><p>WRITE timeout for the socket.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(host,port=EMail::DEFAULT_SMTP_PORT)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>)
+
+        <a class="method-permalink" href="#new%28host%2Cport%3DEMail%3A%3ADEFAULT_SMTP_PORT%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L172" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Class Method Detail</h2>
+  
+    <div class="entry-detail" id="create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>? = <span class="n">nil</span>, on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#create%28host%2Cport%3DEMail%3A%3ADEFAULT_SMTP_PORT%2C%2A%2Cclient_name%3Dnil%2Chelo_domain%3Dnil%2Con_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F%3Dnil%2Con_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F%3Dnil%2Copenssl_verify_mode%3AOpenSSL%3A%3ASSL%3A%3AVerifyMode%3F%3Dnil%2Cuse_tls%3ABool%3F%3Dnil%2Cauth%3ATuple%28String%2CString%29%3F%3Dnil%2Clogger%3ALogger%3F%3Dnil%2Clog_io%3AIO%3F%3Dnil%2Clog_level%3ALogger%3A%3ASeverity%3F%3Dnil%2Clog_progname%3AString%3F%3Dnil%2Clog_formatter%3ALogger%3A%3AFormatter%3F%3Dnil%2Cdns_timeout%3AInt32%3F%3Dnil%2Cconnect_timeout%3AInt32%3F%3Dnil%2Cread_timeout%3AInt32%3F%3Dnil%2Cwrite_timeout%3AInt32%3F%3Dnil%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns <code><a href="../../EMail/Client/Config.html">EMail::Client::Config</a></code> object with given settings.</p>
+
+<ul><li><code>use_tls: true</code> -> <code><a href="../../EMail/Client/Config.html#use_tls%28tls_port%3AInt32%3F%3Dnil%29-instance-method">#use_tls</a></code></li><li><code>auth: {"id", "password"}</code> -> <code><a href="../../EMail/Client/Config.html#use_auth%28id%2Cpassword%29-instance-method">#use_auth("id", "password")</a></code></li></ul>
+
+<p>When other optional arguments are given, the property that has same name will be set.</p>
+
+<p>*<em>NOTE: The <code><a href="../../EMail/Client/Config.html#logger%3ALogger-instance-method">#logger</a></code> option and <code>log_*</code> options are exclusive.*</em></p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L137" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="auth_id-instance-method">
+      <div class="signature">
+        
+        def <strong>auth_id</strong>
+
+        <a class="method-permalink" href="#auth_id-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns authentication id when using SMTP AUTH.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L214" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="auth_password-instance-method">
+      <div class="signature">
+        
+        def <strong>auth_password</strong>
+
+        <a class="method-permalink" href="#auth_password-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns authentication password when using SMTP AUTH.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L219" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="client_name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>client_name</strong> : String
+
+        <a class="method-permalink" href="#client_name%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Client name used in <strong>Message-Id</strong> header and log entry.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L92" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="client_name=(new_name:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>client_name=</strong>(new_name : String)
+
+        <a class="method-permalink" href="#client_name%3D%28new_name%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Client name used in <strong>Message-ID</strong> header and log entry.</p>
+
+<p>Only alphabets(<code>a</code>-<code>z</code>, <code>A</code>-<code>Z</code>), numbers(<code>0</code>-<code>9</code>), and underscore(<code>_</code>) are acceptable.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L200" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="connect_timeout:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>connect_timeout</strong> : Int32?
+
+        <a class="method-permalink" href="#connect_timeout%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>CONNECT timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L120" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="connect_timeout=(sec:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>connect_timeout=</strong>(sec : Int32)
+
+        <a class="method-permalink" href="#connect_timeout%3D%28sec%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>CONNECT timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dns_timeout:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>dns_timeout</strong> : Int32?
+
+        <a class="method-permalink" href="#dns_timeout%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>DNS timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L117" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dns_timeout=(sec:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>dns_timeout=</strong>(sec : Int32)
+
+        <a class="method-permalink" href="#dns_timeout%3D%28sec%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>DNS timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="helo_domain:String?-instance-method">
+      <div class="signature">
+        
+        def <strong>helo_domain</strong> : String?
+
+        <a class="method-permalink" href="#helo_domain%3AString%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Domain name for SMTP <strong>HELO</strong> / <strong>EHLO</strong> command.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L95" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="helo_domain=(new_domain:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>helo_domain=</strong>(new_domain : String)
+
+        <a class="method-permalink" href="#helo_domain%3D%28new_domain%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Domain name for SMTP <strong>HELO</strong> or <strong>EHLO</strong> command.</p>
+
+<p>Only FQDN format is acceptable.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L178" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="host:String-instance-method">
+      <div class="signature">
+        
+        def <strong>host</strong> : String
+
+        <a class="method-permalink" href="#host%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>SMTP server hostname or IP address.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L86" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="host=(host:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>host=</strong>(host : String)
+
+        <a class="method-permalink" href="#host%3D%28host%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>SMTP server hostname or IP address.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L90" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="logger:Logger-instance-method">
+      <div class="signature">
+        
+        def <strong>logger</strong> : Logger
+
+        <a class="method-permalink" href="#logger%3ALogger-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Logger object for logging SMTP session.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L98" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="logger=(logger:Logger)-instance-method">
+      <div class="signature">
+        
+        def <strong>logger=</strong>(logger : Logger)
+
+        <a class="method-permalink" href="#logger%3D%28logger%3ALogger%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Logger object for logging SMTP session.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_failed:EMail::Client::OnFailedProc?-instance-method">
+      <div class="signature">
+        
+        def <strong>on_failed</strong> : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>?
+
+        <a class="method-permalink" href="#on_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Callback function to be called when the SMTP server returns <strong>4XX</strong> or <strong>5XX</strong> response.</p>
+
+<p>This will be called with email message object that tried to send, and SMTP commands and responses history. In this function, you can do something to handle errors: e.g. "investigating the causes of the fail", "notifying you of the fail", and so on.Fatal error handler.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L103" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_failed=(on_failed:EMail::Client::OnFailedProc?)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_failed=</strong>(on_failed : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>?)
+
+        <a class="method-permalink" href="#on_failed%3D%28on_failed%3AEMail%3A%3AClient%3A%3AOnFailedProc%3F%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Callback function to be called when the SMTP server returns <strong>4XX</strong> or <strong>5XX</strong> response.</p>
+
+<p>This will be called with email message object that tried to send, and SMTP commands and responses history. In this function, you can do something to handle errors: e.g. "investigating the causes of the fail", "notifying you of the fail", and so on.Fatal error handler.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L107" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_fatal_error:EMail::Client::OnFatalErrorProc?-instance-method">
+      <div class="signature">
+        
+        def <strong>on_fatal_error</strong> : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>?
+
+        <a class="method-permalink" href="#on_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Callback function to be calld when an exception is raised during SMTP session.</p>
+
+<p>It will be called with the raised Exception instance.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L108" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc?)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_fatal_error=</strong>(on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>?)
+
+        <a class="method-permalink" href="#on_fatal_error%3D%28on_fatal_error%3AEMail%3A%3AClient%3A%3AOnFatalErrorProc%3F%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Callback function to be calld when an exception is raised during SMTP session.</p>
+
+<p>It will be called with the raised Exception instance.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L112" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="openssl_verify_mode:LibSSL::VerifyMode-instance-method">
+      <div class="signature">
+        
+        def <strong>openssl_verify_mode</strong> : LibSSL::VerifyMode
+
+        <a class="method-permalink" href="#openssl_verify_mode%3ALibSSL%3A%3AVerifyMode-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>OpenSSL verification mode for the TLS connection.</p>
+
+<p>See OpenSSL::SSL::VerifyMode.
+For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connection with SMTP server which uses self-signed certificates.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="openssl_verify_mode=(openssl_verify_mode)-instance-method">
+      <div class="signature">
+        
+        def <strong>openssl_verify_mode=</strong>(openssl_verify_mode)
+
+        <a class="method-permalink" href="#openssl_verify_mode%3D%28openssl_verify_mode%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>OpenSSL verification mode for the TLS connection.</p>
+
+<p>See OpenSSL::SSL::VerifyMode.
+For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connection with SMTP server which uses self-signed certificates.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L118" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="port:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>port</strong> : Int32
+
+        <a class="method-permalink" href="#port%3AInt32-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Port number of SMTP server.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L89" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="port=(port:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>port=</strong>(port : Int32)
+
+        <a class="method-permalink" href="#port%3D%28port%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Port number of SMTP server.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L93" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="read_timeout:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>read_timeout</strong> : Int32?
+
+        <a class="method-permalink" href="#read_timeout%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>READ timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L123" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="read_timeout=(sec:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>read_timeout=</strong>(sec : Int32)
+
+        <a class="method-permalink" href="#read_timeout%3D%28sec%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>READ timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="use_auth(id,password)-instance-method">
+      <div class="signature">
+        
+        def <strong>use_auth</strong>(id, password)
+
+        <a class="method-permalink" href="#use_auth%28id%2Cpassword%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Set the client to authenticate with SMTP <strong>AUTH</strong> command by using given id and password.</p>
+
+<p>Only <strong>AUTH PLAIN</strong> and <strong>AUTH LOGIN</strong> commands are supported.
+<strong>NOTE: SMTP authentication can be used only under TLS encryption.</strong></p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L209" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="use_auth?-instance-method">
+      <div class="signature">
+        
+        def <strong>use_auth?</strong>
+
+        <a class="method-permalink" href="#use_auth%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns <code>true</code> when using SMTP AUTH.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L224" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="use_tls(tls_port:Int32?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>use_tls</strong>(tls_port : Int32? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#use_tls%28tls_port%3AInt32%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L184" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="use_tls?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>use_tls?</strong> : Bool
+
+        <a class="method-permalink" href="#use_tls%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns <code>true</code> when using TLS.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L193" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="write_timeout:Int32?-instance-method">
+      <div class="signature">
+        
+        def <strong>write_timeout</strong> : Int32?
+
+        <a class="method-permalink" href="#write_timeout%3AInt32%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>WRITE timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L126" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="write_timeout=(sec:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>write_timeout=</strong>(sec : Int32)
+
+        <a class="method-permalink" href="#write_timeout%3D%28sec%3AInt32%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>WRITE timeout for the socket.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f3bebf9b35189747c4b134f08e8231ea9d48ebdc/src/email/client/config.cr#L228" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

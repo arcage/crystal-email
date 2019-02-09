@@ -1,3 +1,4 @@
+# :nodoc:
 abstract class EMail::Header
   # :nodoc:
   FIELD_NAME = /\A[\x{21}-\x{39}\x{3b}-\x{7e}]+\z/
@@ -15,12 +16,13 @@ abstract class EMail::Header
   # :nodoc:
   ENCODE_DEFINITION_TAIL = "?="
 
+  # :nodoc:
   def self.base64_encode(src_string : String, offset : Int32) : Tuple(String, Int32)
     encoded_lines = [] of String
     encoded_line = ""
     src_chars = Char::Reader.new(src_string)
     until src_chars.current_char == '\u{0}'
-      encoded_size = (((((encoded_line.bytesize + src_chars.current_char_width).to_f * 8 / 6).ceil) / 4).ceil * 4).to_i
+      encoded_size = base64_encoded_size(encoded_line.bytesize + src_chars.current_char_width)
       if offset + ENCODE_DEFINITION_SIZE + encoded_size > LINE_LENGTH
         if encoded_line.empty?
           encoded_lines << ""
@@ -40,10 +42,17 @@ abstract class EMail::Header
     {encoded_lines.join("\n"), offset}
   end
 
+  # :nodoc:
+  def self.base64_encoded_size(bytesize : Int32)
+    ((((bytesize.to_f * 8 / 6).ceil) / 4).ceil * 4).to_i
+  end
+
+  # Returns header name.
   getter name
 
   @name : String
 
+  # Create email header with given header name.
   def initialize(field_name : String)
     raise EMail::Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
     @name = field_name.split("-").map(&.capitalize).join("-")
@@ -53,6 +62,7 @@ abstract class EMail::Header
     ""
   end
 
+  # Returns `true` when the header body has no data.
   def empty?
     body.empty?
   end
@@ -78,7 +88,9 @@ abstract class EMail::Header
     end
   end
 
+  # Email header including multiple email addresses such as **From**, **To**, and so on.
   class AddressList < Header
+    # Returns internal email address list.
     getter list
 
     @list = [] of Address
@@ -87,23 +99,28 @@ abstract class EMail::Header
       @list.join(", ")
     end
 
+    # Returns `true` when the list has no email address.
     def empty?
       @list.empty?
     end
 
+    # Returns the number of included email addresses.
     def size
       @list.size
     end
 
+    # Adds email address.
     def add(mail_address : String, sender_name : String? = nil)
       @list << Address.new(mail_address, sender_name)
     end
 
+    # Adds email address.
     def add(mail_address : Address)
       @list << mail_address
     end
   end
 
+  # Email header including only one email addresses such as **Sender**.
   class SingleAddress < Header
     @addr : Address? = nil
 
@@ -111,23 +128,30 @@ abstract class EMail::Header
       addr.to_s
     end
 
+    # Returns `true` when the email address is not set.
     def empty?
       @addr.nil?
     end
 
+    # Returns set email address.
+    #
+    # When empty, raises an excepotion.
     def addr
       @addr.not_nil!
     end
 
+    # Set email address.
     def set(mail_address : String, sender_name : String? = nil)
       @addr = Address.new(mail_address, sender_name)
     end
 
+    # Set email address.
     def set(mail_address : Address)
       @addr = mail_address
     end
   end
 
+  # **Date** header.
   class Date < Header
     RFC2822_FORMAT = "%a, %d %b %Y %T %z"
 
@@ -137,10 +161,12 @@ abstract class EMail::Header
       super("Date")
     end
 
+    # Set date-time.
     def time=(time : Time)
       @timestamp = time
     end
 
+    # Return `true` when the date-time is not set.
     def empty?
       @timestamp.nil?
     end
@@ -150,6 +176,7 @@ abstract class EMail::Header
     end
   end
 
+  # Email headers that has no specific format such as **Subject**.
   class Unstructured < Header
     @text : String = ""
 
@@ -157,11 +184,13 @@ abstract class EMail::Header
       @text
     end
 
+    # Set header body text.
     def set(body_text : String)
       @text = body_text
     end
   end
 
+  # **Mime-Version** header.
   class MimeVersion < Header
     def initialize(@version : String = "1.0")
       super("Mime-Version")
@@ -172,57 +201,65 @@ abstract class EMail::Header
     end
   end
 
+  # **Content-Type** header
   class ContentType < Header
     @mime_type : String
-    @options : Hash(String, String)
+    @params : Hash(String, String)
 
-    def initialize(@mime_type : String, @options = Hash(String, String).new)
+    def initialize(@mime_type : String, @params = Hash(String, String).new)
       super("Content-Type")
     end
 
-    def set_option(name : String, value : String)
-      @options[name] = value
+    # Set Media type parameter
+    def set_parameter(name : String, value : String)
+      @params[name] = value
     end
 
+    # Set MIME type and subtype.
     def set_mime_type(mime_type : String)
       @mime_type = mime_type
     end
 
+    # Set "charset" parameter.
     def set_charset(charset : String)
-      @options["charset"] = charset
+      @params["charset"] = charset
     end
 
+    # Set "file_name" parameter.
     def set_fname(file_name : String)
-      @options["file_name"] = file_name
+      @params["file_name"] = file_name
     end
 
+    # Set "boundary" parameter.
     def set_boundary(boundary : String)
-      @options["boundary"] = boundary
+      @params["boundary"] = boundary
     end
 
     private def body
       String.build do |body_text|
         body_text << @mime_type << ';'
-        if charset = @options["charset"]?
+        if charset = @params["charset"]?
           body_text << " charset=" << charset << ';'
         end
-        if fname = @options["file_name"]?
+        if fname = @params["file_name"]?
           body_text << " name=\""
           encoded_fname, _ = Header.base64_encode(fname, 6)
           body_text << encoded_fname.strip.gsub(/\n +/, ' ') << "\";"
         end
-        if boundary = @options["boundary"]?
+        if boundary = @params["boundary"]?
           body_text << " boundary=\"" << boundary << "\";"
         end
       end
     end
   end
 
+  # **Content-Trandfer-Encoding** Header
   class ContentTransferEncoding < Header
     def initialize(@encoding : String)
       super("Content-Transfer-Encoding")
     end
 
+    # Set endoding.
     def set(encoding : String)
       @encoding = encoding
     end
@@ -232,6 +269,7 @@ abstract class EMail::Header
     end
   end
 
+  # **Content-Disposition** header.
   class ContentDisposition < Header
     @file_name : String
 
@@ -264,6 +302,7 @@ abstract class EMail::Header
     end
   end
 
+  # **Content-ID** header.
   class ContentID < SingleAddress
     def initialize
       super("Content-Id")
