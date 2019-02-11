@@ -16,15 +16,6 @@ class EMail::Client
   LOG_PROGNAME = "crystal-email"
   DEFAULT_NAME = "EMail_Client"
 
-  # :nodoc:
-  def self.create_default_logger(log_io : IO? = STDOUT) : Logger
-    logger = Logger.new(log_io)
-    logger.progname = EMail::Client::LOG_PROGNAME
-    logger.formatter = EMail::Client::LOG_FORMATTER
-    logger.level = Logger::INFO
-    logger
-  end
-
   # SMTP client settings.
   #
   # ```crystal
@@ -96,7 +87,7 @@ class EMail::Client
     getter helo_domain : String?
 
     # Logger object for logging SMTP session.
-    property logger : Logger = EMail::Client.create_default_logger
+    property logger : Logger = EMail::Client::Config.create_default_logger
 
     # Callback function to be called when the SMTP server returns **4XX** or **5XX** response.
     #
@@ -129,6 +120,15 @@ class EMail::Client
     @tls = false
     @auth : NamedTuple(id: String, password: String)?
 
+    # :nodoc:
+    def self.create_default_logger(log_io : IO? = STDOUT) : Logger
+      logger = Logger.new(log_io)
+      logger.progname = EMail::Client::LOG_PROGNAME
+      logger.formatter = EMail::Client::LOG_FORMATTER
+      logger.level = Logger::INFO
+      logger
+    end
+    
     # Returns `EMail::Client::Config` object with given settings.
     #
     # - `use_tls: true` -> `#use_tls`
