@@ -128,7 +128,7 @@ class EMail::Client
       logger.level = Logger::INFO
       logger
     end
-    
+
     # Returns `EMail::Client::Config` object with given settings.
     #
     # - `use_tls: true` -> `#use_tls`
@@ -136,7 +136,7 @@ class EMail::Client
     #
     # When other optional arguments are given, the property that has same name will be set.
     #
-    # **NOTE: The `logger` option and `log_*` options are exclusive.**
+    # **NOTE: The `logger` option and `log_XXX` options are exclusive.**
     def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
                     client_name = nil, helo_domain = nil,
                     on_failed : EMail::Client::OnFailedProc? = nil,
@@ -208,6 +208,7 @@ class EMail::Client
     # Set the client to authenticate with SMTP **AUTH** command by using given id and password.
     #
     # Only **AUTH PLAIN** and **AUTH LOGIN** commands are supported.
+    #
     # **NOTE: SMTP authentication can be used only under TLS encryption.**
     def use_auth(id, password)
       @auth = {id: id, password: password}

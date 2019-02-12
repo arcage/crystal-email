@@ -374,7 +374,7 @@ class EMail::Message
 
   # :nodoc:
   macro set_text(header_type)
-    # Set **{{header_type.id.split("_").map(&.capitalize).join("-")}}** header.
+    # Set **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
     def {{header_type.id}}(header_body : String)
       @preset_headers[{{header_type}}].set(header_body)
     end
@@ -385,12 +385,12 @@ class EMail::Message
 
   # :nodoc:
   macro set_address(header_type)
-    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-")}}** header.
+    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
     def {{header_type.id}}(mail_address : String, sender_name : String? = nil)
       @preset_headers[{{header_type}}].set(mail_address, sender_name)
     end
 
-    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-")}}** header.
+    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
     def {{header_type.id}}(mail_address : EMail::Address)
       @preset_headers[{{header_type}}].set(mail_address)
     end
@@ -401,12 +401,12 @@ class EMail::Message
 
   # :nodoc:
   macro add_address(header_type)
-    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-")}}** header.
+    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
     def {{header_type.id}}(mail_address : String, sender_name : String? = nil)
       @preset_headers[{{header_type}}].add(mail_address, sender_name)
     end
 
-    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-")}}** header.
+    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
     def {{header_type.id}}(mail_address : EMail::Address)
       @preset_headers[{{header_type}}].add(mail_address)
     end
