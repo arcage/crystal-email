@@ -18,7 +18,7 @@
 # # Start email sending.
 # sender.start do
 #   # In this block, default receiver is sender
-#   rcpts_list.each do |rcpt_to|
+#   rcpt_list.each do |rcpt_to|
 #     # Create email message
 #     mail = EMail::Message.new
 #     mail.from "your_addr@example.com"

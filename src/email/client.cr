@@ -1,6 +1,12 @@
 require "./client/*"
 
 # SMTP client object.
+#
+#
+#
+#
+#
+#
 class EMail::Client
   @helo_domain : String?
   @started : Bool = false
@@ -33,7 +39,7 @@ class EMail::Client
 
   # Start SMTP session.
   #
-  # In the block, the default receiver will is `self`.
+  # In the block, the default receiver will be `self`.
   def start
     ready_to_send
     status_code, _ = smtp_responce("CONN")
