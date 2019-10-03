@@ -149,7 +149,6 @@ abstract class EMail::Content
           str << Time.now.to_unix_ms
           str << '_'
           str << rand(UInt32::MAX)
-          str << "--"
         end
       end
       @@boundaries << boundary_string
@@ -186,7 +185,7 @@ abstract class EMail::Content
           io << "\n--" << @boundary << '\n'
           io << content << '\n'
         end
-        io << "\n--" << @boundary
+        io << "\n--" << @boundary << "--"
       end
     end
   end
