@@ -73,7 +73,7 @@ class EMail::Client
   end
 
   private def mail_validate!(mail : EMail::Message) : EMail::Message
-    timestamp = Time.now
+    timestamp = Time.local
     mail.date timestamp
     mail.message_id String.build { |io|
       io << '<' << timestamp.to_unix_ms << '.' << Process.pid

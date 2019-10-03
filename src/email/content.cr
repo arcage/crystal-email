@@ -146,7 +146,7 @@ abstract class EMail::Content
       while boundary_string.empty? || @@boundaries.includes?(boundary_string)
         boundary_string = String.build do |str|
           str << "Multipart_Boundary_"
-          str << Time.now.to_unix_ms
+          str << Time.local.to_unix_ms
           str << '_'
           str << rand(UInt32::MAX)
         end
