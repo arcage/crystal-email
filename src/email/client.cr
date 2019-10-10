@@ -165,6 +165,7 @@ class EMail::Client
           false
         {% else %}
           tls_context = OpenSSL::SSL::Context::Client.new
+          tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3)
           tls_context.verify_mode = @config.openssl_verify_mode
           tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), tls_context, sync_close: true, hostname: @config.host)
           tls_socket.sync = false
