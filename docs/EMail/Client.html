@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../css/style.css" rel="stylesheet" type="text/css">
@@ -172,14 +172,14 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/client/config.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L1" target="_blank">
         email/client/config.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/client.cr#L10" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L10" target="_blank">
         email/client.cr
       </a>
     
@@ -219,7 +219,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28config%3AEMail%3A%3AClient%3A%3AConfig%29-class-method" class="signature"><strong>.new</strong>(config : EMail::Client::Config)</a>
+        <a href="#new(config:EMail::Client::Config)-class-method" class="signature"><strong>.new</strong>(config : EMail::Client::Config)</a>
         
           <div class="summary"><p>Creates smtp client object.</p></div>
         
@@ -235,14 +235,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#send%28mail%3AEMail%3A%3AMessage%29-instance-method" class="signature"><strong>#send</strong>(mail : EMail::Message)</a>
+        <a href="#send(mail:EMail::Message)-instance-method" class="signature"><strong>#send</strong>(mail : EMail::Message)</a>
         
           <div class="summary"><p>Send a email message</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#start%28%26block%29-instance-method" class="signature"><strong>#start</strong>(&block)</a>
+        <a href="#start(&block)-instance-method" class="signature"><strong>#start</strong>(&block)</a>
         
           <div class="summary"><p>Start SMTP session.</p></div>
         
@@ -286,15 +286,18 @@
         
         def self.<strong>new</strong>(config : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>)
 
-        <a class="method-permalink" href="#new%28config%3AEMail%3A%3AClient%3A%3AConfig%29-class-method">#</a>
+        <a class="method-permalink" href="#new(config:EMail::Client::Config)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Creates smtp client object.</p></div>
+        <div class="doc">
+          
+          <p>Creates smtp client object.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/client.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -311,17 +314,20 @@
         
         def <strong>send</strong>(mail : <a href="../EMail/Message.html">EMail::Message</a>)
 
-        <a class="method-permalink" href="#send%28mail%3AEMail%3A%3AMessage%29-instance-method">#</a>
+        <a class="method-permalink" href="#send(mail:EMail::Message)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Send a email message</p>
+        <div class="doc">
+          
+          <p>Send a email message</p>
 
-<p>You can call this only in the block of the <code><a href="../EMail/Client.html#start%28%26block%29-instance-method">EMail::Client#start</a></code> method.</p></div>
+<p>You can call this only in the block of the <code><a href="../EMail/Client.html#start(&block)-instance-method">EMail::Client#start</a></code> method.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/client.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -331,17 +337,20 @@
         
         def <strong>start</strong>(&block)
 
-        <a class="method-permalink" href="#start%28%26block%29-instance-method">#</a>
+        <a class="method-permalink" href="#start(&block)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Start SMTP session.</p>
+        <div class="doc">
+          
+          <p>Start SMTP session.</p>
 
-<p>In the block, the default receiver will be <code>self</code>.</p></div>
+<p>In the block, the default receiver will be <code>self</code>.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/client.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L43" target="_blank">View source</a>]
         
       </div>
     </div>
