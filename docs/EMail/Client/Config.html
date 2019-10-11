@@ -168,7 +168,8 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
 <span class="c"># Use STARTTLS command to send email</span>
 config.use_tls
 
-<span class="c"># Set TLS context parameters for STARTTLS commands.</span>
+<span class="c"># OpenSSL::SSL::Context::Client object for STARTTLS commands.</span>
+config.tls_context
 
 <span class="c"># # Disable TLS1.1 or lower protocols.</span>
 config.tls_context.add_options(<span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_SSL_V2</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_SSL_V3</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_TLS_V1</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_TLS_V1_1</span>)
@@ -192,7 +193,7 @@ config.on_failed <span class="o">=</span> <span class="t">EMail</span><span clas
 <span class="k">end</span>
 
 <span class="c"># Set fatal error handler.</span>
-<span class="c"># Default: nil</span>
+<span class="c"># Default: DEFAULT_FATAL_ERROR_HANDLER</span>
 config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">OnFatalErrorProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>error<span class="o">|</span>
   puts error
 <span class="k">end</span>
@@ -226,7 +227,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L89" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L90" target="_blank">
         email/client/config.cr
       </a>
     
@@ -544,7 +545,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L214" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L215" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -572,7 +573,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L158" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -599,7 +600,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L179" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L180" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -625,7 +626,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L257" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L258" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -646,7 +647,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L262" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L263" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -667,7 +668,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -690,7 +691,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L242" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L243" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -711,7 +712,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -732,7 +733,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L271" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L272" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -753,7 +754,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L135" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -774,7 +775,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L271" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L272" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -795,7 +796,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L103" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -818,7 +819,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L220" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L221" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -839,7 +840,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L94" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,7 +861,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L97" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L98" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -881,7 +882,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L105" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -902,7 +903,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L109" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -925,7 +926,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L110" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -948,7 +949,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -971,7 +972,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L116" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -994,7 +995,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L119" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1019,7 +1020,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L128" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1044,7 +1045,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L122" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L123" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1065,7 +1066,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L97" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1086,7 +1087,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L100" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L101" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1107,7 +1108,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L142" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1128,7 +1129,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L271" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L272" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1151,7 +1152,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L120" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1176,7 +1177,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L252" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L253" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1197,7 +1198,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L267" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L268" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1218,7 +1219,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L226" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1239,7 +1240,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L235" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L236" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1260,7 +1261,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L145" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1281,7 +1282,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/client/config.cr#L271" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/client/config.cr#L272" target="_blank">View source</a>]
         
       </div>
     </div>
