@@ -41,7 +41,8 @@ class EMail::Client
   # # Use STARTTLS command to send email
   # config.use_tls
   #
-  # # Set TLS context parameters for STARTTLS commands.
+  # # OpenSSL::SSL::Context::Client object for STARTTLS commands.
+  # config.tls_context
   #
   # # # Disable TLS1.1 or lower protocols.
   # config.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
@@ -65,7 +66,7 @@ class EMail::Client
   # end
   #
   # # Set fatal error handler.
-  # # Default: nil
+  # # Default: DEFAULT_FATAL_ERROR_HANDLER
   # config.on_fatal_error = EMail::Client::OnFatalErrorProc.new do |error|
   #   puts error
   # end
