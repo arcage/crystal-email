@@ -13,8 +13,16 @@ class EMail::Client
     io << datetime.to_s("%Y/%m/%d %T") << " [" << progname << "/" << Process.pid << "] "
     io << severity << " " << message
   end
-  LOG_PROGNAME = "crystal-email"
-  DEFAULT_NAME = "EMail_Client"
+  LOG_PROGNAME                = "crystal-email"
+  DEFAULT_NAME                = "EMail_Client"
+  DEFAULT_FATAL_ERROR_HANDLER = OnFatalErrorProc.new do |e|
+    if backtrace = e.backtrace?
+      backtrace.each do |line|
+        STDERR << "  from " << line << '\n'
+      end
+    end
+    exit(1)
+  end
 
   # SMTP client settings.
   #
@@ -30,12 +38,18 @@ class EMail::Client
   # # Default: "EMail_Client"
   # config.name = "your_app_name"
   #
-  # # Use TLS to send email
+  # # Use STARTTLS command to send email
   # config.use_tls
   #
-  # # Set OpenSSL verification mode to skip certificate verification.
-  # # Default: OpenSSL::SSL::VerifyMode::PEER
-  # config.openssl_verify_mode = OpenSSL::SSL::VerifyMode::NONE
+  # # OpenSSL::SSL::Context::Client object for STARTTLS commands.
+  # config.tls_context
+  #
+  # # # Disable TLS1.1 or lower protocols.
+  # config.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
+  #
+  # # # Set OpenSSL verification mode to skip certificate verification.
+  # # # #openssl_verify_mode= method is deprecated now.
+  # config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
   #
   # # Use SMTP AUTH for user authentication.
   # config.use_auth("id", "password")
@@ -52,7 +66,7 @@ class EMail::Client
   # end
   #
   # # Set fatal error handler.
-  # # Default: nil
+  # # Default: DEFAULT_FATAL_ERROR_HANDLER
   # config.on_fatal_error = EMail::Client::OnFatalErrorProc.new do |error|
   #   puts error
   # end
@@ -97,13 +111,24 @@ class EMail::Client
     # Callback function to be calld when an exception is raised during SMTP session.
     #
     # It will be called with the raised Exception instance.
-    property on_fatal_error : EMail::Client::OnFatalErrorProc?
+    property on_fatal_error : EMail::Client::OnFatalErrorProc = DEFAULT_FATAL_ERROR_HANDLER
 
-    # OpenSSL verification mode for the TLS connection.
+    # OpenSSL context for the TLS connection
     #
-    # See OpenSSL::SSL::VerifyMode.
-    # For Example set `OpenSSL::SSL::VerifyMode::NONE` to start tls connection with SMTP server which uses self-signed certificates.
-    property openssl_verify_mode = OpenSSL::SSL::VerifyMode::PEER
+    # See [OpenSSL::SSL::Context::Client](https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html).
+    getter tls_context = OpenSSL::SSL::Context::Client.new
+
+    # Sets OpenSSL verification mode for the TLS connection.
+    @[Deprecated("use #tls_context.verify_mode=")]
+    def openssl_verify_mode=(verify_mode : OpenSSL::SSL::VerifyMode)
+      @tls_context.verify_mode = verify_mode
+    end
+
+    # Gets OpenSSL verification mode for the TLS connection.
+    @[Deprecated("use #tls_context.verify_mode")]
+    def openssl_verify_mode : OpenSSL::SSL::VerifyMode
+      @tls_context.verify_mode
+    end
 
     # DNS timeout for the socket.
     getter dns_timeout : Int32?
@@ -129,6 +154,21 @@ class EMail::Client
       logger
     end
 
+    @[Deprecated("use **tls_verify_mode** argument instead of **openssl_verify_mode**.")]
+    def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
+                    client_name = nil, helo_domain = nil,
+                    on_failed : EMail::Client::OnFailedProc? = nil,
+                    on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
+                    openssl_verify_mode : OpenSSL::SSL::VerifyMode,
+                    use_tls : Bool? = nil, auth : Tuple(String, String)? = nil,
+                    logger : Logger? = nil,
+                    log_io : IO? = nil, log_level : Logger::Severity? = nil,
+                    log_progname : String? = nil, log_formatter : Logger::Formatter? = nil,
+                    dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
+                    read_timeout : Int32? = nil, write_timeout : Int32? = nil)
+      create(host, port, client_name: client_name, helo_domain: helo_domain, on_failed: on_failed, on_fatal_error: on_fatal_error, tls_verify_mode: openssl_verify_mode, use_tls: use_tls, auth: auth, logger: logger, log_io: log_io, log_level: log_level, log_progname: log_progname, log_formatter: log_formatter, dns_timeout: dns_timeout, connect_timeout: connect_timeout, read_timeout: read_timeout, write_timeout: write_timeout)
+    end
+
     # Returns `EMail::Client::Config` object with given settings.
     #
     # - `use_tls: true` -> `#use_tls`
@@ -141,7 +181,7 @@ class EMail::Client
                     client_name = nil, helo_domain = nil,
                     on_failed : EMail::Client::OnFailedProc? = nil,
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                    openssl_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
+                    tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                     use_tls : Bool? = nil, auth : Tuple(String, String)? = nil,
                     logger : Logger? = nil,
                     log_io : IO? = nil, log_level : Logger::Severity? = nil,
@@ -153,7 +193,7 @@ class EMail::Client
       config.helo_domain = helo_domain if helo_domain
       config.on_failed = on_failed if on_failed
       config.on_fatal_error = on_fatal_error if on_fatal_error
-      config.openssl_verify_mode = openssl_verify_mode if openssl_verify_mode
+      config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
       config.use_tls if use_tls
       config.use_auth(auth[0], auth[1]) if auth
       if logger
@@ -186,7 +226,7 @@ class EMail::Client
     #
     def use_tls(tls_port : Int32? = nil)
       {% if flag?(:without_openssl) %}
-      raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
+        raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       {% end %}
       @port = tls_port if tls_port
       @tls = true

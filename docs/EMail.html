@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="css/style.css" rel="stylesheet" type="text/css">
@@ -164,28 +164,28 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/address.cr#L2" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/address.cr#L2" target="_blank">
         email/address.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L155" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L155" target="_blank">
         email/concurrent_sender.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/mimetype.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/mimetype.cr#L1" target="_blank">
         email/mimetype.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email.cr#L10" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email.cr#L10" target="_blank">
         email.cr
       </a>
     
@@ -205,7 +205,7 @@
       
     
       <dt class="entry-const" id="VERSION">
-        <strong>VERSION</strong> = <code><span class="s">&quot;0.4.1&quot;</span></code>
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.4.2&quot;</span></code>
       </dt>
       
     
@@ -219,14 +219,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#send%28config%3AEMail%3A%3AClient%3A%3AConfig%2C%26block%29-class-method" class="signature"><strong>.send</strong>(config : EMail::Client::Config, &block)</a>
+        <a href="#send(config:EMail::Client::Config,&block)-class-method" class="signature"><strong>.send</strong>(config : EMail::Client::Config, &block)</a>
         
           <div class="summary"><p>Send one email with given client settings as EMail::Client::Config object.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#send%28%2Aargs%2C%2A%2Anamed_args%2C%26block%29-class-method" class="signature"><strong>.send</strong>(*args, **named_args, &block)</a>
+        <a href="#send(*args,**named_args,&block)-class-method" class="signature"><strong>.send</strong>(*args, **named_args, &block)</a>
         
           <div class="summary"><p>Send one email with given client settings as several arguments.</p></div>
         
@@ -254,10 +254,12 @@
         
         def self.<strong>send</strong>(config : <a href="EMail/Client/Config.html">EMail::Client::Config</a>, &block)
 
-        <a class="method-permalink" href="#send%28config%3AEMail%3A%3AClient%3A%3AConfig%2C%26block%29-class-method">#</a>
+        <a class="method-permalink" href="#send(config:EMail::Client::Config,&block)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Send one email with given client settings as EMail::Client::Config object.</p>
+        <div class="doc">
+          
+          <p>Send one email with given client settings as EMail::Client::Config object.</p>
 
 <pre><code class="language-crystal">config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.server.name&quot;</span>, <span class="n">587</span>)
 config.use_tls
@@ -276,12 +278,13 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
     --
     Your Signature
     EOM</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -291,10 +294,12 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
         
         def self.<strong>send</strong>(*args, **named_args, &block)
 
-        <a class="method-permalink" href="#send%28%2Aargs%2C%2A%2Anamed_args%2C%26block%29-class-method">#</a>
+        <a class="method-permalink" href="#send(*args,**named_args,&block)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Send one email with given client settings as several arguments.</p>
+        <div class="doc">
+          
+          <p>Send one email with given client settings as several arguments.</p>
 
 <p>Avairable arguments are same as <code>EMail::Client::Conifg.create</code> method.</p>
 
@@ -313,12 +318,13 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
     --
     Your Signature
     EOM</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>

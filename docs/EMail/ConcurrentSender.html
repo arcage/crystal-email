@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.27.1">
+<meta name="generator" content="Crystal Docs 0.30.1">
 
 
 <link href="../css/style.css" rel="stylesheet" type="text/css">
@@ -199,7 +199,7 @@ sender.start <span class="k">do</span>
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L33" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L33" target="_blank">
         email/concurrent_sender.cr
       </a>
     
@@ -214,14 +214,14 @@ sender.start <span class="k">do</span>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28config%29-class-method" class="signature"><strong>.new</strong>(config)</a>
+        <a href="#new(config)-class-method" class="signature"><strong>.new</strong>(config)</a>
         
           <div class="summary"><p>Create sender object with given client settings as EMail::Client::Config object.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28%2Aargs%2C%2A%2Anamed_args%29-class-method" class="signature"><strong>.new</strong>(*args, **named_args)</a>
+        <a href="#new(*args,**named_args)-class-method" class="signature"><strong>.new</strong>(*args, **named_args)</a>
         
           <div class="summary"><p>Send one email with given client settings as several arguments.</p></div>
         
@@ -237,42 +237,42 @@ sender.start <span class="k">do</span>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#connection_interval%3D%28new_interval%3AInt32%29-instance-method" class="signature"><strong>#connection_interval=</strong>(new_interval : Int32)</a>
+        <a href="#connection_interval=(new_interval:Int32)-instance-method" class="signature"><strong>#connection_interval=</strong>(new_interval : Int32)</a>
         
           <div class="summary"><p>Set the interval milliseconds between some connection is closed and new one is opened.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#enqueue%28message%3AMessage%29-instance-method" class="signature"><strong>#enqueue</strong>(message : Message)</a>
-        
-          <div class="summary"><p>Enqueue a email message.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#enqueue%28messages%3AArray%28Message%29%29-instance-method" class="signature"><strong>#enqueue</strong>(messages : Array(Message))</a>
+        <a href="#enqueue(messages:Array(Message))-instance-method" class="signature"><strong>#enqueue</strong>(messages : Array(Message))</a>
         
           <div class="summary"><p>Encueue email messages at the same time.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#messages_per_connection%3D%28new_value%3AInt32%29-instance-method" class="signature"><strong>#messages_per_connection=</strong>(new_value : Int32)</a>
+        <a href="#enqueue(message:Message)-instance-method" class="signature"><strong>#enqueue</strong>(message : Message)</a>
+        
+          <div class="summary"><p>Enqueue a email message.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#messages_per_connection=(new_value:Int32)-instance-method" class="signature"><strong>#messages_per_connection=</strong>(new_value : Int32)</a>
         
           <div class="summary"><p>Set the maximum number of email messages sent by one SMTP connection.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#number_of_connections%3D%28new_value%3AInt32%29-instance-method" class="signature"><strong>#number_of_connections=</strong>(new_value : Int32)</a>
+        <a href="#number_of_connections=(new_value:Int32)-instance-method" class="signature"><strong>#number_of_connections=</strong>(new_value : Int32)</a>
         
           <div class="summary"><p>Set the maximum number of SMTP connections established at the same time.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#start%28number_of_connections%3AInt32%3F%3Dnil%2Cmessages_per_connection%3AInt32%3F%3Dnil%2Cconnection_interval%3AInt32%3F%3Dnil%2C%26block%29-instance-method" class="signature"><strong>#start</strong>(number_of_connections : Int32? = <span class="n">nil</span>, messages_per_connection : Int32? = <span class="n">nil</span>, connection_interval : Int32? = <span class="n">nil</span>, &block)</a>
+        <a href="#start(number_of_connections:Int32?=nil,messages_per_connection:Int32?=nil,connection_interval:Int32?=nil,&block)-instance-method" class="signature"><strong>#start</strong>(number_of_connections : Int32? = <span class="n">nil</span>, messages_per_connection : Int32? = <span class="n">nil</span>, connection_interval : Int32? = <span class="n">nil</span>, &block)</a>
         
           <div class="summary"><p>Starts sending emails with given parameters.</p></div>
         
@@ -316,15 +316,18 @@ sender.start <span class="k">do</span>
         
         def self.<strong>new</strong>(config)
 
-        <a class="method-permalink" href="#new%28config%29-class-method">#</a>
+        <a class="method-permalink" href="#new(config)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Create sender object with given client settings as EMail::Client::Config object.</p></div>
+        <div class="doc">
+          
+          <p>Create sender object with given client settings as EMail::Client::Config object.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -334,17 +337,20 @@ sender.start <span class="k">do</span>
         
         def self.<strong>new</strong>(*args, **named_args)
 
-        <a class="method-permalink" href="#new%28%2Aargs%2C%2A%2Anamed_args%29-class-method">#</a>
+        <a class="method-permalink" href="#new(*args,**named_args)-class-method">#</a>
       </div>
       
-        <div class="doc"><p>Send one email with given client settings as several arguments.</p>
+        <div class="doc">
+          
+          <p>Send one email with given client settings as several arguments.</p>
 
-<p>Avairable arguments are same as <code>EMail::Client::Conifg.create</code> method.</p></div>
+<p>Avairable arguments are same as <code>EMail::Client::Conifg.create</code> method.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L51" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -361,33 +367,18 @@ sender.start <span class="k">do</span>
         
         def <strong>connection_interval=</strong>(new_interval : Int32)
 
-        <a class="method-permalink" href="#connection_interval%3D%28new_interval%3AInt32%29-instance-method">#</a>
+        <a class="method-permalink" href="#connection_interval=(new_interval:Int32)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Set the interval milliseconds between some connection is closed and new one is opened.</p></div>
+        <div class="doc">
+          
+          <p>Set the interval milliseconds between some connection is closed and new one is opened.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L72" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="enqueue(message:Message)-instance-method">
-      <div class="signature">
-        
-        def <strong>enqueue</strong>(message : <a href="../EMail/Message.html">Message</a>)
-
-        <a class="method-permalink" href="#enqueue%28message%3AMessage%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc"><p>Enqueue a email message.</p></div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L79" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -397,15 +388,39 @@ sender.start <span class="k">do</span>
         
         def <strong>enqueue</strong>(messages : Array(<a href="../EMail/Message.html">Message</a>))
 
-        <a class="method-permalink" href="#enqueue%28messages%3AArray%28Message%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#enqueue(messages:Array(Message))-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Encueue email messages at the same time.</p></div>
+        <div class="doc">
+          
+          <p>Encueue email messages at the same time.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L85" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L85" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enqueue(message:Message)-instance-method">
+      <div class="signature">
+        
+        def <strong>enqueue</strong>(message : <a href="../EMail/Message.html">Message</a>)
+
+        <a class="method-permalink" href="#enqueue(message:Message)-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Enqueue a email message.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L79" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -415,17 +430,20 @@ sender.start <span class="k">do</span>
         
         def <strong>messages_per_connection=</strong>(new_value : Int32)
 
-        <a class="method-permalink" href="#messages_per_connection%3D%28new_value%3AInt32%29-instance-method">#</a>
+        <a class="method-permalink" href="#messages_per_connection=(new_value:Int32)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Set the maximum number of email messages sent by one SMTP connection.</p>
+        <div class="doc">
+          
+          <p>Set the maximum number of email messages sent by one SMTP connection.</p>
 
-<p>When the number of sent emails by some SMTP connection reaches this parameter, the current connection will be closed and new one will be opened.</p></div>
+<p>When the number of sent emails by some SMTP connection reaches this parameter, the current connection will be closed and new one will be opened.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -435,15 +453,18 @@ sender.start <span class="k">do</span>
         
         def <strong>number_of_connections=</strong>(new_value : Int32)
 
-        <a class="method-permalink" href="#number_of_connections%3D%28new_value%3AInt32%29-instance-method">#</a>
+        <a class="method-permalink" href="#number_of_connections=(new_value:Int32)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Set the maximum number of SMTP connections established at the same time.</p></div>
+        <div class="doc">
+          
+          <p>Set the maximum number of SMTP connections established at the same time.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -453,15 +474,18 @@ sender.start <span class="k">do</span>
         
         def <strong>start</strong>(number_of_connections : Int32? = <span class="n">nil</span>, messages_per_connection : Int32? = <span class="n">nil</span>, connection_interval : Int32? = <span class="n">nil</span>, &block)
 
-        <a class="method-permalink" href="#start%28number_of_connections%3AInt32%3F%3Dnil%2Cmessages_per_connection%3AInt32%3F%3Dnil%2Cconnection_interval%3AInt32%3F%3Dnil%2C%26block%29-instance-method">#</a>
+        <a class="method-permalink" href="#start(number_of_connections:Int32?=nil,messages_per_connection:Int32?=nil,connection_interval:Int32?=nil,&block)-instance-method">#</a>
       </div>
       
-        <div class="doc"><p>Starts sending emails with given parameters.</p></div>
+        <div class="doc">
+          
+          <p>Starts sending emails with given parameters.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/a92ed694941916e59f3246638735fe9050143e54/src/email/concurrent_sender.cr#L108" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/000bd81b14b492c20cfa980bdac1e4bcebff8c9b/src/email/concurrent_sender.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>
