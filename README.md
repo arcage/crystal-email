@@ -121,6 +121,12 @@ end
 
 See [EMail::ConcurrentSender](https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html) for more details.
 
-## Contributors
+## Owner
 
 - [arcage](https://github.com/arcage) ʕ·ᴥ·ʔAKJ - creator, maintainer
+
+## Contributors
+
+Thank you for valuable contributions.
+
+- [Contributors](https://github.com/arcage/crystal-email/graphs/contributors)
