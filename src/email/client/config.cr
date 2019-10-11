@@ -17,7 +17,7 @@ class EMail::Client
   DEFAULT_NAME                = "EMail_Client"
   DEFAULT_FATAL_ERROR_HANDLER = OnFatalErrorProc.new do |e|
     if backtrace = e.backtrace?
-      backtrace.reverse.each do |line|
+      backtrace.each do |line|
         STDERR << "  from " << line << '\n'
       end
     end
