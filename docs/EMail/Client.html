@@ -167,19 +167,17 @@
 
 
 
-
-
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L1" target="_blank">
         email/client/config.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L10" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client.cr#L5" target="_blank">
         email/client.cr
       </a>
     
@@ -192,6 +190,18 @@
     <h2>Constant Summary</h2>
   
   <dl>
+    
+      <dt class="entry-const" id="DEFAULT_FATAL_ERROR_HANDLER">
+        <strong>DEFAULT_FATAL_ERROR_HANDLER</strong> = <code><span class="t">OnFatalErrorProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>e<span class="o">|</span>
+  <span class="k">if</span> backtrace <span class="o">=</span> e.backtrace?
+    backtrace.reverse.each <span class="k">do</span> <span class="o">|</span>line<span class="o">|</span>
+      ((<span class="t">STDERR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  from &quot;</span>) <span class="o">&lt;&lt;</span> line) <span class="o">&lt;&lt;</span> <span class="s">&#39;\n&#39;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  exit(<span class="n">1</span>)
+<span class="k">end</span></code>
+      </dt>
+      
     
       <dt class="entry-const" id="DEFAULT_NAME">
         <strong>DEFAULT_NAME</strong> = <code><span class="s">&quot;EMail_Client&quot;</span></code>
@@ -219,9 +229,9 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new(config:EMail::Client::Config)-class-method" class="signature"><strong>.new</strong>(config : EMail::Client::Config)</a>
+        <a href="#new(config:EMail::Client::Config,number=nil)-class-method" class="signature"><strong>.new</strong>(config : EMail::Client::Config, number = <span class="n">nil</span>)</a>
         
-          <div class="summary"><p>Creates smtp client object.</p></div>
+          <div class="summary"><p>Creates smtp client object by EMail::Client::Config object.</p></div>
         
       </li>
     
@@ -233,6 +243,13 @@
 
   <h2>Instance Method Summary</h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#config:EMail::Client::Config-instance-method" class="signature"><strong>#config</strong> : EMail::Client::Config</a>
+        
+          <div class="summary"><p>Gets cliet config object.</p></div>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#send(mail:EMail::Message)-instance-method" class="signature"><strong>#send</strong>(mail : EMail::Message)</a>
@@ -281,23 +298,23 @@
 
   <h2>Constructor Detail</h2>
   
-    <div class="entry-detail" id="new(config:EMail::Client::Config)-class-method">
+    <div class="entry-detail" id="new(config:EMail::Client::Config,number=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(config : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>)
+        def self.<strong>new</strong>(config : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>, number = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#new(config:EMail::Client::Config)-class-method">#</a>
+        <a class="method-permalink" href="#new(config:EMail::Client::Config,number=nil)-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Creates smtp client object.</p>
+          <p>Creates smtp client object by EMail::Client::Config object.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -308,6 +325,27 @@
 
 
   <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="config:EMail::Client::Config-instance-method">
+      <div class="signature">
+        
+        def <strong>config</strong> : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>
+
+        <a class="method-permalink" href="#config:EMail::Client::Config-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Gets cliet config object.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client.cr#L22" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="send(mail:EMail::Message)-instance-method">
       <div class="signature">
@@ -327,7 +365,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client.cr#L86" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -350,7 +388,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>

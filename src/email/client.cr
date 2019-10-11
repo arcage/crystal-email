@@ -2,11 +2,6 @@ require "./client/*"
 
 # SMTP client object.
 #
-#
-#
-#
-#
-#
 class EMail::Client
   @helo_domain : String?
   @started : Bool = false
@@ -21,8 +16,11 @@ class EMail::Client
   # :nodoc:
   property number : Int32?
 
-  # Creates smtp client object.
-  def initialize(@config : EMail::Client::Config)
+  # Gets cliet config object.
+  getter config : EMail::Client::Config
+
+  # Creates smtp client object by EMail::Client::Config object.
+  def initialize(@config : EMail::Client::Config, @number = nil)
   end
 
   private def helo_domain : String
@@ -164,7 +162,7 @@ class EMail::Client
           log_error("TLS is disabled because `-D without_openssl` was passed at compile time")
           false
         {% else %}
-          tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), @config.openssl_context, sync_close: true, hostname: @config.host)
+          tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), @config.tls_context, sync_close: true, hostname: @config.host)
           tls_socket.sync = false
           log_info("Start TLS session with #{tls_socket.tls_version}")
           @socket = tls_socket

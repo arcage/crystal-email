@@ -15,6 +15,14 @@ class EMail::Client
   end
   LOG_PROGNAME = "crystal-email"
   DEFAULT_NAME = "EMail_Client"
+  DEFAULT_FATAL_ERROR_HANDLER = OnFatalErrorProc.new do |e|
+    if backtrace = e.backtrace?
+      backtrace.reverse.each do |line|
+        STDERR << "  from " << line << '\n'
+      end
+    end
+    exit(1)
+  end
 
   # SMTP client settings.
   #
@@ -33,13 +41,14 @@ class EMail::Client
   # # Use STARTTLS command to send email
   # config.use_tls
   #
-  # # Set OpenSSL verification mode to skip certificate verification.
-  # # Default: OpenSSL::SSL::VerifyMode::PEER
-  # config.openssl_verify_mode = OpenSSL::SSL::VerifyMode::NONE
+  # # Set TLS context parameters for STARTTLS commands.
   #
-  # # Set TLS context for STARTTLS commands.
-  # # Disable TLS1.1 or lower protocols.
-  # config.openssl_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1_1 | OpenSSL::SSL::Options::NO_TLS_V1_2)
+  # ## Disable TLS1.1 or lower protocols.
+  # config.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
+  #
+  # ## Set OpenSSL verification mode to skip certificate verification.
+  # ## #openssl_verify_mode= method is deprecated now.
+  # config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
   #
   # # Use SMTP AUTH for user authentication.
   # config.use_auth("id", "password")
@@ -101,29 +110,23 @@ class EMail::Client
     # Callback function to be calld when an exception is raised during SMTP session.
     #
     # It will be called with the raised Exception instance.
-    property on_fatal_error : EMail::Client::OnFatalErrorProc?
+    property on_fatal_error : EMail::Client::OnFatalErrorProc = DEFAULT_FATAL_ERROR_HANDLER
 
     # OpenSSL context for the TLS connection
     #
     # See [OpenSSL::SSL::Context::Client](https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html).
-    getter openssl_context = OpenSSL::SSL::Context::Client.new
+    getter tls_context = OpenSSL::SSL::Context::Client.new
 
     # Sets OpenSSL verification mode for the TLS connection.
-    #
-    # See [OpenSSL::SSL::VerifyMode](https://crystal-lang.org/api/OpenSSL/SSL/VerifyMode.html).
-    #
-    # Same as `#openssl_context.verify_mode=`
+    @[Deprecated("use #tls_context.verify_mode=")]
     def openssl_verify_mode=(verify_mode : OpenSSL::SSL::VerifyMode)
-      @openssl_context.verify_mode = verify_mode
+      @tls_context.verify_mode = verify_mode
     end
 
     # Gets OpenSSL verification mode for the TLS connection.
-    #
-    # Same as `#openssl_context.verify_mode`
-    #
-    # See [OpenSSL::SSL::VerifyMode](https://crystal-lang.org/api/OpenSSL/SSL/VerifyMode.html).
+    @[Deprecated("use #tls_context.verify_mode")]
     def openssl_verify_mode : OpenSSL::SSL::VerifyMode
-      @openssl_context.verify_mode
+      @tls_context.verify_mode
     end
 
     # DNS timeout for the socket.
@@ -150,6 +153,21 @@ class EMail::Client
       logger
     end
 
+    @[Deprecated("use **tls_verify_mode** argument instead of **openssl_verify_mode**.")]
+    def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
+                    client_name = nil, helo_domain = nil,
+                    on_failed : EMail::Client::OnFailedProc? = nil,
+                    on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
+                    openssl_verify_mode : OpenSSL::SSL::VerifyMode,
+                    use_tls : Bool? = nil, auth : Tuple(String, String)? = nil,
+                    logger : Logger? = nil,
+                    log_io : IO? = nil, log_level : Logger::Severity? = nil,
+                    log_progname : String? = nil, log_formatter : Logger::Formatter? = nil,
+                    dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
+                    read_timeout : Int32? = nil, write_timeout : Int32? = nil)
+      create(host, port, client_name: client_name, helo_domain: helo_domain, on_failed: on_failed, on_fatal_error: on_fatal_error, tls_verify_mode: openssl_verify_mode, use_tls: use_tls, auth: auth, logger: logger, log_io: log_io, log_level: log_level, log_progname: log_progname, log_formatter: log_formatter, dns_timeout: dns_timeout, connect_timeout: connect_timeout, read_timeout: read_timeout, write_timeout: write_timeout)
+    end
+
     # Returns `EMail::Client::Config` object with given settings.
     #
     # - `use_tls: true` -> `#use_tls`
@@ -162,7 +180,7 @@ class EMail::Client
                     client_name = nil, helo_domain = nil,
                     on_failed : EMail::Client::OnFailedProc? = nil,
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                    openssl_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
+                    tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                     use_tls : Bool? = nil, auth : Tuple(String, String)? = nil,
                     logger : Logger? = nil,
                     log_io : IO? = nil, log_level : Logger::Severity? = nil,
@@ -174,7 +192,7 @@ class EMail::Client
       config.helo_domain = helo_domain if helo_domain
       config.on_failed = on_failed if on_failed
       config.on_fatal_error = on_fatal_error if on_fatal_error
-      config.openssl_verify_mode = openssl_verify_mode if openssl_verify_mode
+      config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
       config.use_tls if use_tls
       config.use_auth(auth[0], auth[1]) if auth
       if logger

@@ -134,7 +134,7 @@ class EMail::ConcurrentSender
       message = @queue.shift?
       while message
         @connection_count += 1
-        client = Client.new(@config)
+        client = Client.new(@config, @connection_count)
         client.number = @connection_count
         client.start do
           sent_messages = 0

@@ -165,12 +165,17 @@ config.helo_domain <span class="o">=</span> <span class="s">&quot;your.host.exam
 <span class="c"># Default: &quot;EMail_Client&quot;</span>
 config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</span>
 
-<span class="c"># Use TLS to send email</span>
+<span class="c"># Use STARTTLS command to send email</span>
 config.use_tls
 
-<span class="c"># Set OpenSSL verification mode to skip certificate verification.</span>
-<span class="c"># Default: OpenSSL::SSL::VerifyMode::PEER</span>
-config.openssl_verify_mode <span class="o">=</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">VerifyMode</span><span class="t">::</span><span class="t">NONE</span>
+<span class="c"># Set TLS context parameters for STARTTLS commands.</span>
+
+<span class="c">## Disable TLS1.1 or lower protocols.</span>
+config.tls_context.add_options(<span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_SSL_V2</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_SSL_V3</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_TLS_V1</span> <span class="o">|</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">Options</span><span class="t">::</span><span class="t">NO_TLS_V1_1</span>)
+
+<span class="c">## Set OpenSSL verification mode to skip certificate verification.</span>
+<span class="c">## #openssl_verify_mode= method is deprecated now.</span>
+config.tls_context.verify_mode <span class="o">=</span> <span class="t">OpenSSL</span><span class="t">::</span><span class="t">SSL</span><span class="t">::</span><span class="t">VerifyMode</span><span class="t">::</span><span class="t">NONE</span>
 
 <span class="c"># Use SMTP AUTH for user authentication.</span>
 config.use_auth(<span class="s">&quot;id&quot;</span>, <span class="s">&quot;password&quot;</span>)
@@ -221,7 +226,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L76" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L89" target="_blank">
         email/client/config.cr
       </a>
     
@@ -248,7 +253,16 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method" class="signature"><strong>.create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : EMail::Client::OnFailedProc? = <span class="n">nil</span>, on_fatal_error : EMail::Client::OnFatalErrorProc? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)</a>
+        <a href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method" class="signature"><strong>.create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : EMail::Client::OnFailedProc? = <span class="n">nil</span>, on_fatal_error : EMail::Client::OnFatalErrorProc? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p><span class="flag red">DEPRECATED</span>  use <strong>tls_verify_mode</strong> argument instead of <strong>openssl_verify_mode</strong>.</p>
+
+</div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,tls_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method" class="signature"><strong>.create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : EMail::Client::OnFailedProc? = <span class="n">nil</span>, on_fatal_error : EMail::Client::OnFatalErrorProc? = <span class="n">nil</span>, tls_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)</a>
         
           <div class="summary"><p>Returns <code><a href="../../EMail/Client/Config.html">EMail::Client::Config</a></code> object with given settings.</p></div>
         
@@ -374,37 +388,38 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       </li>
     
       <li class="entry-summary">
-        <a href="#on_fatal_error:EMail::Client::OnFatalErrorProc?-instance-method" class="signature"><strong>#on_fatal_error</strong> : EMail::Client::OnFatalErrorProc?</a>
+        <a href="#on_fatal_error:EMail::Client::OnFatalErrorProc-instance-method" class="signature"><strong>#on_fatal_error</strong> : EMail::Client::OnFatalErrorProc</a>
         
           <div class="summary"><p>Callback function to be calld when an exception is raised during SMTP session.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc?)-instance-method" class="signature"><strong>#on_fatal_error=</strong>(on_fatal_error : EMail::Client::OnFatalErrorProc?)</a>
+        <a href="#on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc)-instance-method" class="signature"><strong>#on_fatal_error=</strong>(on_fatal_error : EMail::Client::OnFatalErrorProc)</a>
         
           <div class="summary"><p>Callback function to be calld when an exception is raised during SMTP session.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#openssl_context:OpenSSL::SSL::Context::Client-instance-method" class="signature"><strong>#openssl_context</strong> : OpenSSL::SSL::Context::Client</a>
-        
-          <div class="summary"><p>OpenSSL context for the TLS connection</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#openssl_verify_mode:OpenSSL::SSL::VerifyMode-instance-method" class="signature"><strong>#openssl_verify_mode</strong> : OpenSSL::SSL::VerifyMode</a>
         
-          <div class="summary"><p>Gets OpenSSL verification mode for the TLS connection.</p></div>
+          <div class="summary"><p>Gets OpenSSL verification mode for the TLS connection.</p>
+
+<p><span class="flag red">DEPRECATED</span>  use #tls_context.verify_mode</p>
+
+</div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#openssl_verify_mode=(verify_mode:OpenSSL::SSL::VerifyMode)-instance-method" class="signature"><strong>#openssl_verify_mode=</strong>(verify_mode : OpenSSL::SSL::VerifyMode)</a>
         
-          <div class="summary"><p>Sets OpenSSL verification mode for the TLS connection.</p></div>
+          <div class="summary"><p>Sets OpenSSL verification mode for the TLS connection.</p>
+
+<p><span class="flag red">DEPRECATED</span>  use #tls_context.verify_mode=</p>
+
+</div>
         
       </li>
     
@@ -433,6 +448,13 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
         <a href="#read_timeout=(sec:Int32)-instance-method" class="signature"><strong>#read_timeout=</strong>(sec : Int32)</a>
         
           <div class="summary"><p>READ timeout for the socket.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#tls_context:OpenSSL::SSL::Context::Client-instance-method" class="signature"><strong>#tls_context</strong> : OpenSSL::SSL::Context::Client</a>
+        
+          <div class="summary"><p>OpenSSL context for the TLS connection</p></div>
         
       </li>
     
@@ -522,7 +544,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L194" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L214" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -532,12 +554,35 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
 
   <h2>Class Method Detail</h2>
   
-    <div class="entry-detail" id="create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">
+    <div class="entry-detail" id="create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>? = <span class="n">nil</span>, on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)
+        def self.<strong>create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>? = <span class="n">nil</span>, on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>? = <span class="n">nil</span>, openssl_verify_mode : OpenSSL::SSL::VerifyMode, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">#</a>
+        <a class="method-permalink" href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,openssl_verify_mode:OpenSSL::SSL::VerifyMode,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag red">DEPRECATED</span>  use <strong>tls_verify_mode</strong> argument instead of <strong>openssl_verify_mode</strong>.</p>
+
+
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L157" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,tls_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>create</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, client_name = <span class="n">nil</span>, helo_domain = <span class="n">nil</span>, on_failed : <a href="../../EMail/Client/OnFailedProc.html">EMail::Client::OnFailedProc</a>? = <span class="n">nil</span>, on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>? = <span class="n">nil</span>, tls_verify_mode : OpenSSL::SSL::VerifyMode? = <span class="n">nil</span>, use_tls : Bool? = <span class="n">nil</span>, auth : Tuple(String, String)? = <span class="n">nil</span>, logger : Logger? = <span class="n">nil</span>, log_io : IO? = <span class="n">nil</span>, log_level : Logger::Severity? = <span class="n">nil</span>, log_progname : String? = <span class="n">nil</span>, log_formatter : Logger::Formatter? = <span class="n">nil</span>, dns_timeout : Int32? = <span class="n">nil</span>, connect_timeout : Int32? = <span class="n">nil</span>, read_timeout : Int32? = <span class="n">nil</span>, write_timeout : Int32? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#create(host,port=EMail::DEFAULT_SMTP_PORT,*,client_name=nil,helo_domain=nil,on_failed:EMail::Client::OnFailedProc?=nil,on_fatal_error:EMail::Client::OnFatalErrorProc?=nil,tls_verify_mode:OpenSSL::SSL::VerifyMode?=nil,use_tls:Bool?=nil,auth:Tuple(String,String)?=nil,logger:Logger?=nil,log_io:IO?=nil,log_level:Logger::Severity?=nil,log_progname:String?=nil,log_formatter:Logger::Formatter?=nil,dns_timeout:Int32?=nil,connect_timeout:Int32?=nil,read_timeout:Int32?=nil,write_timeout:Int32?=nil)-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -554,7 +599,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -580,7 +625,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L237" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L257" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -601,7 +646,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L242" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L262" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -622,7 +667,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -645,7 +690,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L222" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L242" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -666,7 +711,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -687,7 +732,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L251" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L271" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -708,7 +753,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L135" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -729,7 +774,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L251" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L271" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -750,7 +795,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L102" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -773,7 +818,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L220" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -794,7 +839,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -815,7 +860,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L97" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -836,7 +881,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -857,7 +902,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L109" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -880,7 +925,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L97" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -903,17 +948,17 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L101" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L114" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_fatal_error:EMail::Client::OnFatalErrorProc?-instance-method">
+    <div class="entry-detail" id="on_fatal_error:EMail::Client::OnFatalErrorProc-instance-method">
       <div class="signature">
         
-        def <strong>on_fatal_error</strong> : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>?
+        def <strong>on_fatal_error</strong> : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>
 
-        <a class="method-permalink" href="#on_fatal_error:EMail::Client::OnFatalErrorProc?-instance-method">#</a>
+        <a class="method-permalink" href="#on_fatal_error:EMail::Client::OnFatalErrorProc-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -926,17 +971,17 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc?)-instance-method">
+    <div class="entry-detail" id="on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc)-instance-method">
       <div class="signature">
         
-        def <strong>on_fatal_error=</strong>(on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>?)
+        def <strong>on_fatal_error=</strong>(on_fatal_error : <a href="../../EMail/Client/OnFatalErrorProc.html">EMail::Client::OnFatalErrorProc</a>)
 
-        <a class="method-permalink" href="#on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc?)-instance-method">#</a>
+        <a class="method-permalink" href="#on_fatal_error=(on_fatal_error:EMail::Client::OnFatalErrorProc)-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -949,30 +994,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L106" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="openssl_context:OpenSSL::SSL::Context::Client-instance-method">
-      <div class="signature">
-        
-        def <strong>openssl_context</strong> : OpenSSL::SSL::Context::Client
-
-        <a class="method-permalink" href="#openssl_context:OpenSSL::SSL::Context::Client-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>OpenSSL context for the TLS connection</p>
-
-<p>See <a href="https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html" target="_blank">OpenSSL::SSL::Context::Client</a>.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L107" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L119" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -989,15 +1011,15 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
           
           <p>Gets OpenSSL verification mode for the TLS connection.</p>
 
-<p>Same as <code><a href="../../EMail/Client/Config.html#openssl_context:OpenSSL::SSL::Context::Client-instance-method">#openssl_context</a>.verify_mode</code></p>
+<p><span class="flag red">DEPRECATED</span>  use #tls_context.verify_mode</p>
 
-<p>See <a href="https://crystal-lang.org/api/OpenSSL/SSL/VerifyMode.html" target="_blank">OpenSSL::SSL::VerifyMode</a>.</p>
+
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L123" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L128" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1014,17 +1036,15 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
           
           <p>Sets OpenSSL verification mode for the TLS connection.</p>
 
-<p>See <a href="https://crystal-lang.org/api/OpenSSL/SSL/VerifyMode.html" target="_blank">OpenSSL::SSL::VerifyMode</a>.</p>
+<p><span class="flag red">DEPRECATED</span>  use #tls_context.verify_mode=</p>
 
-<p>For Example set <code>OpenSSL::SSL::VerifyMode::NONE</code> to start tls connection with SMTP server which uses self-signed certificates.</p>
 
-<p>Same as <code><a href="../../EMail/Client/Config.html#openssl_context:OpenSSL::SSL::Context::Client-instance-method">#openssl_context</a>.verify_mode=</code></p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L122" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1045,7 +1065,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1066,7 +1086,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1087,7 +1107,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L136" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1108,7 +1128,30 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L251" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L271" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tls_context:OpenSSL::SSL::Context::Client-instance-method">
+      <div class="signature">
+        
+        def <strong>tls_context</strong> : OpenSSL::SSL::Context::Client
+
+        <a class="method-permalink" href="#tls_context:OpenSSL::SSL::Context::Client-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>OpenSSL context for the TLS connection</p>
+
+<p>See <a href="https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html" target="_blank">OpenSSL::SSL::Context::Client</a>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1133,7 +1176,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L252" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1154,7 +1197,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L247" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L267" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1175,7 +1218,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L206" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L226" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1196,7 +1239,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L215" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L235" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1217,7 +1260,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L139" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1238,7 +1281,7 @@ config.connect_timeout <span class="o">=</span> <span class="n">1</span></code><
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/8a1c2700e9c945039ef7fc6f9f6e2e67327a3832/src/email/client/config.cr#L251" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/98404025056a9c3580b6b0a2435f58606fcdb316/src/email/client/config.cr#L271" target="_blank">View source</a>]
         
       </div>
     </div>
