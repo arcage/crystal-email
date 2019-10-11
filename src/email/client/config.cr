@@ -13,8 +13,8 @@ class EMail::Client
     io << datetime.to_s("%Y/%m/%d %T") << " [" << progname << "/" << Process.pid << "] "
     io << severity << " " << message
   end
-  LOG_PROGNAME = "crystal-email"
-  DEFAULT_NAME = "EMail_Client"
+  LOG_PROGNAME                = "crystal-email"
+  DEFAULT_NAME                = "EMail_Client"
   DEFAULT_FATAL_ERROR_HANDLER = OnFatalErrorProc.new do |e|
     if backtrace = e.backtrace?
       backtrace.reverse.each do |line|
@@ -43,11 +43,11 @@ class EMail::Client
   #
   # # Set TLS context parameters for STARTTLS commands.
   #
-  # ## Disable TLS1.1 or lower protocols.
+  # # # Disable TLS1.1 or lower protocols.
   # config.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
   #
-  # ## Set OpenSSL verification mode to skip certificate verification.
-  # ## #openssl_verify_mode= method is deprecated now.
+  # # # Set OpenSSL verification mode to skip certificate verification.
+  # # # #openssl_verify_mode= method is deprecated now.
   # config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
   #
   # # Use SMTP AUTH for user authentication.
