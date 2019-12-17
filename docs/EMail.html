@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.30.1">
+<meta name="generator" content="Crystal Docs 0.31.1">
 
-
-<link href="css/style.css" rel="stylesheet" type="text/css">
-
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
-<script type="text/javascript">
-  CrystalDoc.base_path = "";
-</script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 
   <meta id="repository-name" content="github.com/arcage/crystal-email">
   <title>EMail - github.com/arcage/crystal-email</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "";
+  </script>
 </head>
 <body>
 
@@ -161,31 +165,38 @@
 
 
 
-  <h2>Defined in:</h2>
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/address.cr#L2" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/address.cr#L2" target="_blank">
         email/address.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/concurrent_sender.cr#L155" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/concurrent_sender.cr#L155" target="_blank">
         email/concurrent_sender.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/mimetype.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/mimetype.cr#L1" target="_blank">
         email/mimetype.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email.cr#L10" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email.cr#L10" target="_blank">
         email.cr
       </a>
     
@@ -195,7 +206,14 @@
 
 
   
-    <h2>Constant Summary</h2>
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
   
   <dl>
     
@@ -205,7 +223,7 @@
       
     
       <dt class="entry-const" id="VERSION">
-        <strong>VERSION</strong> = <code><span class="s">&quot;0.4.3&quot;</span></code>
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.4.5&quot;</span></code>
       </dt>
       
     
@@ -215,18 +233,25 @@
 
 
 
-  <h2>Class Method Summary</h2>
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#send(config:EMail::Client::Config,&block)-class-method" class="signature"><strong>.send</strong>(config : EMail::Client::Config, &block)</a>
+        <a href="#send(config:EMail::Client::Config,&)-class-method" class="signature"><strong>.send</strong>(config : EMail::Client::Config, &)</a>
         
           <div class="summary"><p>Send one email with given client settings as EMail::Client::Config object.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#send(*args,**named_args,&block)-class-method" class="signature"><strong>.send</strong>(*args, **named_args, &block)</a>
+        <a href="#send(*args,**named_args,&)-class-method" class="signature"><strong>.send</strong>(*args, **named_args, &)</a>
         
           <div class="summary"><p>Send one email with given client settings as several arguments.</p></div>
         
@@ -247,14 +272,21 @@
 
 
 
-  <h2>Class Method Detail</h2>
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
   
-    <div class="entry-detail" id="send(config:EMail::Client::Config,&amp;block)-class-method">
+    <div class="entry-detail" id="send(config:EMail::Client::Config,&amp;)-class-method">
       <div class="signature">
         
-        def self.<strong>send</strong>(config : <a href="EMail/Client/Config.html">EMail::Client::Config</a>, &block)
+        def self.<strong>send</strong>(config : <a href="EMail/Client/Config.html">EMail::Client::Config</a>, &)
 
-        <a class="method-permalink" href="#send(config:EMail::Client::Config,&block)-class-method">#</a>
+        <a class="method-permalink" href="#send(config:EMail::Client::Config,&)-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -284,17 +316,17 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="send(*args,**named_args,&amp;block)-class-method">
+    <div class="entry-detail" id="send(*args,**named_args,&amp;)-class-method">
       <div class="signature">
         
-        def self.<strong>send</strong>(*args, **named_args, &block)
+        def self.<strong>send</strong>(*args, **named_args, &)
 
-        <a class="method-permalink" href="#send(*args,**named_args,&block)-class-method">#</a>
+        <a class="method-permalink" href="#send(*args,**named_args,&)-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -324,7 +356,7 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>

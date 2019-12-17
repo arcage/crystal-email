@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.30.1">
+<meta name="generator" content="Crystal Docs 0.31.1">
 
-
-<link href="../css/style.css" rel="stylesheet" type="text/css">
-
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/doc.js"></script>
-<script type="text/javascript">
-  CrystalDoc.base_path = "../";
-</script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 
   <meta id="repository-name" content="github.com/arcage/crystal-email">
   <title>EMail::Message - github.com/arcage/crystal-email</title>
+  <script type="text/javascript">
+    CrystalDoc.base_path = "../";
+  </script>
 </head>
 <body>
 
@@ -150,11 +154,22 @@
 
 
 
-  <h2>Overview</h2>
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
 
   <p>Email message object.</p>
 
-<h3>Minimal email with plain text message.</h3>
+<h3><a id="minimal-email-with-plain-text-message." class="anchor" href="#minimal-email-with-plain-text-message.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Minimal email with plain text message.</h3>
 
 <pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
 
@@ -181,17 +196,29 @@ email.message <span class="s">&lt;&lt;-EOM
 
 <p><em>[?] required at least one recipient.</em></p>
 
-<h3>Set custom header</h3>
+<h3><a id="set-custom-header" class="anchor" href="#set-custom-header">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Set custom header</h3>
 
 <pre><code class="language-crystal">email.custom_header <span class="s">&quot;X-Mailer&quot;</span>, <span class="s">&quot;Your APP Name&quot;</span></code></pre>
 
-<h3>Set mailbox name with email address</h3>
+<h3><a id="set-mailbox-name-with-email-address" class="anchor" href="#set-mailbox-name-with-email-address">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Set mailbox name with email address</h3>
 
 <pre><code class="language-crystal">email.from <span class="s">&quot;your_addr@example.com&quot;</span>, <span class="s">&quot;your name&quot;</span></code></pre>
 
 <p>Also, <code><a href="../EMail/Message.html#to(mail_address:String,sender_name:String?=nil)-instance-method">#to</a></code>, <code><a href="../EMail/Message.html#cc(mail_address:EMail::Address)-instance-method">#cc</a></code>, <code><a href="../EMail/Message.html#bcc(mail_address:EMail::Address)-instance-method">#bcc</a></code>, etc...</p>
 
-<h3>HTML email with altanative plain text message.</h3>
+<h3><a id="html-email-with-altanative-plain-text-message." class="anchor" href="#html-email-with-altanative-plain-text-message.">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>HTML email with altanative plain text message.</h3>
 
 <pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
 
@@ -221,7 +248,11 @@ email.message_html <span class="s">&lt;&lt;-EOM
   &lt;/html&gt;
   EOM</span></code></pre>
 
-<h3>Attache files</h3>
+<h3><a id="attache-files" class="anchor" href="#attache-files">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Attache files</h3>
 
 <pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
 
@@ -241,21 +272,37 @@ email.message <span class="s">&lt;&lt;-EOM
 <span class="c"># Attach file to email</span>
 email.attach <span class="s">&quot;./photo.jpeg&quot;</span></code></pre>
 
-<h4>Set alternative file name for recipient</h4>
+<h4><a id="set-alternative-file-name-for-recipient" class="anchor" href="#set-alternative-file-name-for-recipient">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Set alternative file name for recipient</h4>
 
 <pre><code class="language-crystal">email.attach <span class="s">&quot;./photo.jpeg&quot;</span>, file_name: <span class="s">&quot;last_year.jpeg&quot;</span></code></pre>
 
-<h4>Set specific MIME type</h4>
+<h4><a id="set-specific-mime-type" class="anchor" href="#set-specific-mime-type">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Set specific MIME type</h4>
 
 <pre><code class="language-crystal">email.attach <span class="s">&quot;./data&quot;</span>, mime_type: <span class="s">&quot;text/csv&quot;</span></code></pre>
 
-<h4>Read attachment file data from IO</h4>
+<h4><a id="read-attachment-file-data-from-io" class="anchor" href="#read-attachment-file-data-from-io">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Read attachment file data from IO</h4>
 
 <pre><code class="language-crystal">email.attach io, file_name: <span class="s">&quot;photo.jpeg&quot;</span></code></pre>
 
 <p>In this case, <code>file_name</code> argument is required.</p>
 
-<h3>Add message resouces</h3>
+<h3><a id="add-message-resouces" class="anchor" href="#add-message-resouces">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Add message resouces</h3>
 
 <pre><code class="language-crystal">email <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Message</span>.<span class="k">new</span>
 
@@ -304,10 +351,17 @@ email.message_resource <span class="s">&quot;./logo.png&quot;</span>, cid: <span
 
 
 
-  <h2>Defined in:</h2>
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L163" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L163" target="_blank">
         email/message.cr
       </a>
     
@@ -322,7 +376,14 @@ email.message_resource <span class="s">&quot;./logo.png&quot;</span>, cid: <span
 
 
 
-  <h2>Instance Method Summary</h2>
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
   <ul class="list-summary">
     
       <li class="entry-summary">
@@ -535,7 +596,14 @@ email.message_resource <span class="s">&quot;./logo.png&quot;</span>, cid: <span
 
 
 
-  <h2>Instance Method Detail</h2>
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
   
     <div class="entry-detail" id="attach(file_path:String,file_name:String?=nil,mime_type:String?=nil)-instance-method">
       <div class="signature">
@@ -556,7 +624,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L333" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L333" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -579,7 +647,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L340" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L340" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -600,7 +668,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L418" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L418" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -621,7 +689,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L418" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L418" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -642,7 +710,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L417" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L417" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -663,7 +731,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L417" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L417" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -684,7 +752,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L361" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L361" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -705,7 +773,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L212" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L212" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -726,7 +794,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L415" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L415" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -747,7 +815,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L415" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L415" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -768,7 +836,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L320" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L320" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -789,7 +857,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L325" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L325" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -810,7 +878,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L384" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L384" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -833,7 +901,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L347" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L347" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -856,7 +924,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L355" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L355" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -877,7 +945,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L419" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L419" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -898,7 +966,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L419" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L419" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -919,7 +987,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L400" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L400" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -940,7 +1008,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L400" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L400" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -961,7 +1029,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L399" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L399" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -982,7 +1050,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L399" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L399" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1003,7 +1071,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L383" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L383" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1024,7 +1092,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L416" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L416" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1045,7 +1113,7 @@ By default, MIME type will be inferred from extname of the file name.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L416" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L416" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1078,7 +1146,7 @@ which includes its class name and its object address.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d8216197c65ab6d8decf4a9f4cad52270abda392/src/email/message.cr#L308" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/1690de8774f30786adc326ae9b46b4a849111b30/src/email/message.cr#L308" target="_blank">View source</a>]
         
       </div>
     </div>
