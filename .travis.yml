@@ -1,1 +1,11 @@
 language: crystal
+
+services:
+  - docker
+
+before_install:
+  - docker pull feathj/postfix-blackhole
+  - docker run -it -p 25:25 -p 80:80 feathj/postfix-blackhole
+
+script:
+  - crystal spec
