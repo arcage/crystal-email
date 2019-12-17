@@ -91,11 +91,13 @@ class EMail::Client
     recipients = mail.recipients
     if smtp_rset && smtp_mail(mail_from) && smtp_rcpt(recipients) && smtp_data(mail.data)
       log_info("Successfully sent a message from <#{mail_from.addr}> to #{recipients.size} recipient(s)")
+      return true
     else
       log_error("Failed sending message for some reason")
       if on_failed = @config.on_failed
         on_failed.call(mail, @command_history)
       end
+      return false
     end
   end
 
