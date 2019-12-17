@@ -83,7 +83,8 @@ class EMail::Client
   # Send a email message
   #
   # You can call this only in the block of the `EMail::Client#start` method.
-  def send(mail : EMail::Message)
+  # This retruns sending result as Bool(`true` for success, `false` for fail). 
+  def send(mail : EMail::Message) : Bool
     raise EMail::Error::ClientError.new("Email client has not been started") unless @started
     @command_history.clear
     mail = mail_validate!(mail)

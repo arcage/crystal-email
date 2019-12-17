@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.30.1">
+<meta name="generator" content="Crystal Docs 0.31.1">
 
-
-<link href="css/style.css" rel="stylesheet" type="text/css">
-
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
-<script type="text/javascript">
-  CrystalDoc.base_path = "";
-</script>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
 
   <meta id="repository-name" content="github.com/arcage/crystal-email">
   <title>README - github.com/arcage/crystal-email</title>
+  <script type="text/javascript">
+  CrystalDoc.base_path = "";
+  </script>
 </head>
 <body>
 
@@ -138,7 +142,11 @@
 
 
 <div class="main-content">
-<h1>EMail for Crystal</h1>
+<h1><a id="e-mail-for-crystal" class="anchor" href="#e-mail-for-crystal">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>EMail for Crystal</h1>
 
 <p>Simple email sending library for the <a href="https://crystal-lang.org" target="_blank">Crystal programming language</a>.</p>
 
@@ -150,7 +158,11 @@
 
 <ul><li>use ESMTP features except those mentioned above.</li></ul>
 
-<h2>Installation</h2>
+<h2><a id="installation" class="anchor" href="#installation">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation</h2>
 
 <p>First, add the dependency to your <code>shard.yml</code>:</p>
 
@@ -160,7 +172,11 @@
 
 <p>Then, run <code>shards install</code></p>
 
-<h2>Usage</h2>
+<h2><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h2>
 
 <p>To send a minimal email message:</p>
 
@@ -195,7 +211,11 @@ client.start <span class="k">do</span>
 2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Successfully sent a message from &lt;your_addr@example.com> to 1 recipient(s)
 2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25</code></pre>
 
-<h3>Client configs</h3>
+<h3><a id="client-configs" class="anchor" href="#client-configs">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Client configs</h3>
 
 <p>You can set some connection settings to <code><a href="EMail/Client/Config.html">EMail::Client::Config</a></code> object.</p>
 
@@ -203,7 +223,11 @@ client.start <span class="k">do</span>
 
 <p>See <a href="https://www.denchu.org/crystal-email/EMail/Client/Config.html" target="_blank">EMail::Client::Config</a> for more details.</p>
 
-<h3>Email message</h3>
+<h3><a id="email-message" class="anchor" href="#email-message">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Email message</h3>
 
 <p>You can set more email headers to <code><a href="EMail/Message.html">EMail::Message</a></code> object.</p>
 
@@ -211,7 +235,11 @@ client.start <span class="k">do</span>
 
 <p>See <a href="https://www.denchu.org/crystal-email/EMail/Message.html" target="_blank">EMail::Message</a> for more details.</p>
 
-<h3>Concurrent sending</h3>
+<h3><a id="concurrent-sending" class="anchor" href="#concurrent-sending">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Concurrent sending</h3>
 
 <p>By using <code><a href="EMail/ConcurrentSender.html">EMail::ConcurrentSender</a></code> object, you can concurrently send multiple messages by multiple connections.</p>
 
@@ -246,11 +274,19 @@ sender.start <span class="k">do</span>
 
 <p>See <a href="https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html" target="_blank">EMail::ConcurrentSender</a> for more details.</p>
 
-<h2>Owner</h2>
+<h2><a id="owner" class="anchor" href="#owner">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Owner</h2>
 
 <ul><li><a href="https://github.com/arcage" target="_blank">arcage</a> ʕ·ᴥ·ʔAKJ - creator, maintainer</li></ul>
 
-<h2>Contributors</h2>
+<h2><a id="contributors" class="anchor" href="#contributors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributors</h2>
 
 <p>Thank you for valuable contributions.</p>
 
