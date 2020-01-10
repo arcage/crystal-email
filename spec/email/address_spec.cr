@@ -6,11 +6,16 @@ describe EMail::Address do
       EMail::Address.valid_address!("aa@bb.cc").should eq "aa@bb.cc"
     end
 
+    it "accepts domain part without \".\"" do
+      EMail::Address.valid_address!("aa@localhost").should eq "aa@localhost"
+    end
+
     it "raises Email::Error::AddressError when argument seems to be invalid as a email address" do
       expect_raises(EMail::Error::AddressError) {
         EMail::Address.valid_address!("aa@bb,cc")
       }
     end
+
   end
 
   describe ".valid_name!" do
