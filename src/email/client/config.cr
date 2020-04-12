@@ -83,7 +83,7 @@ class EMail::Client
     #
     # It will be called with the raised Exception instance.
     property on_fatal_error : EMail::Client::OnFatalErrorProc = EMail::Client::OnFatalErrorProc.new { |e| raise e }
-    
+
     # OpenSSL context for the TLS connection
     #
     # See [OpenSSL::SSL::Context::Client](https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html).
