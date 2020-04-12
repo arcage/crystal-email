@@ -82,8 +82,8 @@ class EMail::Client
     # Callback function to be calld when an exception is raised during SMTP session.
     #
     # It will be called with the raised Exception instance.
-    property on_fatal_error : EMail::Client::OnFatalErrorProc?
-
+    property on_fatal_error : EMail::Client::OnFatalErrorProc = EMail::Client::OnFatalErrorProc.new { |e| raise e }
+    
     # OpenSSL context for the TLS connection
     #
     # See [OpenSSL::SSL::Context::Client](https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html).
@@ -132,7 +132,7 @@ class EMail::Client
       config.client_name = client_name if client_name
       config.helo_domain = helo_domain if helo_domain
       config.on_failed = on_failed
-      config.on_fatal_error = on_fatal_error
+      config.on_fatal_error = on_fatal_error if on_fatal_error
       config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
       config.use_tls if use_tls
       config.log = log
