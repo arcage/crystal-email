@@ -179,24 +179,10 @@
   </svg>
 </a>Logging</h3>
 
-<p>Without specifying explisit Log object in EMail::Client::Config, all EMail::Client objects use default Log object.</p>
+<p>Without client specific logger in EMail::Client::Config, all EMail::Client objects use the default logger.</p>
 
-<p>The default Log object can be got by EMail::Client.log
-You can set log level, output IO, and log formatter for default Log object by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.</p>
-
-<h4><a id="debug-log" class="anchor" href="#debug-log">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Debug log</h4>
-
-<p>When you set the log level to <code>Log::Severity::Debug</code>, you can see all of the SMTP commands and the resposes in the log entries.</p>
-
-<pre><code class="language-crystal"><span class="t">EMail</span><span class="t">::</span><span class="t">Client</span>.log_level <span class="o">=</span> <span class="t">Log</span><span class="t">::</span><span class="t">Severity</span><span class="t">::</span><span class="t">Debug</span></code></pre>
-
-<p>Debug log are very useful to check how SMTP session works.</p>
-
-<p>But, in the case of using SMTP AUTH, the debug log includes Base64 encoded user ID and passowrd. You should remenber that anyone can decode the authentication information from the debug log. And, you should use that very carefully.</p>
+<p>The default logger can be got by EMail::Client.log
+You can set log level, output IO, and log formatter for the default logger by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.</p>
 
 
 
@@ -221,14 +207,14 @@ You can set log level, output IO, and log formatter for default Log object by us
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client/config.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client/config.cr#L1" target="_blank">
         email/client/config.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L28" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L17" target="_blank">
         email/client.cr
       </a>
     
@@ -389,7 +375,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -422,7 +408,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L47" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -443,7 +429,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -464,7 +450,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -485,7 +471,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -518,7 +504,7 @@ You can set log level, output IO, and log formatter for default Log object by us
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -542,7 +528,7 @@ This retruns sending result as Bool(<code>true</code> for success, <code>false</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L163" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -565,7 +551,7 @@ This retruns sending result as Bool(<code>true</code> for success, <code>false</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/d4d82d889118de67a812cdbf8326a2e44c2c43af/src/email/client.cr#L117" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/4b9aae427a57352f79340a8b72d0d42fc80be5da/src/email/client.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>

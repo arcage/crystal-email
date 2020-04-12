@@ -30,20 +30,20 @@ class EMail::Client
     end
   end
 
-  @@log : Log = create_log
+  @@log : Log = create_logger
 
-  # Get default [Log]() object to output SMTP log.
+  # Get default logger([Log]() typr object) to output SMTP log.
   def self.log : Log
     @@log
   end
 
-  # Set log level for default Log object.
+  # Set log level for default logger.
   def self.log_level=(new_level : Log::Severity)
     @@log.level = new_level
     nil
   end
 
-  # Set IO to outpu SMTP log for default Log object.
+  # Set log io for default logger.
   def self.log_io=(new_io : IO)
     if (log_backend = @@log.backend).is_a?(Log::IOBackend)
       log_backend.io = new_io
@@ -51,7 +51,7 @@ class EMail::Client
     nil
   end
 
-  # Set log formatter for default Log object.
+  # Set log formatter for default logger.
   def self.log_formatter=(new_formatter : Log::Formatter)
     if (log_backend = @@log.backend).is_a?(Log::IOBackend)
       log_backend.formatter = new_formatter
@@ -60,7 +60,7 @@ class EMail::Client
   end
 
   # :nodoc:
-  private def self.create_log : Log
+  private def self.create_logger : Log
     log = Log.for(self, Log::Severity::Info)
     log_backend = Log::IOBackend.new(STDOUT)
     log_backend.formatter = LOG_FORMATTER

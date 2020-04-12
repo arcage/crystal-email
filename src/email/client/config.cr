@@ -11,8 +11,6 @@ class EMail::Client
 
   # SMTP client settings.
   #
-  # **Settings around logging has been moved to `EMail::Client.log_***=` methods.**
-  #
   # ```crystal
   # # Set the SMTP server FQDN(or IP address) and port.
   # config = EMail::Client::Config.new("your.mx.example.com", 587)
