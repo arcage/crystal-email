@@ -8,7 +8,7 @@ require "uri"
 require "./email/*"
 
 module EMail
-  VERSION           = "0.4.6"
+  VERSION           = "0.5.0"
   DEFAULT_SMTP_PORT = 25
 
   # :nodoc:
@@ -20,7 +20,6 @@ module EMail
   # config = EMail::Client::Config.new("your.mx.server.name", 587)
   # config.use_tls
   # config.use_auth("your_id", "your_password")
-  # config.logger.level = Logger::DEBUG
   #
   # EMail.send(config) do
   #   # In this block, default receiver is EMail::Message object
@@ -50,8 +49,7 @@ module EMail
   # ```crystal
   # EMail.send("your.mx.server.name", 578,
   #   use_tle: true,
-  #   auth: {"your_id", "your_password"},
-  #   log_level: Logger::DEBUG) do
+  #   auth: {"your_id", "your_password"}) do
   #   # In this block, default receiver is EMail::Message object
   #   from "your@mail.addr"
   #   to "to@some.domain"

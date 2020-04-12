@@ -8,8 +8,8 @@ describe EMail::Client do
   describe "#send" do
     it "try to send an email to SMTP server, but recipient refused." do
       log = String.build do |io|
+        EMail::Client.log_io = io
         config = EMail::Client::Config.new("localhost", 25)
-        config.logger = EMail::Client::Config.create_default_logger(io)
         client = EMail::Client.new(config)
         client.start do
           send(email).should be_false
@@ -20,8 +20,8 @@ describe EMail::Client do
 
     it "send an email with SMTP auth." do
       log = String.build do |io|
+        EMail::Client.log_io = io
         config = EMail::Client::Config.new("localhost", 25)
-        config.logger = EMail::Client::Config.create_default_logger(io)
         config.use_tls
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "password")
@@ -35,8 +35,8 @@ describe EMail::Client do
 
     it "try to send an email with invalid password, but authentication refused." do
       log = String.build do |io|
+        EMail::Client.log_io = io
         config = EMail::Client::Config.new("localhost", 25)
-        config.logger = EMail::Client::Config.create_default_logger(io)
         config.use_tls
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "invalid")

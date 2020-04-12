@@ -65,9 +65,9 @@ end
 This code will output log entries to `STDOUT` as follows:
 
 ```text
-2018/01/25 20:35:09 [crystal-email/12347] INFO [EMail_Client] Start TCP session to your.mx.example.com:25
-2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Successfully sent a message from <your_addr@example.com> to 1 recipient(s)
-2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25
+2018/01/25 20:35:09 [e_mail.client/12347] INFO [EMail_Client] Start TCP session to your.mx.example.com:25
+2018/01/25 20:35:10 [e_mail.client/12347] INFO [EMail_Client] Successfully sent a message from <your_addr@example.com> to 1 recipient(s)
+2018/01/25 20:35:10 [e_mail.client/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25
 ```
 
 ### Client configs
@@ -87,6 +87,8 @@ And, you can also send emails including attachment files, HTML message, and/or r
 See [EMail::Message](https://www.denchu.org/crystal-email/EMail/Message.html) for more details.
 
 ### Concurrent sending
+
+**Note: this feature supports the _concurrent_ sending with only one thread.**
 
 By using `EMail::ConcurrentSender` object, you can concurrently send multiple messages by multiple connections.
 
@@ -122,6 +124,33 @@ end
 ```
 
 See [EMail::ConcurrentSender](https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html) for more details.
+
+## Logging
+
+The v0.34.0 of Crystal language has drastic changes in the logging functions. To fit it, the v0.5.0 of this shard also changes the logging behaviour.
+
+You can use two kinds of logger(`Log` type) objects, the _default logger_ and the _client specific logger_.
+
+The _default logger_ is decleared on the `EMail::Client` type. It can be got by `EMail::Client.log`, and change its behaviour by `EMail::Client.log_***=` methods.
+
+On the other hand, the _client specific logger_ will be set to `EMail::Client` instance itself by `EMail::Client::Config` setting. With this, you can use your own logger for the `EMail::Client` object.
+
+If the client has the _client specific logger_, the client use it. Otherwise, the client use the _default logger_ to output the log entries.
+
+See [EMail::Client](https://www.denchu.org/crystal-email/EMail/Client.html) and [EMail::Client::Config](https://www.denchu.org/crystal-email/EMail/Client/Config.html) for more details.
+
+### Debug log
+
+When you set the log level to `Log::Severity::Debug`, you can see all of the SMTP commands and the resposes in the log entries.
+
+```crystal
+EMail::Client.log_level = Log::Severity::Debug
+```
+
+Debug log are very useful to check how SMTP session works.
+
+But, in the case of using SMTP AUTH, the debug log includes Base64 encoded user ID and passowrd. You should remenber that anyone can decode the authentication information from the debug log. And, you should use that **very carefully**.
+
 
 ## Owner
 
