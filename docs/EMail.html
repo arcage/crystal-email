@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.31.1">
+<meta name="generator" content="Crystal Docs 0.33.0">
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
@@ -175,28 +175,28 @@
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/address.cr#L2" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/address.cr#L2" target="_blank">
         email/address.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/concurrent_sender.cr#L155" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/concurrent_sender.cr#L155" target="_blank">
         email/concurrent_sender.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/mimetype.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/mimetype.cr#L1" target="_blank">
         email/mimetype.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email.cr#L10" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email.cr#L10" target="_blank">
         email.cr
       </a>
     
@@ -223,7 +223,7 @@
       
     
       <dt class="entry-const" id="VERSION">
-        <strong>VERSION</strong> = <code><span class="s">&quot;0.4.5&quot;</span></code>
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.5.0&quot;</span></code>
       </dt>
       
     
@@ -296,7 +296,6 @@
 <pre><code class="language-crystal">config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.server.name&quot;</span>, <span class="n">587</span>)
 config.use_tls
 config.use_auth(<span class="s">&quot;your_id&quot;</span>, <span class="s">&quot;your_password&quot;</span>)
-config.logger.level <span class="o">=</span> <span class="t">Logger</span><span class="t">::</span><span class="t">DEBUG</span>
 
 <span class="t">EMail</span>.send(config) <span class="k">do</span>
   <span class="c"># In this block, default receiver is EMail::Message object</span>
@@ -316,7 +315,7 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -337,8 +336,7 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
 
 <pre><code class="language-crystal"><span class="t">EMail</span>.send(<span class="s">&quot;your.mx.server.name&quot;</span>, <span class="n">578</span>,
   use_tle: <span class="n">true</span>,
-  auth: {<span class="s">&quot;your_id&quot;</span>, <span class="s">&quot;your_password&quot;</span>},
-  log_level: <span class="t">Logger</span><span class="t">::</span><span class="t">DEBUG</span>) <span class="k">do</span>
+  auth: {<span class="s">&quot;your_id&quot;</span>, <span class="s">&quot;your_password&quot;</span>}) <span class="k">do</span>
   <span class="c"># In this block, default receiver is EMail::Message object</span>
   from <span class="s">&quot;your@mail.addr&quot;</span>
   to <span class="s">&quot;to@some.domain&quot;</span>
@@ -356,7 +354,7 @@ config.logger.level <span class="o">=</span> <span class="t">Logger</span><span 
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>

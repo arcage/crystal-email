@@ -1,8 +1,73 @@
 require "./client/*"
+require "log"
 
 # SMTP client object.
 #
+# ### Client configuration
+#
+# EMail::Client::Config object is used to set client configrations.
+#
+# ### Logging
+#
+# Without client specific logger in EMail::Client::Config, all EMail::Client objects use the default logger.
+#
+# The default logger can be got by EMail::Client.log
+# You can set log level, output IO, and log formatter for the default logger by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.
+#
 class EMail::Client
+  # :nodoc:
+  DEFAULT_NAME = "EMail_Client"
+
+  # :nodoc:
+  LOG_FORMATTER = Log::Formatter.new do |entry, io|
+    io << entry.timestamp.to_s("%Y/%m/%d %T") << " [" << entry.source << "/" << Process.pid << "] "
+    io << entry.severity << " " << entry.message
+    if entry.context.size > 0
+      io << " -- " << entry.context
+    end
+    if ex = entry.exception
+      io << " -- " << ex.class << ": " << ex
+    end
+  end
+
+  @@log : Log = create_logger
+
+  # Get default logger([Log]() typr object) to output SMTP log.
+  def self.log : Log
+    @@log
+  end
+
+  # Set log level for default logger.
+  def self.log_level=(new_level : Log::Severity)
+    @@log.level = new_level
+    nil
+  end
+
+  # Set log io for default logger.
+  def self.log_io=(new_io : IO)
+    if (log_backend = @@log.backend).is_a?(Log::IOBackend)
+      log_backend.io = new_io
+    end
+    nil
+  end
+
+  # Set log formatter for default logger.
+  def self.log_formatter=(new_formatter : Log::Formatter)
+    if (log_backend = @@log.backend).is_a?(Log::IOBackend)
+      log_backend.formatter = new_formatter
+    end
+    nil
+  end
+
+  # :nodoc:
+  private def self.create_logger : Log
+    log = Log.for(self, Log::Severity::Info)
+    log_backend = Log::IOBackend.new(STDOUT)
+    log_backend.formatter = LOG_FORMATTER
+    log.backend = log_backend
+    log
+  end
+
   @helo_domain : String?
   @started : Bool = false
   @first_send : Bool = true
@@ -83,7 +148,7 @@ class EMail::Client
   # Send a email message
   #
   # You can call this only in the block of the `EMail::Client#start` method.
-  # This retruns sending result as Bool(`true` for success, `false` for fail). 
+  # This retruns sending result as Bool(`true` for success, `false` for fail).
   def send(mail : EMail::Message) : Bool
     raise EMail::Error::ClientError.new("Email client has not been started") unless @started
     @command_history.clear
@@ -110,6 +175,10 @@ class EMail::Client
     socket << command_and_parameter << "\r\n"
     socket.flush
     smtp_responce(command)
+  end
+
+  private def log : Log
+    @config.log || EMail::Client.log
   end
 
   private def smtp_responce(command : String)
@@ -288,7 +357,7 @@ class EMail::Client
   end
 
   private def fatal_error(error : Exception)
-    log_fatal(error.message.try(&.gsub(/\s+/, ' ')).to_s + "(#{error.class})")
+    log_fatal(error)
     if on_fatal_error = @config.on_fatal_error
       on_fatal_error.call(error)
     end
@@ -303,18 +372,21 @@ class EMail::Client
   end
 
   private def log_debug(message : String)
-    @config.logger.debug(log_format(message))
+    message = log_format(message)
+    log.debug { message }
   end
 
   private def log_info(message : String)
-    @config.logger.info(log_format(message))
+    message = log_format(message)
+    log.info { message }
   end
 
   private def log_error(message : String)
-    @config.logger.error(log_format(message))
+    message = log_format(message)
+    log.error { message }
   end
 
-  private def log_fatal(message : String)
-    @config.logger.fatal(log_format(message))
+  private def log_fatal(error : Exception)
+    log.fatal(exception: error) { "Fatal Error" }
   end
 end

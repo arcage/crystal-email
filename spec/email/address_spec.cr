@@ -15,7 +15,6 @@ describe EMail::Address do
         EMail::Address.valid_address!("aa@bb,cc")
       }
     end
-
   end
 
   describe ".valid_name!" do

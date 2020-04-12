@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.31.1">
+<meta name="generator" content="Crystal Docs 0.33.0">
 
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/doc.js"></script>
@@ -165,6 +165,25 @@
 
   <p>SMTP client object.</p>
 
+<h3><a id="client-configuration" class="anchor" href="#client-configuration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Client configuration</h3>
+
+<p>EMail::Client::Config object is used to set client configrations.</p>
+
+<h3><a id="logging" class="anchor" href="#logging">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Logging</h3>
+
+<p>Without client specific logger in EMail::Client::Config, all EMail::Client objects use the default logger.</p>
+
+<p>The default logger can be got by EMail::Client.log
+You can set log level, output IO, and log formatter for the default logger by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.</p>
+
 
 
 
@@ -188,14 +207,14 @@
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client/config.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client/config.cr#L1" target="_blank">
         email/client/config.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client.cr#L5" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L17" target="_blank">
         email/client.cr
       </a>
     
@@ -203,50 +222,6 @@
   
 
 
-
-  
-    <h2>
-      <a id="constant-summary" class="anchor" href="#constant-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-      Constant Summary
-    </h2>
-  
-  <dl>
-    
-      <dt class="entry-const" id="DEFAULT_FATAL_ERROR_HANDLER">
-        <strong>DEFAULT_FATAL_ERROR_HANDLER</strong> = <code><span class="t">OnFatalErrorProc</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>e<span class="o">|</span>
-  <span class="k">if</span> backtrace <span class="o">=</span> e.backtrace?
-    backtrace.each <span class="k">do</span> <span class="o">|</span>line<span class="o">|</span>
-      ((<span class="t">STDERR</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  from &quot;</span>) <span class="o">&lt;&lt;</span> line) <span class="o">&lt;&lt;</span> <span class="s">&#39;\n&#39;</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-  exit(<span class="n">1</span>)
-<span class="k">end</span></code>
-      </dt>
-      
-    
-      <dt class="entry-const" id="DEFAULT_NAME">
-        <strong>DEFAULT_NAME</strong> = <code><span class="s">&quot;EMail_Client&quot;</span></code>
-      </dt>
-      
-    
-      <dt class="entry-const" id="LOG_FORMATTER">
-        <strong>LOG_FORMATTER</strong> = <code><span class="t">Logger</span><span class="t">::</span><span class="t">Formatter</span>.<span class="k">new</span> <span class="k">do</span> <span class="o">|</span>severity, datetime, progname, message, io<span class="o">|</span>
-  (((((io <span class="o">&lt;&lt;</span> (datetime.to_s(<span class="s">&quot;%Y/%m/%d %T&quot;</span>))) <span class="o">&lt;&lt;</span> <span class="s">&quot; [&quot;</span>) <span class="o">&lt;&lt;</span> progname) <span class="o">&lt;&lt;</span> <span class="s">&quot;/&quot;</span>) <span class="o">&lt;&lt;</span> <span class="t">Process</span>.pid) <span class="o">&lt;&lt;</span> <span class="s">&quot;] &quot;</span>
-  ((io <span class="o">&lt;&lt;</span> severity) <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>) <span class="o">&lt;&lt;</span> message
-<span class="k">end</span></code>
-      </dt>
-      
-    
-      <dt class="entry-const" id="LOG_PROGNAME">
-        <strong>LOG_PROGNAME</strong> = <code><span class="s">&quot;crystal-email&quot;</span></code>
-      </dt>
-      
-    
-  </dl>
 
 
 
@@ -270,6 +245,46 @@
   </ul>
 
 
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#log:Log-class-method" class="signature"><strong>.log</strong> : Log</a>
+        
+          <div class="summary"><p>Get default logger(<a href="" target="_blank">Log</a> typr object) to output SMTP log.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_formatter=(new_formatter:Log::Formatter)-class-method" class="signature"><strong>.log_formatter=</strong>(new_formatter : Log::Formatter)</a>
+        
+          <div class="summary"><p>Set log formatter for default logger.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_io=(new_io:IO)-class-method" class="signature"><strong>.log_io=</strong>(new_io : IO)</a>
+        
+          <div class="summary"><p>Set log io for default logger.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_level=(new_level:Log::Severity)-class-method" class="signature"><strong>.log_level=</strong>(new_level : Log::Severity)</a>
+        
+          <div class="summary"><p>Set log level for default logger.</p></div>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -360,13 +375,107 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="log:Log-class-method">
+      <div class="signature">
+        
+        def self.<strong>log</strong> : Log
+
+        <a class="method-permalink" href="#log:Log-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Get default logger(<a href="" target="_blank">Log</a> typr object) to output SMTP log.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_formatter=(new_formatter:Log::Formatter)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_formatter=</strong>(new_formatter : Log::Formatter)
+
+        <a class="method-permalink" href="#log_formatter=(new_formatter:Log::Formatter)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Set log formatter for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_io=(new_io:IO)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_io=</strong>(new_io : IO)
+
+        <a class="method-permalink" href="#log_io=(new_io:IO)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Set log io for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_level=(new_level:Log::Severity)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_level=</strong>(new_level : Log::Severity)
+
+        <a class="method-permalink" href="#log_level=(new_level:Log::Severity)-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Set log level for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
@@ -395,7 +504,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -413,13 +522,13 @@
           <p>Send a email message</p>
 
 <p>You can call this only in the block of the <code><a href="../EMail/Client.html#start(&)-instance-method">EMail::Client#start</a></code> method.
-This retruns sending result as Bool(<code>true</code> for success, <code>false</code> for fail). </p>
+This retruns sending result as Bool(<code>true</code> for success, <code>false</code> for fail).</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -442,7 +551,7 @@ This retruns sending result as Bool(<code>true</code> for success, <code>false</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/3ea7742ee7659c8ba5c52fa1b14bbc1a6507996a/src/email/client.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9e183a29e87efaa87dd30a6666cbd1276f92b94d/src/email/client.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.31.1">
+<meta name="generator" content="Crystal Docs 0.33.0">
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
@@ -209,9 +209,9 @@ client.start <span class="k">do</span>
 
 <p>This code will output log entries to <code>STDOUT</code> as follows:</p>
 
-<pre><code class="language-text">2018/01/25 20:35:09 [crystal-email/12347] INFO [EMail_Client] Start TCP session to your.mx.example.com:25
-2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Successfully sent a message from &lt;your_addr@example.com> to 1 recipient(s)
-2018/01/25 20:35:10 [crystal-email/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25</code></pre>
+<pre><code class="language-text">2018/01/25 20:35:09 [e_mail.client/12347] INFO [EMail_Client] Start TCP session to your.mx.example.com:25
+2018/01/25 20:35:10 [e_mail.client/12347] INFO [EMail_Client] Successfully sent a message from &lt;your_addr@example.com> to 1 recipient(s)
+2018/01/25 20:35:10 [e_mail.client/12347] INFO [EMail_Client] Close TCP session to your.mx.example.com:25</code></pre>
 
 <h3><a id="client-configs" class="anchor" href="#client-configs">
   <svg class="octicon-link" aria-hidden="true">
@@ -242,6 +242,8 @@ client.start <span class="k">do</span>
     <use href="#octicon-link"/>
   </svg>
 </a>Concurrent sending</h3>
+
+<p><strong>Note: this feature supports the <em>concurrent</em>(not parallel) sending with only one thread.</strong></p>
 
 <p>By using <code><a href="EMail/ConcurrentSender.html">EMail::ConcurrentSender</a></code> object, you can concurrently send multiple messages by multiple connections.</p>
 
@@ -275,6 +277,38 @@ sender.start <span class="k">do</span>
 <span class="k">end</span></code></pre>
 
 <p>See <a href="https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html" target="_blank">EMail::ConcurrentSender</a> for more details.</p>
+
+<h2><a id="logging" class="anchor" href="#logging">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Logging</h2>
+
+<p>The v0.34.0 of Crystal language has drastic changes in the logging functions. To fit it, the v0.5.0 of this shard also changes the logging behaviour.</p>
+
+<p>You can use two kinds of logger(<code>Log</code> type) objects, the <strong>default logger</strong> and the <strong>client specific logger</strong>.</p>
+
+<p>The <strong>default logger</strong> is decleared on the <code><a href="EMail/Client.html">EMail::Client</a></code> type. It can be got by <code>EMail::Client.log</code>, and change its behaviour by <code>EMail::Client.log_***=</code> methods.</p>
+
+<p>On the other hand, the <strong>client specific logger</strong> will be set to <code><a href="EMail/Client.html">EMail::Client</a></code> instance itself by <code><a href="EMail/Client/Config.html">EMail::Client::Config</a></code> setting. With this, you can use your own logger for the <code><a href="EMail/Client.html">EMail::Client</a></code> object.</p>
+
+<p>If the <code><a href="EMail/Client.html">EMail::Client</a></code> object has the <strong>client specific logger</strong>, the client use it to output the log entries. Otherwise, the client use the <strong>default logger</strong>.</p>
+
+<p>See <a href="https://www.denchu.org/crystal-email/EMail/Client.html" target="_blank">EMail::Client</a> and <a href="https://www.denchu.org/crystal-email/EMail/Client/Config.html" target="_blank">EMail::Client::Config</a> for more details.</p>
+
+<h3><a id="debug-log" class="anchor" href="#debug-log">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Debug log</h3>
+
+<p>When you set the log level to <code>Log::Severity::Debug</code>, you can see all of the SMTP commands and the resposes in the log entries.</p>
+
+<pre><code class="language-crystal"><span class="t">EMail</span><span class="t">::</span><span class="t">Client</span>.log_level <span class="o">=</span> <span class="t">Log</span><span class="t">::</span><span class="t">Severity</span><span class="t">::</span><span class="t">Debug</span></code></pre>
+
+<p>Debug log are very useful to check how SMTP session works.</p>
+
+<p>But, in the case of using SMTP AUTH, the debug log includes Base64 encoded user ID and passowrd. You should remenber that anyone can decode the authentication information from the debug log. And, you should use that <strong>very carefully</strong>.</p>
 
 <h2><a id="owner" class="anchor" href="#owner">
   <svg class="octicon-link" aria-hidden="true">
