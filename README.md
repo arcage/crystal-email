@@ -129,9 +129,9 @@ See [EMail::ConcurrentSender](https://www.denchu.org/crystal-email/EMail/Concurr
 
 The v0.34.0 of Crystal language has drastic changes in the logging functions. To fit it, the v0.5.0 of this shard also changes the logging behaviour.
 
-You can use two kinds of logger(`Log` type) objects, the **default logger** and the **client specific logger**.
+You can use two kinds of logger(`Log` type object), the **default logger** and the **client specific logger**.
 
-The **default logger** is decleared on the `EMail::Client` type. It can be got by `EMail::Client.log`, and change its behaviour by `EMail::Client.log_***=` methods.
+The **default logger** is declered on the `EMail::Client` type. It can be got by `EMail::Client.log`, and change its behavior by `EMail::Client.log_***=` methods.
 
 On the other hand, the **client specific logger** will be set to `EMail::Client` instance itself by `EMail::Client::Config` setting. With this, you can use your own logger for the `EMail::Client` object.
 
