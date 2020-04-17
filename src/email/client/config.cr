@@ -1,4 +1,9 @@
 class EMail::Client
+  enum TLSMode
+    NONE
+    STARTTLS
+    SMTPS
+  end
   # SMTP error handler.
   #
   # Called when the SMTP server returns **4XX** or **5XX** responce during sending email.
@@ -9,39 +14,52 @@ class EMail::Client
   # Called when the exception is raised during sending email.
   alias OnFatalErrorProc = Exception ->
 
-  # SMTP client settings.
+  # Base settings
   #
   # ```crystal
-  # # Set the SMTP server FQDN(or IP address) and port.
-  # config = EMail::Client::Config.new("your.mx.example.com", 587)
-  #
-  # # Set domain name for SMTP HELO/EHLO command.
-  # # Default: "[#{IP address of client host}]"
-  # config.helo_domain = "your.host.example.com"
+  # # Create with the SMTP server FQDN(or IP address), port number, .
+  # config = EMail::Client::Config.new("your.mx.example.com", 587, helo_domain: "your.host.example.com")
   #
   # # Set email client name.
   # # Default: "EMail_Client"
   # config.name = "your_app_name"
+  # ```
+  #
+  # ### TLS settings
+  #
+  # ```crystal
+  # # Use SMTP over SSL/TLS
+  # config.use_tls(TLSMode::SMTPS)
   #
   # # Use STARTTLS command to send email
-  # config.use_tls
+  # config.use_tls(TLSMode::STARTTLS)
   #
   # # OpenSSL::SSL::Context::Client object for STARTTLS commands.
   # config.tls_context
   #
-  # # # Disable TLS1.1 or lower protocols.
+  # # Disable TLS1.1 or lower protocols.
   # config.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
   #
-  # # # Set OpenSSL verification mode to skip certificate verification.
-  # # # #openssl_verify_mode= method is deprecated now.
+  # # Set OpenSSL verification mode to skip certificate verification.
   # config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
+  # ```
   #
-  # # Use SMTP AUTH for user authentication.
+  # ### SMTP authentication
+  #
+  # ```crystal
   # config.use_auth("id", "password")
+  # ```
   #
-  # # Use the client specific logger.
+  # ### Logging
+  #
+  # ```crystal
+  # # Use the client specific(non-default) logger.
   # config.log = Log.for("your_log_source")
+  # ```
   #
+  # ### Error handling
+  #
+  # ```crystal
   # # Set SMTP error handler.
   # # Default: nil
   # config.on_failed = EMail::Client::OnFailedProc.new do |mail, command_history|
@@ -56,11 +74,14 @@ class EMail::Client
   #   puts error
   # end
   #
-  # # Set connection timeout to 1 sec.
-  # config.connect_timeout = 1
+  # ### Connection timeouts
+  #
+  # ```crystal
+  # config.connect_timeout = 1 # sec
+  # config.read_timeout = 1    # sec
+  # config.write_timeout = 1   # sec
+  # config.dns_timeout = 1     # sec
   # ```
-  #
-  #
   class Config
     # SMTP server hostname or IP address.
     property host : String
@@ -108,33 +129,59 @@ class EMail::Client
     # WRITE timeout for the socket.
     getter write_timeout : Int32?
 
-    @tls = false
+    @tls : TLSMode = TLSMode::NONE
     @auth : NamedTuple(id: String, password: String)?
 
     # Returns `EMail::Client::Config` object with given settings.
     #
-    # - `use_tls: true` -> `#use_tls`
+    # - `use_tls: tls_mode` -> `#use_tls(tls_mode)`
     # - `auth: {"id", "password"}` -> `#use_auth("id", "password")`
     #
-    # When other optional arguments are given, the property that has same name will be set.
-    #
-    # **NOTE: The `logger` option and `log_XXX` options are exclusive.**
+    # Other optional arguments set value to the property that has the same name.
     def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
-                    client_name : String? = nil, helo_domain : String? = nil,
+                    client_name : String? = nil, helo_domain : String,
                     on_failed : EMail::Client::OnFailedProc? = nil,
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
                     tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
-                    use_tls : Bool = false, auth : Tuple(String, String)? = nil,
+                    use_tls : TLSMode = TLSMode::NONE,
+                    auth : Tuple(String, String)? = nil,
                     log : Log? = nil,
                     dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
                     read_timeout : Int32? = nil, write_timeout : Int32? = nil)
       config = new(host, port)
       config.client_name = client_name if client_name
-      config.helo_domain = helo_domain if helo_domain
+      config.helo_domain = helo_domain
       config.on_failed = on_failed
       config.on_fatal_error = on_fatal_error if on_fatal_error
       config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
-      config.use_tls if use_tls
+      config.use_tls(use_tls)
+      config.log = log
+      config.use_auth(auth[0], auth[1]) if auth
+      config.dns_timeout = dns_timeout if dns_timeout
+      config.connect_timeout = connect_timeout if connect_timeout
+      config.read_timeout = read_timeout if read_timeout
+      config.write_timeout = write_timeout if write_timeout
+      config
+    end
+
+    # :ditto:
+    @[Deprecated("At the next version, helo_domain option will be required argumnent.")]
+    def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
+                    client_name : String? = nil,
+                    on_failed : EMail::Client::OnFailedProc? = nil,
+                    on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
+                    tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
+                    use_tls : TLSMode = TLSMode::NONE,
+                    auth : Tuple(String, String)? = nil,
+                    log : Log? = nil,
+                    dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
+                    read_timeout : Int32? = nil, write_timeout : Int32? = nil)
+      config = new(host, port)
+      config.client_name = client_name if client_name
+      config.on_failed = on_failed
+      config.on_fatal_error = on_fatal_error if on_fatal_error
+      config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
+      config.use_tls(use_tls)
       config.log = log
       config.use_auth(auth[0], auth[1]) if auth
       config.dns_timeout = dns_timeout if dns_timeout
@@ -156,17 +203,21 @@ class EMail::Client
     end
 
     # Use STARTTLS command to encrypt the SMTP session.
-    def use_tls(tls_port : Int32? = nil)
+    def use_tls(tls_mode : TLSMode)
       {% if flag?(:without_openssl) %}
         raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       {% end %}
-      @port = tls_port if tls_port
-      @tls = true
+      @tls = tls_mode
     end
 
-    # Returns `true` when using TLS.
-    def use_tls?
-      @tls
+    # Returns `true` when using SMTPS.
+    def use_smtps?
+      @tls.smtps?
+    end
+
+    # Returns `true` when using STARTTLS.
+    def use_starttls?
+      @tls.starttls?
     end
 
     # Client name used in **Message-ID** header and log entry.

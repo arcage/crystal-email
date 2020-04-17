@@ -32,7 +32,7 @@ class EMail::Client
 
   @@log : Log = create_logger
 
-  # Get default logger([Log]() typr object) to output SMTP log.
+  # Get default logger([Log](https://crystal-lang.org/api/OpenSSL/Log.html) type object) to output SMTP log.
   def self.log : Log
     @@log
   end
@@ -71,6 +71,7 @@ class EMail::Client
   @helo_domain : String?
   @started : Bool = false
   @first_send : Bool = true
+  @tcp_socket : TCPSocket? = nil
   {% if flag?(:without_openssl) %}
     @socket : TCPSocket? = nil
   {% else %}
@@ -89,7 +90,7 @@ class EMail::Client
   end
 
   private def helo_domain : String
-    @helo_domain ||= @config.helo_domain || "[#{socket.as(TCPSocket).local_address.address}]"
+    @helo_domain ||= @config.helo_domain || "[#{@tcp_socket.as(TCPSocket).local_address.address}]"
   end
 
   private def socket
@@ -124,15 +125,40 @@ class EMail::Client
     end
   end
 
+  private def wrap_socket_tls
+    {% if flag?(:without_openssl) %}
+      log_error("TLS is disabled because `-D without_openssl` was passed at compile time")
+      false
+    {% else %}
+      case tcp_socket = @socket
+      when TCPSocket
+        log_info("create openssl socket.client")
+        tls_socket = OpenSSL::SSL::Socket::Client.new(tcp_socket, @config.tls_context, sync_close: true, hostname: @config.host)
+        tls_socket.sync = false
+        log_info("Start SMTPS session with #{tls_socket.tls_version}")
+        @socket = tls_socket
+        true
+      when OpenSSL::SSL::Socket::Client
+        log_info("socket is already useing TLS.")
+        true
+      else
+        raise Error::ClientError.new("socket is not opened.")
+        false
+      end
+    {% end %}
+  end
+
   private def ready_to_send
     log_info("Start TCP session to #{@config.host}:#{@config.port}")
-    @socket = TCPSocket.new(@config.host, @config.port, @config.dns_timeout, @config.connect_timeout)
+    tcp_socket = TCPSocket.new(@config.host, @config.port, @config.dns_timeout, @config.connect_timeout)
     if read_timeout = @config.read_timeout
-      @socket.as(TCPSocket).read_timeout = read_timeout
+      tcp_socket.read_timeout = read_timeout
     end
     if write_timeout = @config.write_timeout
-      @socket.as(TCPSocket).write_timeout = write_timeout
+      tcp_socket.write_timeout = write_timeout
     end
+    @socket = @tcp_socket = tcp_socket
+    wrap_socket_tls if @config.use_smtps?
   end
 
   private def mail_validate!(mail : EMail::Message) : EMail::Message
@@ -227,19 +253,10 @@ class EMail::Client
   end
 
   private def smtp_starttls
-    if @config.use_tls?
+    if @config.use_starttls?
       status_code, _ = smtp_command("STARTTLS")
       if (status_code == "220")
-        {% if flag?(:without_openssl) %}
-          log_error("TLS is disabled because `-D without_openssl` was passed at compile time")
-          false
-        {% else %}
-          tls_socket = OpenSSL::SSL::Socket::Client.new(@socket.as(TCPSocket), @config.tls_context, sync_close: true, hostname: @config.host)
-          tls_socket.sync = false
-          log_info("Start TLS session with #{tls_socket.tls_version}")
-          @socket = tls_socket
-          smtp_helo
-        {% end %}
+        wrap_socket_tls
       else
         false
       end
@@ -387,6 +404,7 @@ class EMail::Client
   end
 
   private def log_fatal(error : Exception)
-    log.fatal(exception: error) { "Fatal Error" }
+    message = log_format("Exception rised")
+    log.fatal(exception: error) { message }
   end
 end

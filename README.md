@@ -11,7 +11,7 @@ You can:
 - set multiple recipients to the email.
 - use multibyte characters(only UTF-8) in the email.
 - send the email by using local or remote SMTP server.
-- use TLS connection by `STARTTLS` command.
+- use TLS connection by SMTP orver SSL/TLS or `STARTTLS` command.
 - use SMTP-AUTH by `AUTH PLAIN` or `AUTH LOGIN` when using TLS.
 - send multiple emails concurrently by using multiple smtp connections.
 

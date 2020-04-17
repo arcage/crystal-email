@@ -15,7 +15,7 @@
 </svg>
 
   <meta id="repository-name" content="github.com/arcage/crystal-email">
-  <title>EMail::Error::AddressError - github.com/arcage/crystal-email</title>
+  <title>EMail::Client::TLSMode - github.com/arcage/crystal-email</title>
   <script type="text/javascript">
     CrystalDoc.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       
         <ul>
   
-  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
+  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail/Client" data-name="email::client">
       <a href="../../EMail/Client.html">Client</a>
       
         <ul>
@@ -65,7 +65,7 @@
       
     </li>
   
-  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Client/TLSMode" data-name="email::client::tlsmode">
+  <li class=" current" data-id="github.com/arcage/crystal-email/EMail/Client/TLSMode" data-name="email::client::tlsmode">
       <a href="../../EMail/Client/TLSMode.html">TLSMode</a>
       
     </li>
@@ -80,12 +80,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
+  <li class="parent " data-id="github.com/arcage/crystal-email/EMail/Error" data-name="email::error">
       <a href="../../EMail/Error.html">Error</a>
       
         <ul>
   
-  <li class=" current" data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
+  <li class=" " data-id="github.com/arcage/crystal-email/EMail/Error/AddressError" data-name="email::error::addresserror">
       <a href="../../EMail/Error/AddressError.html">AddressError</a>
       
     </li>
@@ -149,12 +149,10 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> EMail::Error::AddressError
+  <span class="kind">enum</span> EMail::Client::TLSMode
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../EMail/Error/AddressError.html">EMail::Error::AddressError</a></li><li class="superclass"><a href="../../EMail/Error.html">EMail::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -182,8 +180,8 @@
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/f77b954ad19dcfd125317ed8cfff7f0161f8c405/src/email/error.cr#L2" target="_blank">
-        email/error.cr
+      <a href="https://github.com/arcage/crystal-email/blob/f77b954ad19dcfd125317ed8cfff7f0161f8c405/src/email/client/config.cr#L2" target="_blank">
+        email/client/config.cr
       </a>
     
     <br/>
@@ -191,11 +189,67 @@
 
 
 
+  
+    <h2>
+      <a id="enum-members" class="anchor" href="#enum-members">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Enum Members
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="NONE">
+        <strong>NONE</strong> = <code><span class="n">0</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="STARTTLS">
+        <strong>STARTTLS</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="SMTPS">
+        <strong>SMTPS</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+    
+  </dl>
 
 
 
 
 
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#none?-instance-method" class="signature"><strong>#none?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#smtps?-instance-method" class="signature"><strong>#smtps?</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#starttls?-instance-method" class="signature"><strong>#starttls?</strong></a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -249,6 +303,64 @@
 
 
 
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="none?-instance-method">
+      <div class="signature">
+        
+        def <strong>none?</strong>
+
+        <a class="method-permalink" href="#none?-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f77b954ad19dcfd125317ed8cfff7f0161f8c405/src/email/client/config.cr#L3" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="smtps?-instance-method">
+      <div class="signature">
+        
+        def <strong>smtps?</strong>
+
+        <a class="method-permalink" href="#smtps?-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f77b954ad19dcfd125317ed8cfff7f0161f8c405/src/email/client/config.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="starttls?-instance-method">
+      <div class="signature">
+        
+        def <strong>starttls?</strong>
+
+        <a class="method-permalink" href="#starttls?-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/f77b954ad19dcfd125317ed8cfff7f0161f8c405/src/email/client/config.cr#L4" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
