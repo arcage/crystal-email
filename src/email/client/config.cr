@@ -14,15 +14,11 @@ class EMail::Client
   # Called when the exception is raised during sending email.
   alias OnFatalErrorProc = Exception ->
 
-  # Base settings
+  # SMTP client setting object.
   #
   # ```crystal
-  # # Create with the SMTP server FQDN(or IP address), port number, .
+  # # Create config object with the SMTP server FQDN(or IP address), port number, and helo domain.
   # config = EMail::Client::Config.new("your.mx.example.com", 587, helo_domain: "your.host.example.com")
-  #
-  # # Set email client name.
-  # # Default: "EMail_Client"
-  # config.name = "your_app_name"
   # ```
   #
   # ### TLS settings
@@ -73,15 +69,25 @@ class EMail::Client
   # config.on_fatal_error = EMail::Client::OnFatalErrorProc.new do |error|
   #   puts error
   # end
-  #
+  # ```
+  # 
   # ### Connection timeouts
   #
   # ```crystal
   # config.connect_timeout = 1 # sec
-  # config.read_timeout = 1    # sec
-  # config.write_timeout = 1   # sec
-  # config.dns_timeout = 1     # sec
+  # config.read_timeout    = 1 # sec
+  # config.write_timeout   = 1 # sec
+  # config.dns_timeout     = 1 # sec
   # ```
+  #
+  # ### Misc
+  #
+  # ```crystal
+  # # Set email client name, used in log entries and Message-ID headers.
+  # # Default: "EMail_Client"
+  # config.name = "your_app_name"
+  # ```
+  #
   class Config
     # SMTP server hostname or IP address.
     property host : String
