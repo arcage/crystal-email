@@ -9,7 +9,7 @@ describe EMail::Client do
     it "try to send an email to SMTP server, but recipient refused." do
       log = String.build do |io|
         EMail::Client.log_io = io
-        config = EMail::Client::Config.new("localhost", 25)
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
         client = EMail::Client.new(config)
         client.start do
           send(email).should be_false
@@ -21,8 +21,8 @@ describe EMail::Client do
     it "send an email with SMTP auth." do
       log = String.build do |io|
         EMail::Client.log_io = io
-        config = EMail::Client::Config.new("localhost", 25)
-        config.use_tls
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
+        config.use_tls(:starttls)
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "password")
         client = EMail::Client.new(config)
@@ -36,8 +36,8 @@ describe EMail::Client do
     it "try to send an email with invalid password, but authentication refused." do
       log = String.build do |io|
         EMail::Client.log_io = io
-        config = EMail::Client::Config.new("localhost", 25)
-        config.use_tls
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
+        config.use_tls(:starttls)
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "invalid")
         client = EMail::Client.new(config)
