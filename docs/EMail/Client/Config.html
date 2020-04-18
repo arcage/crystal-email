@@ -238,9 +238,9 @@ config.on_fatal_error <span class="o">=</span> <span class="t">EMail</span><span
 </a>Connection timeouts</h3>
 
 <pre><code class="language-crystal">config.connect_timeout <span class="o">=</span> <span class="n">1</span> <span class="c"># sec</span>
-config.read_timeout    <span class="o">=</span> <span class="n">1</span> <span class="c"># sec</span>
-config.write_timeout   <span class="o">=</span> <span class="n">1</span> <span class="c"># sec</span>
-config.dns_timeout     <span class="o">=</span> <span class="n">1</span> <span class="c"># sec</span></code></pre>
+config.read_timeout <span class="o">=</span> <span class="n">1</span>    <span class="c"># sec</span>
+config.write_timeout <span class="o">=</span> <span class="n">1</span>   <span class="c"># sec</span>
+config.dns_timeout <span class="o">=</span> <span class="n">1</span>     <span class="c"># sec</span></code></pre>
 
 <h3><a id="misc" class="anchor" href="#misc">
   <svg class="octicon-link" aria-hidden="true">
@@ -275,7 +275,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L91" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L91" target="_blank">
         email/client/config.cr
       </a>
     
@@ -297,7 +297,9 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new(host,port=EMail::DEFAULT_SMTP_PORT)-class-method" class="signature"><strong>.new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>)</a>
+        <a href="#new(host,port=EMail::DEFAULT_SMTP_PORT,*,helo_domain=nil)-class-method" class="signature"><strong>.new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, helo_domain = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Creates instance with minimam setting.</p></div>
         
       </li>
     
@@ -597,18 +599,23 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(host,port=EMail::DEFAULT_SMTP_PORT)-class-method">
+    <div class="entry-detail" id="new(host,port=EMail::DEFAULT_SMTP_PORT,*,helo_domain=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>)
+        def self.<strong>new</strong>(host, port = <span class="t">EMail</span><span class="t">::</span><span class="t">DEFAULT_SMTP_PORT</span>, *, helo_domain = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#new(host,port=EMail::DEFAULT_SMTP_PORT)-class-method">#</a>
+        <a class="method-permalink" href="#new(host,port=EMail::DEFAULT_SMTP_PORT,*,helo_domain=nil)-class-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Creates instance with minimam setting.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -645,7 +652,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L147" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L147" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -674,7 +681,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L174" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -707,7 +714,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L247" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L247" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -728,7 +735,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L252" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L252" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -749,7 +756,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -772,7 +779,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -793,7 +800,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -814,7 +821,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -835,7 +842,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L127" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -856,7 +863,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -877,7 +884,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L102" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -900,7 +907,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L206" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L206" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -921,7 +928,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -942,7 +949,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -967,7 +974,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L124" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -992,7 +999,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L124" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1015,7 +1022,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L107" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L107" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1038,7 +1045,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L107" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L107" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1061,7 +1068,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1084,7 +1091,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,7 +1112,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1126,7 +1133,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1147,7 +1154,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L133" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1168,7 +1175,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1191,7 +1198,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L117" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1216,7 +1223,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L242" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L242" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1237,7 +1244,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L257" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L257" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1258,7 +1265,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L220" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L220" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1279,7 +1286,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L225" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L225" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1300,7 +1307,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L212" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L212" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1321,7 +1328,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L136" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1342,7 +1349,7 @@ config.name <span class="o">=</span> <span class="s">&quot;your_app_name&quot;</
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/084399bb02251032734054208ee6d25461557a47/src/email/client/config.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/525e6fe1d99e32d948a320b1b1fb35d877b99eaa/src/email/client/config.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>

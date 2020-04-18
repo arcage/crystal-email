@@ -70,14 +70,14 @@ class EMail::Client
   #   puts error
   # end
   # ```
-  # 
+  #
   # ### Connection timeouts
   #
   # ```crystal
   # config.connect_timeout = 1 # sec
-  # config.read_timeout    = 1 # sec
-  # config.write_timeout   = 1 # sec
-  # config.dns_timeout     = 1 # sec
+  # config.read_timeout = 1    # sec
+  # config.write_timeout = 1   # sec
+  # config.dns_timeout = 1     # sec
   # ```
   #
   # ### Misc
@@ -154,9 +154,8 @@ class EMail::Client
                     log : Log? = nil,
                     dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
                     read_timeout : Int32? = nil, write_timeout : Int32? = nil)
-      config = new(host, port)
+      config = new(host, port, helo_domain: helo_domain)
       config.client_name = client_name if client_name
-      config.helo_domain = helo_domain
       config.on_failed = on_failed
       config.on_fatal_error = on_fatal_error if on_fatal_error
       config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
@@ -197,6 +196,7 @@ class EMail::Client
       config
     end
 
+    # Creates instance with minimam setting.
     def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *, @helo_domain = nil)
     end
 
