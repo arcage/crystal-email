@@ -197,7 +197,7 @@ class EMail::Client
       config
     end
 
-    def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT)
+    def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *, @helo_domain = nil)
     end
 
     # Domain name for SMTP **HELO** or **EHLO** command.
