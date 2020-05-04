@@ -1,5 +1,4 @@
 require "base64"
-require "logger"
 require "socket"
 {% if !flag?(:without_openssl) %}
   require "openssl"
@@ -8,7 +7,7 @@ require "uri"
 require "./email/*"
 
 module EMail
-  VERSION           = "0.6.0"
+  VERSION           = "0.6.1"
   DEFAULT_SMTP_PORT = 25
 
   # :nodoc:
