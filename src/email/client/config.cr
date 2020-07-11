@@ -116,6 +116,10 @@ class EMail::Client
     # See [OpenSSL::SSL::Context::Client](https://crystal-lang.org/api/OpenSSL/SSL/Context/Client.html).
     getter tls_context = OpenSSL::SSL::Context::Client.new
 
+    # Force a auth method ignoring supported methods on SMTP Server
+    # You can pass it as EMail::Client::AuthMethod::PLAIN
+    property force_auth_method : EMail::Client::AuthMethod?
+
     # Client specific(non-default) logger.
     #
     # Even without this, email clients can use the default logger of the EMail::Client type to output log entries.
@@ -150,6 +154,7 @@ class EMail::Client
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
                     tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                     use_tls : TLSMode = TLSMode::NONE,
+                    force_auth_method : EMail::Client::AuthMethod = nil,
                     auth : Tuple(String, String)? = nil,
                     log : Log? = nil,
                     dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
@@ -160,6 +165,7 @@ class EMail::Client
       config.on_fatal_error = on_fatal_error if on_fatal_error
       config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
       config.use_tls(use_tls)
+      config.force_auth_method = force_auth_method if force_auth_method
       config.log = log
       config.use_auth(auth[0], auth[1]) if auth
       config.dns_timeout = dns_timeout if dns_timeout
@@ -177,6 +183,7 @@ class EMail::Client
                     on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
                     tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
                     use_tls : TLSMode = TLSMode::NONE,
+                    force_auth_method : EMail::Client::AuthMethod = nil,
                     auth : Tuple(String, String)? = nil,
                     log : Log? = nil,
                     dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
@@ -187,6 +194,7 @@ class EMail::Client
       config.on_fatal_error = on_fatal_error if on_fatal_error
       config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
       config.use_tls(use_tls)
+      config.force_auth_method = force_auth_method if force_auth_method
       config.log = log
       config.use_auth(auth[0], auth[1]) if auth
       config.dns_timeout = dns_timeout if dns_timeout

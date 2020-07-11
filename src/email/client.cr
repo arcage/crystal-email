@@ -30,6 +30,14 @@ class EMail::Client
     end
   end
 
+  # :nodoc:
+  alias AuthMethod = String
+
+  class AuthMethod
+    PLAIN = "PLAIN"
+    LOGIN = "LOGIN"
+  end
+
   @@log : Log = create_logger
 
   # Get default logger([Log](https://crystal-lang.org/api/OpenSSL/Log.html) type object) to output SMTP log.
@@ -270,13 +278,19 @@ class EMail::Client
       login_id = @config.auth_id.not_nil!
       login_password = @config.auth_password.not_nil!
       if socket.is_a?(OpenSSL::SSL::Socket::Client)
-        if @esmtp_commands["AUTH"].includes?("PLAIN")
+        if @config.force_auth_method == AuthMethod::PLAIN
           smtp_auth_plain(login_id, login_password)
-        elsif @esmtp_commands["AUTH"].includes?("LOGIN")
+        elsif @config.force_auth_method == AuthMethod::LOGIN
           smtp_auth_login(login_id, login_password)
         else
-          log_error("cannot found supported authentication methods")
-          false
+          if @esmtp_commands["AUTH"].includes?(AuthMethod::PLAIN)
+            smtp_auth_plain(login_id, login_password)
+          elsif @esmtp_commands["AUTH"].includes?(AuthMethod::LOGIN)
+            smtp_auth_login(login_id, login_password)
+          else
+            log_error("cannot found supported authentication methods")
+            false
+          end
         end
       else
         log_error("AUTH command cannot be used without TLS")
