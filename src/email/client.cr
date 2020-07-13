@@ -257,6 +257,8 @@ class EMail::Client
       status_code, _ = smtp_command("STARTTLS")
       if (status_code == "220")
         wrap_socket_tls
+        @esmtp_commands.clear
+        return smtp_helo
       else
         false
       end
