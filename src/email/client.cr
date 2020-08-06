@@ -406,7 +406,7 @@ class EMail::Client
   end
 
   private def log_fatal(error : Exception)
-    message = log_format("Exception rised")
+    message = log_format("Exception raised")
     log.fatal(exception: error) { message }
   end
 end
