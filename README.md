@@ -31,6 +31,12 @@ dependencies:
 
 Then, run `shards install`
 
+### Library requirement
+
+When using STARTTLS or SMTPS, this shard require **libssl** and **libcrypto** for TLS handling. 
+
+You may have to install those libraries to your system.
+
 ## Usage
 
 To send a minimal email message:
