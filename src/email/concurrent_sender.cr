@@ -1,6 +1,6 @@
 # Utility object for concurrent email sending.
 #
-# ```crystal
+# ```
 # rcpt_list = ["a@example.com", "b@example.com", "c@example.com", "d@example.com"]
 #
 # # Set SMTP client configuration
