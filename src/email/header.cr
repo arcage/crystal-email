@@ -288,7 +288,7 @@ abstract class EMail::Header
       fname_chars = Char::Reader.new(file_name)
       encoded_line = " filename*#{encoded_lines.size}*=UTF-8''"
       until fname_chars.current_char == '\u{0}'
-        fname_char = URI.encode(fname_chars.current_char.to_s)
+        fname_char = URI.encode_path(fname_chars.current_char.to_s)
         line_size = encoded_line.size + fname_chars.current_char_width * 3
         unless line_size < LINE_LENGTH
           encoded_lines << encoded_line + ";"

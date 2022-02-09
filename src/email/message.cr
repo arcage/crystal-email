@@ -2,7 +2,7 @@
 #
 # ### Minimal email with plain text message.
 #
-# ```crystal
+# ```
 # email = EMail::Message.new
 #
 # # Email headers
@@ -39,12 +39,12 @@
 #
 # ### Set custom header
 #
-# ```crystal
+# ```
 # email.custom_header "X-Mailer", "Your APP Name"
 # ```
 # ### Set mailbox name with email address
 #
-# ```crystal
+# ```
 # email.from "your_addr@example.com", "your name"
 # ```
 #
@@ -52,7 +52,7 @@
 #
 # ### HTML email with altanative plain text message.
 #
-# ```crystal
+# ```
 # email = EMail::Message.new
 #
 # # Email headers
@@ -84,7 +84,7 @@
 #
 # ### Attache files
 #
-# ```crystal
+# ```
 # email = EMail::Message.new
 #
 # # Email headers
@@ -106,26 +106,26 @@
 #
 # #### Set alternative file name for recipient
 #
-# ```crystal
+# ```
 # email.attach "./photo.jpeg", file_name: "last_year.jpeg"
 # ```
 #
 # #### Set specific MIME type
 #
-# ```crystal
+# ```
 # email.attach "./data", mime_type: "text/csv"
 # ```
 #
 # #### Read attachment file data from IO
 #
-# ```crystal
+# ```
 # email.attach io, file_name: "photo.jpeg"
 # ```
 # In this case, `file_name` argument is required.
 #
 # ### Add message resouces
 #
-# ```crystal
+# ```
 # email = EMail::Message.new
 #
 # # Email headers

@@ -131,7 +131,7 @@ abstract class EMail::Content
       @other_headers << Header::ContentDisposition.new(@file_name)
       if file_id = @file_id
         content_id = Header::ContentID.new
-        content_id.set (file_id)
+        content_id.set(file_id)
         @other_headers << content_id
       end
       @data = encode_data(io)
