@@ -32,18 +32,18 @@ class EMail::Client
 
   @@log : Log = create_logger
 
-  # Get default logger([Log](https://crystal-lang.org/api/OpenSSL/Log.html) type object) to output SMTP log.
+  # Gets default logger([Log](https://crystal-lang.org/api/OpenSSL/Log.html) type object) to output SMTP log.
   def self.log : Log
     @@log
   end
 
-  # Set log level for default logger.
+  # Sets log level for default logger.
   def self.log_level=(new_level : Log::Severity)
     @@log.level = new_level
     nil
   end
 
-  # Set log io for default logger.
+  # Sets log io for default logger.
   def self.log_io=(new_io : IO)
     if (log_backend = @@log.backend).is_a?(Log::IOBackend)
       log_backend.io = new_io
@@ -51,7 +51,7 @@ class EMail::Client
     nil
   end
 
-  # Set log formatter for default logger.
+  # Sets log formatter for default logger.
   def self.log_formatter=(new_formatter : Log::Formatter)
     if (log_backend = @@log.backend).is_a?(Log::IOBackend)
       log_backend.formatter = new_formatter
@@ -90,7 +90,7 @@ class EMail::Client
   end
 
   private def helo_domain : String
-    @helo_domain ||= @config.helo_domain || "[#{@tcp_socket.as(TCPSocket).local_address.address}]"
+    @helo_domain ||= @config.helo_domain
   end
 
   private def socket
@@ -101,7 +101,7 @@ class EMail::Client
     end
   end
 
-  # Start SMTP session.
+  # Starts SMTP session.
   #
   # In the block, the default receiver will be `self`.
   def start
@@ -171,7 +171,7 @@ class EMail::Client
     mail.validate!
   end
 
-  # Send a email message
+  # Sends a email message
   #
   # You can call this only in the block of the `EMail::Client#start` method.
   # This retruns sending result as Bool(`true` for success, `false` for fail).

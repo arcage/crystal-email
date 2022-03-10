@@ -79,7 +79,7 @@ abstract class EMail::Content
   class TextContent < Content
     # Create content with given MIME subtype of text.
     #
-    # When `text_typr` is `plain`, the Mediatype of this content is `text/plain`.
+    # When `text_type` is `plain`, the Mediatype of this content is `text/plain`.
     def initialize(text_type : String)
       super("text/#{text_type}")
       @content_type.set_charset("UTF-8")
@@ -87,22 +87,8 @@ abstract class EMail::Content
 
     # Set content text.
     def data=(message_body : String)
-      encoded = !message_body.ascii_only? || message_body.split(/\r?\n/).map(&.size).max > 998
+      encoded = !message_body.ascii_only? || message_body.split(/\r?\n/).map(&.bytesize).max > 998
       @data = (encoded ? encode_data(message_body) : message_body)
-    end
-
-    private def line_validate(message_body : String)
-      String.build do |str|
-        message_body.split(/\r?\n/) do |line|
-          while line.size > 990
-            str << line[0, 990]
-            str << "!\n"
-            line = line[990, (line.size - 990)]
-          end
-          str << line
-          str << '\n'
-        end
-      end
     end
   end
 
