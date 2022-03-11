@@ -21,21 +21,45 @@
 #
 # You can set following preset headers and your own `#custom_header`s:
 #
-# - [*][!] `#from`
-# - [*][?] `#to`
-# - [*][?] `#cc`
-# - [*][?] `#bcc`
-# - [*] `#reply_to`
+# - **[*][!]** `#from`
+# - **[*][?]** `#to`
+# - **[*][?]** `#cc`
+# - **[*][?]** `#bcc`
+# - **[*]** `#reply_to`
 # - `#return_path`
 # - `#sender`
 # - `#envelope_from`
-# - [!] `#subject`
+# - **[!]** `#subject`
 #
-# _[!] required._
+# **[!]** required.
 #
-# _[*] usable multiple times._
+# **[*]** callable multiple times.
 #
-# _[?] required at least one recipient._
+# **[?]** required at least one of these recipients.
+#
+# ### Add multiple email addresses at once
+#
+# For **From**, **To**, **Cc**, **Bcc**, and **Reply-To** headers, you can add multiple email addresses at once with array of **String** or **EMail::Address**.
+#
+# ```
+# # Add two email addresses with array of email address strings
+# email.to ["to1@example.com", "to2@example.com"]
+#
+# # Notice: Following code will not add two email addresses
+# #         but only one email address "to1@example.com"
+# #         that has mailbox name "to2@example.com"
+# email.to "to1@example.com", "to2@example.com"
+# ```
+#
+# or
+#
+# ```
+# # Add two email addresses with array of EMail::Address ojects
+# addr_list = [] of EMail::Address
+# addr_list << EMail::Address.new("to1@example.com", "to1 name")
+# addr_list << EMail::Address.new("to2@example.com", "to2 name")
+# email.to addr_list
+# ```
 #
 # ### Set custom header
 #
@@ -316,17 +340,17 @@ class EMail::Message
     io << body_content
   end
 
-  # Set plain text message body.
+  # Sets plain text message body.
   def message(message_body : String)
     @body.data = message_body
   end
 
-  # Set html text message body.
+  # Sets html text message body.
   def message_html(message_body : String)
     @body_html.data = message_body
   end
 
-  # Attache the file from given file path.
+  # Attaches the file from given file path.
   #
   # You can set another `file_name` for recipients and sprcific `mime_type`.
   # By default, MIME type will be inferred from extname of the file name.
@@ -334,14 +358,14 @@ class EMail::Message
     @attachments << Content::AttachmentFile.new(file_path, file_id: nil, file_name: file_name, mime_type: mime_type)
   end
 
-  # Attache the file read from given IO.
+  # Attaches the file read from given IO.
   #
   # In this case, `file_name` argument is required.
   def attach(io : IO, file_name : String, mime_type : String? = nil)
     @attachments << Content::AttachmentFile.new(io, file_id: nil, file_name: file_name, mime_type: mime_type)
   end
 
-  # Add message resource file, such as images or stylesheets for the html message, from given file path.
+  # Adds message resource file, such as images or stylesheets for the html message, from given file path.
   #
   # Almost same as `#attach` expect this require `cid` argument.
   def message_resource(file_path : String, cid : String, file_name : String? = nil, mime_type : String? = nil)
@@ -349,7 +373,7 @@ class EMail::Message
     @body_resources[cid] = EMail::Content::AttachmentFile.new(file_path, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
-  # Add message resource file, such as images or stylesheets for the html message, read from given IO.
+  # Adds message resource file, such as images or stylesheets for the html message, read from given IO.
   #
   # Almost same as `#attach` expect this require `cid` argument.
   def message_resource(io : IO, cid : String, file_name : String, mime_type : String? = nil)
@@ -357,14 +381,20 @@ class EMail::Message
     @body_resources[cid] = EMail::Content::AttachmentFile.new(io, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
-  # Set cuntome header you want to set to the message.
+  # Sets cuntome header you want to set to the message.
   def custom_header(name : String, value : String)
     normalized_name = name.downcase.gsub('-', '_')
     raise EMail::Error::MessageError.new("Mime-Version header is automatically set to 1.0, and cannot be overwritten.") if normalized_name == "mime_version"
     raise EMail::Error::MessageError.new("#{name} header must be set by using ##{normalized_name} method") if @preset_headers.keys.map(&.to_s).includes?(normalized_name)
-    opt_hdr = EMail::Header::Unstructured.new(name.to_s)
+    opt_hdr = EMail::Header::Unstructured.new(name)
     opt_hdr.set(value)
     @custom_headers << opt_hdr
+  end
+
+  # Removes all custom headers with specific name.
+  def clear_custom_header(name : String)
+    normalized_name = Header.normalize_name(name)
+    @custom_headers.reject! { |opt_hdr| opt_hdr.name == normalized_name }
   end
 
   # :nodoc:
@@ -385,12 +415,12 @@ class EMail::Message
 
   # :nodoc:
   macro set_address(header_type)
-    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
-    def {{header_type.id}}(mail_address : String, sender_name : String? = nil)
-      @preset_headers[{{header_type}}].set(mail_address, sender_name)
+    # Sets email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
+    def {{header_type.id}}(mail_address : String, mailbox_name : String? = nil)
+      @preset_headers[{{header_type}}].set(mail_address, mailbox_name)
     end
 
-    # Set email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
+    # :ditto:
     def {{header_type.id}}(mail_address : EMail::Address)
       @preset_headers[{{header_type}}].set(mail_address)
     end
@@ -401,15 +431,39 @@ class EMail::Message
 
   # :nodoc:
   macro add_address(header_type)
-    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
-    def {{header_type.id}}(mail_address : String, sender_name : String? = nil)
-      @preset_headers[{{header_type}}].add(mail_address, sender_name)
+    # Adds email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
+    #
+    # Call this multiple times to set multiple addresses.
+    def {{header_type.id}}(mail_address : String, mailbox_name : String? = nil)
+      @preset_headers[{{header_type}}].add(mail_address, mailbox_name)
     end
-
-    # Add email address to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
+  
+    # :ditto:
     def {{header_type.id}}(mail_address : EMail::Address)
       @preset_headers[{{header_type}}].add(mail_address)
     end
+
+    # Adds multiple email addresses to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header at once.
+    #
+    # In this method, you cannot set mailbox name.
+    def {{header_type.id}}(mail_addresses : Array(String))
+      mail_addresses.each do |mail_address|
+        @preset_headers[{{header_type}}].add(mail_address)
+      end
+    end
+
+    # Adds multiple email addresses to **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header at once.
+    def {{header_type.id}}(mail_addresses : Array(EMail::Address))
+      mail_addresses.each do |mail_address|
+        @preset_headers[{{header_type}}].add(mail_address)
+      end
+    end
+
+    # Removes all email addresses from **{{header_type.id.split("_").map(&.capitalize).join("-").id}}** header.
+    def clear_{{header_type.id}}
+      @preset_headers[{{header_type}}].clear
+    end
+
   end
 
   add_address :from

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.2.0">
-<meta name="crystal_docs.project_version" content="0.6.4">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="email">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="email">
-  <title>EMail - email 0.6.4</title>
+  <title>EMail - email 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.4
+        0.7.0
       </span>
     </div>
   </div>
@@ -191,28 +191,28 @@
   </h2>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email.cr#L9" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email.cr#L9" target="_blank">
         email.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email/address.cr#L2" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/address.cr#L2" target="_blank">
         email/address.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email/concurrent_sender.cr#L155" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L155" target="_blank">
         email/concurrent_sender.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email/mimetype.cr#L1" target="_blank">
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/mimetype.cr#L1" target="_blank">
         email/mimetype.cr
       </a>
     
@@ -239,7 +239,7 @@
       
     
       <dt class="entry-const" id="VERSION">
-        <strong>VERSION</strong> = <code><span class="s">&quot;0.6.4&quot;</span></code>
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.6.5&quot;</span></code>
       </dt>
       
     
@@ -262,14 +262,14 @@
       <li class="entry-summary">
         <a href="#send%28config%3AEMail%3A%3AClient%3A%3AConfig%2C%26%29-class-method" class="signature"><strong>.send</strong>(config : EMail::Client::Config, &)</a>
         
-          <div class="summary"><p>Send one email with given client settings as EMail::Client::Config object.</p></div>
+          <div class="summary"><p>Sends one email with given client settings as EMail::Client::Config object.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#send%28%2Aargs%2C%2A%2Anamed_args%2C%26%29-class-method" class="signature"><strong>.send</strong>(*args, **named_args, &)</a>
         
-          <div class="summary"><p>Send one email with given client settings as several arguments.</p></div>
+          <div class="summary"><p>Sends one email with given client settings as several arguments.</p></div>
         
       </li>
     
@@ -307,7 +307,7 @@
       
         <div class="doc">
           
-          <p>Send one email with given client settings as EMail::Client::Config object.</p>
+          <p>Sends one email with given client settings as EMail::Client::Config object.</p>
 <pre><code class="language-crystal">config <span class="o">=</span> <span class="t">EMail</span><span class="t">::</span><span class="t">Client</span><span class="t">::</span><span class="t">Config</span>.<span class="k">new</span>(<span class="s">&quot;your.mx.server.name&quot;</span>, <span class="n">587</span>)
 config.use_tls
 config.use_auth(<span class="s">&quot;your_id&quot;</span>, <span class="s">&quot;your_password&quot;</span>)
@@ -330,7 +330,7 @@ config.use_auth(<span class="s">&quot;your_id&quot;</span>, <span class="s">&quo
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -345,7 +345,7 @@ config.use_auth(<span class="s">&quot;your_id&quot;</span>, <span class="s">&quo
       
         <div class="doc">
           
-          <p>Send one email with given client settings as several arguments.</p>
+          <p>Sends one email with given client settings as several arguments.</p>
 <p>Avairable arguments are same as <code>EMail::Client::Conifg.create</code> method.</p>
 <pre><code class="language-crystal"><span class="t">EMail</span>.send(<span class="s">&quot;your.mx.server.name&quot;</span>, <span class="n">578</span>,
   use_tle: <span class="n">true</span>,
@@ -367,7 +367,7 @@ config.use_auth(<span class="s">&quot;your_id&quot;</span>, <span class="s">&quo
       <br/>
       <div>
         
-          [<a href="https://github.com/arcage/crystal-email/blob/fe7cb4012e5476f029952a776e6ef5363d551f5d/src/email.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>

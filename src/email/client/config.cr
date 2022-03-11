@@ -99,7 +99,7 @@ class EMail::Client
     getter client_name = EMail::Client::DEFAULT_NAME
 
     # Domain name for SMTP **HELO** / **EHLO** command.
-    getter helo_domain : String?
+    getter helo_domain : String
 
     # Callback function to be called when the SMTP server returns **4XX** or **5XX** response.
     #
@@ -144,6 +144,8 @@ class EMail::Client
     # - `auth: {"id", "password"}` -> `#use_auth("id", "password")`
     #
     # Other optional arguments set value to the property that has the same name.
+    #
+    # **Notice:** Since v0.7.0, helo_domain argument is required.
     def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
                     client_name : String? = nil, helo_domain : String,
                     on_failed : EMail::Client::OnFailedProc? = nil,
@@ -169,35 +171,10 @@ class EMail::Client
       config
     end
 
-    # :ditto:
-    @[Deprecated("At the next version, helo_domain option will be required argumnent.")]
-    def self.create(host, port = EMail::DEFAULT_SMTP_PORT, *,
-                    client_name : String? = nil,
-                    on_failed : EMail::Client::OnFailedProc? = nil,
-                    on_fatal_error : EMail::Client::OnFatalErrorProc? = nil,
-                    tls_verify_mode : OpenSSL::SSL::VerifyMode? = nil,
-                    use_tls : TLSMode = TLSMode::NONE,
-                    auth : Tuple(String, String)? = nil,
-                    log : Log? = nil,
-                    dns_timeout : Int32? = nil, connect_timeout : Int32? = nil,
-                    read_timeout : Int32? = nil, write_timeout : Int32? = nil)
-      config = new(host, port)
-      config.client_name = client_name if client_name
-      config.on_failed = on_failed
-      config.on_fatal_error = on_fatal_error if on_fatal_error
-      config.tls_context.verify_mode = tls_verify_mode if tls_verify_mode
-      config.use_tls(use_tls)
-      config.log = log
-      config.use_auth(auth[0], auth[1]) if auth
-      config.dns_timeout = dns_timeout if dns_timeout
-      config.connect_timeout = connect_timeout if connect_timeout
-      config.read_timeout = read_timeout if read_timeout
-      config.write_timeout = write_timeout if write_timeout
-      config
-    end
-
     # Creates instance with minimam setting.
-    def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *, @helo_domain = nil)
+    #
+    # **Notice:** Since v0.7.0, helo_domain argument is required.
+    def initialize(@host, @port = EMail::DEFAULT_SMTP_PORT, *, @helo_domain)
     end
 
     # Domain name for SMTP **HELO** or **EHLO** command.
@@ -208,7 +185,7 @@ class EMail::Client
       @helo_domain = new_domain
     end
 
-    # Use STARTTLS command to encrypt the SMTP session.
+    # Enables TLS function to encrypt the SMTP session.
     def use_tls(tls_mode : TLSMode)
       {% if flag?(:without_openssl) %}
         raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
@@ -234,7 +211,7 @@ class EMail::Client
       @client_name = new_name
     end
 
-    # Set the client to authenticate with SMTP **AUTH** command by using given id and password.
+    # Sets the client to authenticate with SMTP **AUTH** command by using given id and password.
     #
     # Only **AUTH PLAIN** and **AUTH LOGIN** commands are supported.
     #

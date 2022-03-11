@@ -41,25 +41,25 @@ class EMail::ConcurrentSender
   @messages_per_connection : Int32 = 10
   @connection_interval : Int32 = 200
 
-  # Create sender object with given client settings as EMail::Client::Config object.
+  # Creates sender object with given client settings as EMail::Client::Config object.
   def initialize(@config)
   end
 
-  # Send one email with given client settings as several arguments.
+  # Sends one email with given client settings as several arguments.
   #
   # Avairable arguments are same as `EMail::Client::Conifg.create` method.
   def initialize(*args, **named_args)
     initialize(EMail::Client::Config.create(*args, **named_args))
   end
 
-  # Set the maximum number of SMTP connections established at the same time.
+  # Sets the maximum number of SMTP connections established at the same time.
   def number_of_connections=(new_value : Int32)
     raise EMail::Error::SenderError.new("Parameters cannot be set after start sending") if @started
     raise EMail::Error::SenderError.new("Number of connections must be 1 or greater(given: #{new_value})") if new_value < 1
     @number_of_connections = new_value
   end
 
-  # Set the maximum number of email messages sent by one SMTP connection.
+  # Sets the maximum number of email messages sent by one SMTP connection.
   #
   # When the number of sent emails by some SMTP connection reaches this parameter, the current connection will be closed and new one will be opened.
   def messages_per_connection=(new_value : Int32)
@@ -68,20 +68,20 @@ class EMail::ConcurrentSender
     @messages_per_connection = new_value
   end
 
-  # Set the interval milliseconds between some connection is closed and new one is opened.
+  # Sets the interval milliseconds between some connection is closed and new one is opened.
   def connection_interval=(new_interval : Int32)
     raise EMail::Error::SenderError.new("Parameters cannot be set after start sending") if @started
     raise EMail::Error::SenderError.new("Connection interval must be 0 or greater(given: #{new_interval})") if new_interval < 0
     @connection_interval = new_interval
   end
 
-  # Enqueue a email message.
+  # Enqueues a email message.
   def enqueue(message : Message)
     @queue << message.validate!
     Fiber.yield
   end
 
-  # Encueue email messages at the same time.
+  # Encueues email messages at the same time.
   def enqueue(messages : Array(Message))
     messages.each do |message|
       enqueue(message)

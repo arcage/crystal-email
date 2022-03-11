@@ -47,15 +47,25 @@ abstract class EMail::Header
     ((((bytesize.to_f * 8 / 6).ceil) / 4).ceil * 4).to_i
   end
 
+  # Converts header field name to Capitalized-Kebab-Case string.
+  #
+  # ```
+  # Header.normaliz_name("x-mailer") # => "X-Mailer"
+  # ```
+  def self.normalize_name(name : String) : String
+    name = name.split("-").map(&.capitalize).join("-")
+    raise EMail::Error::HeaderError.new("#{name.inspect} is invalid as a header field name.") unless name =~ FIELD_NAME
+    name
+  end
+
   # Returns header name.
   getter name
 
   @name : String
 
-  # Create email header with given header name.
+  # Creates email header with given header name.
   def initialize(field_name : String)
-    raise EMail::Error::HeaderError.new("#{field_name.inspect} is invalid as a header field name.") unless field_name =~ FIELD_NAME
-    @name = field_name.split("-").map(&.capitalize).join("-")
+    @name = Header.normalize_name(field_name)
   end
 
   private def body
@@ -118,6 +128,11 @@ abstract class EMail::Header
     def add(mail_address : Address)
       @list << mail_address
     end
+
+    # Removes all email addrersses
+    def clear
+      @list.clear
+    end
   end
 
   # Email header including only one email addresses such as **Sender**.
@@ -140,14 +155,19 @@ abstract class EMail::Header
       @addr.not_nil!
     end
 
-    # Set email address.
+    # Sets email address.
     def set(mail_address : String, sender_name : String? = nil)
       @addr = Address.new(mail_address, sender_name)
     end
 
-    # Set email address.
+    # Sets email address.
     def set(mail_address : Address)
       @addr = mail_address
+    end
+
+    # Removes email address
+    def clear
+      @addr = nil
     end
   end
 
@@ -161,12 +181,12 @@ abstract class EMail::Header
       super("Date")
     end
 
-    # Set date-time.
+    # Sets date-time.
     def time=(time : Time)
       @timestamp = time
     end
 
-    # Return `true` when the date-time is not set.
+    # Returns `true` when the date-time is not set.
     def empty?
       @timestamp.nil?
     end
@@ -184,7 +204,7 @@ abstract class EMail::Header
       @text
     end
 
-    # Set header body text.
+    # Sets header body text.
     def set(body_text : String)
       @text = body_text
     end
@@ -210,27 +230,27 @@ abstract class EMail::Header
       super("Content-Type")
     end
 
-    # Set Media type parameter
+    # Sets Media type parameter
     def set_parameter(name : String, value : String)
       @params[name] = value
     end
 
-    # Set MIME type and subtype.
+    # Sets MIME type and subtype.
     def set_mime_type(mime_type : String)
       @mime_type = mime_type
     end
 
-    # Set "charset" parameter.
+    # Sets "charset" parameter.
     def set_charset(charset : String)
       @params["charset"] = charset
     end
 
-    # Set "file_name" parameter.
+    # Sets "file_name" parameter.
     def set_fname(file_name : String)
       @params["file_name"] = file_name
     end
 
-    # Set "boundary" parameter.
+    # Sets "boundary" parameter.
     def set_boundary(boundary : String)
       @params["boundary"] = boundary
     end
@@ -259,7 +279,7 @@ abstract class EMail::Header
       super("Content-Transfer-Encoding")
     end
 
-    # Set endoding.
+    # Sets endoding.
     def set(encoding : String)
       @encoding = encoding
     end

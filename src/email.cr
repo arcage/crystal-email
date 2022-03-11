@@ -7,13 +7,13 @@ require "uri"
 require "./email/*"
 
 module EMail
-  VERSION           = "0.6.4"
+  VERSION           = "0.7.0"
   DEFAULT_SMTP_PORT = 25
 
   # :nodoc:
   DOMAIN_FORMAT = /\A[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+(\.[a-zA-Z0-9\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`^{\|\}\~]+)+\z/
 
-  # Send one email with given client settings as EMail::Client::Config object.
+  # Sends one email with given client settings as EMail::Client::Config object.
   #
   # ```
   # config = EMail::Client::Config.new("your.mx.server.name", 587)
@@ -42,7 +42,7 @@ module EMail
     end
   end
 
-  # Send one email with given client settings as several arguments.
+  # Sends one email with given client settings as several arguments.
   #
   # Avairable arguments are same as `EMail::Client::Conifg.create` method.
   # ```
