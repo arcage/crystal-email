@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.2.0">
-<meta name="crystal_docs.project_version" content="0.6.4-dev">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="email">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="email">
-  <title>EMail::ConcurrentSender - email 0.6.4-dev</title>
+  <title>EMail::ConcurrentSender - email 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.4-dev
+        0.7.0
       </span>
     </div>
   </div>
@@ -232,7 +232,9 @@ sender.start <span class="k">do</span>
   </h2>
   
     
-      email/concurrent_sender.cr
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L33" target="_blank">
+        email/concurrent_sender.cr
+      </a>
     
     <br/>
   
@@ -254,14 +256,14 @@ sender.start <span class="k">do</span>
       <li class="entry-summary">
         <a href="#new%28config%29-class-method" class="signature"><strong>.new</strong>(config)</a>
         
-          <div class="summary"><p>Create sender object with given client settings as EMail::Client::Config object.</p></div>
+          <div class="summary"><p>Creates sender object with given client settings as EMail::Client::Config object.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#new%28%2Aargs%2C%2A%2Anamed_args%29-class-method" class="signature"><strong>.new</strong>(*args, **named_args)</a>
         
-          <div class="summary"><p>Send one email with given client settings as several arguments.</p></div>
+          <div class="summary"><p>Sends one email with given client settings as several arguments.</p></div>
         
       </li>
     
@@ -284,35 +286,35 @@ sender.start <span class="k">do</span>
       <li class="entry-summary">
         <a href="#connection_interval%3D%28new_interval%3AInt32%29-instance-method" class="signature"><strong>#connection_interval=</strong>(new_interval : Int32)</a>
         
-          <div class="summary"><p>Set the interval milliseconds between some connection is closed and new one is opened.</p></div>
+          <div class="summary"><p>Sets the interval milliseconds between some connection is closed and new one is opened.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#enqueue%28messages%3AArray%28Message%29%29-instance-method" class="signature"><strong>#enqueue</strong>(messages : Array(Message))</a>
         
-          <div class="summary"><p>Encueue email messages at the same time.</p></div>
+          <div class="summary"><p>Encueues email messages at the same time.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#enqueue%28message%3AMessage%29-instance-method" class="signature"><strong>#enqueue</strong>(message : Message)</a>
         
-          <div class="summary"><p>Enqueue a email message.</p></div>
+          <div class="summary"><p>Enqueues a email message.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#messages_per_connection%3D%28new_value%3AInt32%29-instance-method" class="signature"><strong>#messages_per_connection=</strong>(new_value : Int32)</a>
         
-          <div class="summary"><p>Set the maximum number of email messages sent by one SMTP connection.</p></div>
+          <div class="summary"><p>Sets the maximum number of email messages sent by one SMTP connection.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#number_of_connections%3D%28new_value%3AInt32%29-instance-method" class="signature"><strong>#number_of_connections=</strong>(new_value : Int32)</a>
         
-          <div class="summary"><p>Set the maximum number of SMTP connections established at the same time.</p></div>
+          <div class="summary"><p>Sets the maximum number of SMTP connections established at the same time.</p></div>
         
       </li>
     
@@ -373,11 +375,13 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Create sender object with given client settings as EMail::Client::Config object.</p>
+          <p>Creates sender object with given client settings as EMail::Client::Config object.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -392,12 +396,14 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Send one email with given client settings as several arguments.</p>
+          <p>Sends one email with given client settings as several arguments.</p>
 <p>Avairable arguments are same as <code>EMail::Client::Conifg.create</code> method.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -426,11 +432,13 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Set the interval milliseconds between some connection is closed and new one is opened.</p>
+          <p>Sets the interval milliseconds between some connection is closed and new one is opened.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -445,11 +453,13 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Encueue email messages at the same time.</p>
+          <p>Encueues email messages at the same time.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -464,11 +474,13 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Enqueue a email message.</p>
+          <p>Enqueues a email message.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L79" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -483,12 +495,14 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Set the maximum number of email messages sent by one SMTP connection.</p>
+          <p>Sets the maximum number of email messages sent by one SMTP connection.</p>
 <p>When the number of sent emails by some SMTP connection reaches this parameter, the current connection will be closed and new one will be opened.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -503,11 +517,13 @@ sender.start <span class="k">do</span>
       
         <div class="doc">
           
-          <p>Set the maximum number of SMTP connections established at the same time.</p>
+          <p>Sets the maximum number of SMTP connections established at the same time.</p>
         </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -527,6 +543,8 @@ sender.start <span class="k">do</span>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/concurrent_sender.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>
