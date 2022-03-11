@@ -391,7 +391,7 @@ class EMail::Message
     @custom_headers << opt_hdr
   end
 
-  # Removes custom headers with specific name.
+  # Removes all custom headers with specific name.
   def clear_custom_header(name : String)
     normalized_name = Header.normalize_name(name)
     @custom_headers.reject! { |opt_hdr| opt_hdr.name == normalized_name }
