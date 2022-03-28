@@ -41,6 +41,8 @@ You may have to install those libraries to your system.
 
 To send a minimal email message:
 
+**NOTE: Since v0.7.0, EMail::Client::Config object require `helo_domain` argument at initializing.**
+
 ```crystal
 require "email"
 
@@ -57,7 +59,7 @@ email.message <<-EOM
   EOM
 
 # Set SMTP client configuration
-config = EMail::Client::Config.new("your.mx.example.com", 25)
+config = EMail::Client::Config.new("your.mx.example.com", 25, helo_domain: "your.host.example.com")
 
 # Create SMTP client object
 client = EMail::Client.new(config)
@@ -102,7 +104,7 @@ By using `EMail::ConcurrentSender` object, you can concurrently send multiple me
 rcpt_list = ["a@example.com", "b@example.com", "c@example.com", "d@example.com"]
 
 # Set SMTP client configuration
-config = EMail::Client::Config.new("your.mx.example.com", 25)
+config = EMail::Client::Config.new("your.mx.example.com", 25, helo_domain: "your.host.example.com")
 
 # Create concurrent sender object
 sender = EMail::ConcurrentSender.new(config)
