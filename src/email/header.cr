@@ -1,5 +1,5 @@
 # :nodoc:
-abstract class NetUtils::EMail::Header
+abstract class EMail::Header
   # :nodoc:
   FIELD_NAME = /\A[\x{21}-\x{39}\x{3b}-\x{7e}]+\z/
   # :nodoc:
@@ -54,7 +54,7 @@ abstract class NetUtils::EMail::Header
   # ```
   def self.normalize_name(name : String) : String
     name = name.split("-").map(&.capitalize).join("-")
-    raise EMail::HeaderError.new("#{name.inspect} is invalid as a header field name.") unless name =~ FIELD_NAME
+    raise EMail::Error::HeaderError.new("#{name.inspect} is invalid as a header field name.") unless name =~ FIELD_NAME
     name
   end
 
@@ -79,7 +79,7 @@ abstract class NetUtils::EMail::Header
 
   def to_s(io : IO)
     header_body = body
-    raise EMail::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
+    raise EMail::Error::HeaderError.new("Header #{@name} includes invalid line break(s).") if header_body =~ /\n[^\x{9}\x{20}]/
     io << @name << ":"
     offset = @name.size + 1
     if header_body =~ FIELD_BODY

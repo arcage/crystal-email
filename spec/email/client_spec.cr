@@ -1,5 +1,5 @@
-describe NetUtils::EMail::Client do
-  email = NetUtils::EMail::Message.new
+describe EMail::Client do
+  email = EMail::Message.new
   email.from "from@example.com"
   email.to "to@example.com"
   email.subject "Subject"
@@ -8,9 +8,9 @@ describe NetUtils::EMail::Client do
   describe "#send" do
     it "try to send an email to SMTP server, but recipient refused." do
       log = String.build do |io|
-        NetUtils::EMail::Client.log_io = io
-        config = NetUtils::EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
-        client = NetUtils::EMail::Client.new(config)
+        EMail::Client.log_io = io
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
+        client = EMail::Client.new(config)
         client.start do
           send(email).should be_false
         end
@@ -20,12 +20,12 @@ describe NetUtils::EMail::Client do
 
     it "send an email with SMTP auth." do
       log = String.build do |io|
-        NetUtils::EMail::Client.log_io = io
-        config = NetUtils::EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
+        EMail::Client.log_io = io
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
         config.use_tls(:starttls)
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "password")
-        client = NetUtils::EMail::Client.new(config)
+        client = EMail::Client.new(config)
         client.start do
           send(email).should be_true
         end
@@ -35,12 +35,12 @@ describe NetUtils::EMail::Client do
 
     it "try to send an email with invalid password, but authentication refused." do
       log = String.build do |io|
-        NetUtils::EMail::Client.log_io = io
-        config = NetUtils::EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
+        EMail::Client.log_io = io
+        config = EMail::Client::Config.new("localhost", 25, helo_domain: "example.com")
         config.use_tls(:starttls)
         config.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
         config.use_auth("from@example.com", "invalid")
-        client = NetUtils::EMail::Client.new(config)
+        client = EMail::Client.new(config)
         client.start do
           send(email).should be_false
         end

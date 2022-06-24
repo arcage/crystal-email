@@ -1,4 +1,4 @@
-class NetUtils::EMail::Client
+class EMail::Client
   enum TLSMode
     NONE
     STARTTLS
@@ -181,14 +181,14 @@ class NetUtils::EMail::Client
     #
     # Only FQDN format is acceptable.
     def helo_domain=(new_domain : String)
-      raise EMail::ClientConfigError.new("Invalid HELO domain \"#{helo_domain}\"") unless new_domain =~ DOMAIN_FORMAT
+      raise EMail::Error::ClientConfigError.new("Invalid HELO domain \"#{helo_domain}\"") unless new_domain =~ DOMAIN_FORMAT
       @helo_domain = new_domain
     end
 
     # Enables TLS function to encrypt the SMTP session.
     def use_tls(tls_mode : TLSMode)
       {% if flag?(:without_openssl) %}
-        raise EMail::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
+        raise EMail::Error::ClientConfigError.new("TLS is disabled because `-D without_openssl` was passed at compile time")
       {% end %}
       @tls = tls_mode
     end
@@ -207,7 +207,7 @@ class NetUtils::EMail::Client
     #
     # Only alphabets(`a`-`z`, `A`-`Z`), numbers(`0`-`9`), and underscore(`_`) are acceptable.
     def client_name=(new_name : String)
-      raise EMail::ClientConfigError.new("Invalid client name \"#{new_name}\"") if new_name.empty? || new_name =~ /\W/
+      raise EMail::Error::ClientConfigError.new("Invalid client name \"#{new_name}\"") if new_name.empty? || new_name =~ /\W/
       @client_name = new_name
     end
 
@@ -238,7 +238,7 @@ class NetUtils::EMail::Client
     {% for name in ["dns", "connect", "read", "write"] %}
     # {{name.id.upcase}} timeout for the socket.
     def {{name.id}}_timeout=(sec : Int32)
-      raise EMail::ClientConfigError.new("{{name.id}}_timeout must be greater than 0.") unless sec > 0
+      raise EMail::Error::ClientConfigError.new("{{name.id}}_timeout must be greater than 0.") unless sec > 0
       @{{name.id}}_timeout = sec
     end
     {% end %}

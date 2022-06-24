@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.2.0">
+<meta name="crystal_docs.project_version" content="0.7.0">
+<meta name="crystal_docs.project_name" content="email">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="email">
+  <title>EMail::Client - email 0.7.0</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          email
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.7.0
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="email/EMail" data-name="email">
+      <a href="../EMail.html">EMail</a>
+      
+        <ul>
+  
+  <li class="parent open current" data-id="email/EMail/Client" data-name="email::client">
+      <a href="../EMail/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="email/EMail/Client/Config" data-name="email::client::config">
+      <a href="../EMail/Client/Config.html">Config</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Client/OnFailedProc" data-name="email::client::onfailedproc">
+      <a href="../EMail/Client/OnFailedProc.html">OnFailedProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Client/OnFatalErrorProc" data-name="email::client::onfatalerrorproc">
+      <a href="../EMail/Client/OnFatalErrorProc.html">OnFatalErrorProc</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Client/TLSMode" data-name="email::client::tlsmode">
+      <a href="../EMail/Client/TLSMode.html">TLSMode</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/ConcurrentSender" data-name="email::concurrentsender">
+      <a href="../EMail/ConcurrentSender.html">ConcurrentSender</a>
+      
+    </li>
+  
+  <li class="parent " data-id="email/EMail/Error" data-name="email::error">
+      <a href="../EMail/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="email/EMail/Error/AddressError" data-name="email::error::addresserror">
+      <a href="../EMail/Error/AddressError.html">AddressError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/ClientConfigError" data-name="email::error::clientconfigerror">
+      <a href="../EMail/Error/ClientConfigError.html">ClientConfigError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/ClientError" data-name="email::error::clienterror">
+      <a href="../EMail/Error/ClientError.html">ClientError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/ContentError" data-name="email::error::contenterror">
+      <a href="../EMail/Error/ContentError.html">ContentError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/HeaderError" data-name="email::error::headererror">
+      <a href="../EMail/Error/HeaderError.html">HeaderError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/MessageError" data-name="email::error::messageerror">
+      <a href="../EMail/Error/MessageError.html">MessageError</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Error/SenderError" data-name="email::error::sendererror">
+      <a href="../EMail/Error/SenderError.html">SenderError</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Message" data-name="email::message">
+      <a href="../EMail/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="email/EMail/Sender" data-name="email::sender">
+      <a href="../EMail/Sender.html">Sender</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> EMail::Client
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../EMail/Client.html">EMail::Client</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>SMTP client object.</p>
+<h3><a id="client-configuration" class="anchor" href="#client-configuration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Client configuration</h3>
+<p>EMail::Client::Config object is used to set client configrations.</p>
+<h3><a id="logging" class="anchor" href="#logging">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Logging</h3>
+<p>Without client specific logger in EMail::Client::Config, all EMail::Client objects use the default logger.</p>
+<p>The default logger can be got by EMail::Client.log
+You can set log level, output IO, and log formatter for the default logger by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L17" target="_blank">
+        email/client.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client/config.cr#L1" target="_blank">
+        email/client/config.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28config%3AEMail%3A%3AClient%3A%3AConfig%2Cnumber%3Dnil%29-class-method" class="signature"><strong>.new</strong>(config : EMail::Client::Config, number = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Creates smtp client object by EMail::Client::Config object.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#log%3ALog-class-method" class="signature"><strong>.log</strong> : Log</a>
+        
+          <div class="summary"><p>Gets default logger(<a href="https://crystal-lang.org/api/OpenSSL/Log.html">Log</a> type object) to output SMTP log.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_formatter%3D%28new_formatter%3ALog%3A%3AFormatter%29-class-method" class="signature"><strong>.log_formatter=</strong>(new_formatter : Log::Formatter)</a>
+        
+          <div class="summary"><p>Sets log formatter for default logger.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_io%3D%28new_io%3AIO%29-class-method" class="signature"><strong>.log_io=</strong>(new_io : IO)</a>
+        
+          <div class="summary"><p>Sets log io for default logger.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#log_level%3D%28new_level%3ALog%3A%3ASeverity%29-class-method" class="signature"><strong>.log_level=</strong>(new_level : Log::Severity)</a>
+        
+          <div class="summary"><p>Sets log level for default logger.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#config%3AEMail%3A%3AClient%3A%3AConfig-instance-method" class="signature"><strong>#config</strong> : EMail::Client::Config</a>
+        
+          <div class="summary"><p>Gets cliet config object.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#send%28mail%3AEMail%3A%3AMessage%29%3ABool-instance-method" class="signature"><strong>#send</strong>(mail : EMail::Message) : Bool</a>
+        
+          <div class="summary"><p>Sends a email message</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#start%28%26%29-instance-method" class="signature"><strong>#start</strong>(&)</a>
+        
+          <div class="summary"><p>Starts SMTP session.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(config:EMail::Client::Config,number=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(config : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>, number = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#new%28config%3AEMail%3A%3AClient%3A%3AConfig%2Cnumber%3Dnil%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates smtp client object by EMail::Client::Config object.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L89" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="log:Log-class-method">
+      <div class="signature">
+        
+        def self.<strong>log</strong> : Log
+
+        <a class="method-permalink" href="#log%3ALog-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Gets default logger(<a href="https://crystal-lang.org/api/OpenSSL/Log.html">Log</a> type object) to output SMTP log.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_formatter=(new_formatter:Log::Formatter)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_formatter=</strong>(new_formatter : Log::Formatter)
+
+        <a class="method-permalink" href="#log_formatter%3D%28new_formatter%3ALog%3A%3AFormatter%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets log formatter for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L55" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_io=(new_io:IO)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_io=</strong>(new_io : IO)
+
+        <a class="method-permalink" href="#log_io%3D%28new_io%3AIO%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets log io for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L47" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="log_level=(new_level:Log::Severity)-class-method">
+      <div class="signature">
+        
+        def self.<strong>log_level=</strong>(new_level : Log::Severity)
+
+        <a class="method-permalink" href="#log_level%3D%28new_level%3ALog%3A%3ASeverity%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets log level for default logger.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L41" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="config:EMail::Client::Config-instance-method">
+      <div class="signature">
+        
+        def <strong>config</strong> : <a href="../EMail/Client/Config.html">EMail::Client::Config</a>
+
+        <a class="method-permalink" href="#config%3AEMail%3A%3AClient%3A%3AConfig-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Gets cliet config object.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L86" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="send(mail:EMail::Message):Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>send</strong>(mail : <a href="../EMail/Message.html">EMail::Message</a>) : Bool
+
+        <a class="method-permalink" href="#send%28mail%3AEMail%3A%3AMessage%29%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sends a email message</p>
+<p>You can call this only in the block of the <code><a href="../EMail/Client.html#start%28%26%29-instance-method">EMail::Client#start</a></code> method.
+This retruns sending result as Bool(<code>true</code> for success, <code>false</code> for fail).</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L178" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="start(&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>start</strong>(&)
+
+        <a class="method-permalink" href="#start%28%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Starts SMTP session.</p>
+<p>In the block, the default receiver will be <code>self</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/arcage/crystal-email/blob/9c1dddeca5b97bffbfc5f65a2f3c71144c10186f/src/email/client.cr#L107" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>

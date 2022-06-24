@@ -1,4 +1,4 @@
-module NetUtils::EMail
+module EMail
   # :nodoc:
   MIME_TYPE = {
     ".123"         => "application/vnd.lotus-1-2-3",

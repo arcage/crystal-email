@@ -184,7 +184,7 @@
 # ```
 #
 # `#message_resource` is lmost same as `#attach` expect it requires `cid` argument.
-class NetUtils::EMail::Message
+class EMail::Message
   @preset_headers = {
     return_path: EMail::Header::SingleAddress.new("Return-Path"),
     sender:      EMail::Header::SingleAddress.new("Sender"),
@@ -208,11 +208,11 @@ class NetUtils::EMail::Message
 
   # :nodoc:
   def validate!
-    raise EMail::MessageError.new("Message has no subject.") if @preset_headers[:subject].empty?
-    raise EMail::MessageError.new("Message has no From address.") if @preset_headers[:from].empty?
-    raise EMail::MessageError.new("Message has no To addresses.") if @preset_headers[:to].empty?
-    raise EMail::MessageError.new("Message has no contents.") if @body.empty? && @body_html.empty? && @attachments.empty?
-    raise EMail::MessageError.new("Message has related resoures, but no text message") if message_has_resource? && !has_message?
+    raise EMail::Error::MessageError.new("Message has no subject.") if @preset_headers[:subject].empty?
+    raise EMail::Error::MessageError.new("Message has no From address.") if @preset_headers[:from].empty?
+    raise EMail::Error::MessageError.new("Message has no To addresses.") if @preset_headers[:to].empty?
+    raise EMail::Error::MessageError.new("Message has no contents.") if @body.empty? && @body_html.empty? && @attachments.empty?
+    raise EMail::Error::MessageError.new("Message has related resoures, but no text message") if message_has_resource? && !has_message?
     if @preset_headers[:sender].empty? && @preset_headers[:from].size > 1
       sender @preset_headers[:from].list.first
     end
@@ -293,7 +293,7 @@ class NetUtils::EMail::Message
     elsif has_html_message?
       @body_html
     else
-      raise EMail::MessageError.new("Message doesn't have both of text and html message.")
+      raise EMail::Error::MessageError.new("Message doesn't have both of text and html message.")
     end
   end
 
@@ -369,7 +369,7 @@ class NetUtils::EMail::Message
   #
   # Almost same as `#attach` expect this require `cid` argument.
   def message_resource(file_path : String, cid : String, file_name : String? = nil, mime_type : String? = nil)
-    raise EMail::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise EMail::Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = EMail::Content::AttachmentFile.new(file_path, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
@@ -377,15 +377,15 @@ class NetUtils::EMail::Message
   #
   # Almost same as `#attach` expect this require `cid` argument.
   def message_resource(io : IO, cid : String, file_name : String, mime_type : String? = nil)
-    raise EMail::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
+    raise EMail::Error::MessageError.new("CID #{cid} already exists.") if @body_resources.has_key?(cid)
     @body_resources[cid] = EMail::Content::AttachmentFile.new(io, file_id: cid, file_name: file_name, mime_type: mime_type)
   end
 
   # Sets cuntome header you want to set to the message.
   def custom_header(name : String, value : String)
     normalized_name = name.downcase.gsub('-', '_')
-    raise EMail::MessageError.new("Mime-Version header is automatically set to 1.0, and cannot be overwritten.") if normalized_name == "mime_version"
-    raise EMail::MessageError.new("#{name} header must be set by using ##{normalized_name} method") if @preset_headers.keys.map(&.to_s).includes?(normalized_name)
+    raise EMail::Error::MessageError.new("Mime-Version header is automatically set to 1.0, and cannot be overwritten.") if normalized_name == "mime_version"
+    raise EMail::Error::MessageError.new("#{name} header must be set by using ##{normalized_name} method") if @preset_headers.keys.map(&.to_s).includes?(normalized_name)
     opt_hdr = EMail::Header::Unstructured.new(name)
     opt_hdr.set(value)
     @custom_headers << opt_hdr
