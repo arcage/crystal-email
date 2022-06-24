@@ -1,6 +1,4 @@
-# EMail for Crystal
-
-[![Build Status](https://travis-ci.org/arcage/crystal-email.svg?branch=master)](https://travis-ci.org/arcage/crystal-email)
+# NetUtils.cr/EMail for Crystal
 
 Simple email sending library for the [Crystal programming language](https://crystal-lang.org).
 
@@ -26,7 +24,7 @@ First, add the dependency to your `shard.yml`:
 ```yaml
 dependencies:
   email:
-    github: arcage/crystal-email
+    github: NetUtils-cr/email
 ```
 
 Then, run `shards install`
@@ -47,7 +45,7 @@ To send a minimal email message:
 require "email"
 
 # Create email message
-email = EMail::Message.new
+email = NetUtils::EMail::Message.new
 email.from    "your_addr@example.com"
 email.to      "to@example.com"
 email.subject "Subject of the mail"
@@ -59,10 +57,10 @@ email.message <<-EOM
   EOM
 
 # Set SMTP client configuration
-config = EMail::Client::Config.new("your.mx.example.com", 25, helo_domain: "your.host.example.com")
+config = NetUtils::EMail::Client::Config.new("your.mx.example.com", 25, helo_domain: "your.host.example.com")
 
 # Create SMTP client object
-client = EMail::Client.new(config)
+client = NetUtils::EMail::Client.new(config)
 
 client.start do
   # In this block, default receiver is client
@@ -80,58 +78,19 @@ This code will output log entries to `STDOUT` as follows:
 
 ### Client configs
 
-You can set some connection settings to `EMail::Client::Config` object.
+You can set some connection settings to `NetUtils::EMail::Client::Config` object.
 
 That can make SMTP connection to use TLS / SMTP AUTH, or output more detailed log message.
 
-See [EMail::Client::Config](https://www.denchu.org/crystal-email/EMail/Client/Config.html) for more details.
+See [NetUtils::EMail::Client::Config](https://www.denchu.org/crystal-email/EMail/Client/Config.html) for more details.
 
 ### Email message
 
-You can set more email headers to `EMail::Message` object.
+You can set more email headers to `NetUtils::EMail::Message` object.
 
 And, you can also send emails including attachment files, HTML message, and/or resource files related message body(e.g. image file for HTML message).
 
-See [EMail::Message](https://www.denchu.org/crystal-email/EMail/Message.html) for more details.
-
-### Concurrent sending
-
-**Note: this feature supports the _concurrent_(not parallel) sending with only one thread.**
-
-By using `EMail::ConcurrentSender` object, you can concurrently send multiple messages by multiple connections.
-
-```crystal
-rcpt_list = ["a@example.com", "b@example.com", "c@example.com", "d@example.com"]
-
-# Set SMTP client configuration
-config = EMail::Client::Config.new("your.mx.example.com", 25, helo_domain: "your.host.example.com")
-
-# Create concurrent sender object
-sender = EMail::ConcurrentSender.new(config)
-
-# Sending emails with concurrently 3 connections.
-sender.number_of_connections = 3
-
-# Sending max 10 emails by 1 connection.
-sender.messages_per_connection = 10
-
-# Start email sending.
-sender.start do
-  # In this block, default receiver is sender
-  rcpts_list.each do |rcpt_to|
-    # Create email message
-    mail = EMail::Message.new
-    mail.from "your_addr@example.com"
-    mail.to rcpt_to
-    mail.subject "Concurrent email sending"
-    mail.message "message to #{rcpt_to}"
-    # Enqueue the email to sender
-    enqueue mail
-  end
-end
-```
-
-See [EMail::ConcurrentSender](https://www.denchu.org/crystal-email/EMail/ConcurrentSender.html) for more details.
+See [NetUtils::EMail::Message](https://www.denchu.org/crystal-email/EMail/Message.html) for more details.
 
 ## Logging
 
@@ -139,13 +98,11 @@ The v0.34.0 of Crystal language has drastic changes in the logging functions. To
 
 You can use two kinds of logger(`Log` type object), the **default logger** and the **client specific logger**.
 
-The **default logger** is declered on the `EMail::Client` type. It can be got by `EMail::Client.log`, and change its behavior by `EMail::Client.log_***=` methods.
+The **default logger** is declered on the `NetUtils::EMail::Client` type. It can be got by `NetUtils::EMail::Client.log`, and change its behavior by `NetUtils::EMail::Client.log_***=` methods.
 
-On the other hand, the **client specific logger** will be set to `EMail::Client` instance itself by `EMail::Client::Config` setting. With this, you can use your own logger for the `EMail::Client` object.
+On the other hand, the **client specific logger** will be set to `NetUtils::EMail::Client` instance itself by `EMail::Client::Config` setting. With this, you can use your own logger for the `EMail::Client` object.
 
-If the `EMail::Client` object has the **client specific logger**, the client use it to output the log entries. Otherwise, the client use the **default logger**.
-
-See [EMail::Client](https://www.denchu.org/crystal-email/EMail/Client.html) and [EMail::Client::Config](https://www.denchu.org/crystal-email/EMail/Client/Config.html) for more details.
+If the `NetUtils::EMail::Client` object has the **client specific logger**, the client use it to output the log entries. Otherwise, the client use the **default logger**.
 
 ### Debug log
 
@@ -167,4 +124,4 @@ But, in the case of using SMTP AUTH, the debug log includes Base64 encoded user 
 
 Thank you for valuable contributions.
 
-- [Contributors](https://github.com/arcage/crystal-email/graphs/contributors)
+- [Contributors](https://github.com/NetUtils-cr/email/graphs/contributors)

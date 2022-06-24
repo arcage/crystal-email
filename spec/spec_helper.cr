@@ -1,2 +1,2 @@
 require "spec"
-require "../src/email"
+require "../src/net_utils/email"

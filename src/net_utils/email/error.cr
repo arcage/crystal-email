@@ -1,4 +1,6 @@
-class EMail::Error < Exception
+module NetUtils::EMail
+  class Error < Exception; end
+
   class AddressError < Error; end
 
   class ContentError < Error; end

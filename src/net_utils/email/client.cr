@@ -14,7 +14,7 @@ require "log"
 # The default logger can be got by EMail::Client.log
 # You can set log level, output IO, and log formatter for the default logger by using EMail::Client.log_level=, EMail::Client.log_io=, EMail::Client.log_formatter= methods respectively.
 #
-class EMail::Client
+class NetUtils::EMail::Client
   # :nodoc:
   DEFAULT_NAME = "EMail_Client"
 
@@ -97,7 +97,7 @@ class EMail::Client
     if _socket = @socket
       _socket
     else
-      raise EMail::Error::ClientError.new("Client socket not opened.")
+      raise EMail::ClientError.new("Client socket not opened.")
     end
   end
 
@@ -142,7 +142,7 @@ class EMail::Client
         log_info("socket is already useing TLS.")
         true
       else
-        raise Error::ClientError.new("socket is not opened.")
+        raise EMail::ClientError.new("socket is not opened.")
         false
       end
     {% end %}
@@ -176,7 +176,7 @@ class EMail::Client
   # You can call this only in the block of the `EMail::Client#start` method.
   # This retruns sending result as Bool(`true` for success, `false` for fail).
   def send(mail : EMail::Message) : Bool
-    raise EMail::Error::ClientError.new("Email client has not been started") unless @started
+    raise EMail::ClientError.new("Email client has not been started") unless @started
     @command_history.clear
     mail = mail_validate!(mail)
     mail_from = mail.mail_from
@@ -223,7 +223,7 @@ class EMail::Client
           break
         end
       else
-        raise EMail::Error::ClientError.new("Invalid responce \"#{line}\" received.")
+        raise EMail::ClientError.new("Invalid responce \"#{line}\" received.")
       end
     end
     status_message = status_messages.join(" / ")

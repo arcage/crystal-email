@@ -1,5 +1,5 @@
 # :nodoc:
-abstract class EMail::Content
+abstract class NetUtils::EMail::Content
   @mime_type : String
   @data : String = ""
   @content_type : Header::ContentType
@@ -99,7 +99,7 @@ abstract class EMail::Content
 
     def initialize(file_path : String, file_id : String? = nil, file_name : String? = nil, mime_type : String? = nil)
       file_name ||= file_path.split(/\//).last
-      raise EMail::Error::ContentError.new("Attached file #{file_path} is not exist.") unless File.file?(file_path)
+      raise EMail::ContentError.new("Attached file #{file_path} is not exist.") unless File.file?(file_path)
       File.open(file_path) do |io|
         initialize(io, file_id: file_id, file_name: file_name, mime_type: mime_type)
       end
