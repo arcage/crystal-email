@@ -124,16 +124,16 @@ class EMail::Client
     property log : Log?
 
     # DNS timeout for the socket.
-    getter dns_timeout : Int32?
+    getter dns_timeout : Time::Span?
 
     # CONNECT timeout for the socket.
-    getter connect_timeout : Int32?
+    getter connect_timeout : Time::Span?
 
     # READ timeout for the socket.
-    getter read_timeout : Int32?
+    getter read_timeout : Time::Span?
 
     # WRITE timeout for the socket.
-    getter write_timeout : Int32?
+    getter write_timeout : Time::Span?
 
     @tls : TLSMode = TLSMode::NONE
     @auth : NamedTuple(id: String, password: String)?
@@ -239,7 +239,7 @@ class EMail::Client
     # {{name.id.upcase}} timeout for the socket.
     def {{name.id}}_timeout=(sec : Int32)
       raise EMail::Error::ClientConfigError.new("{{name.id}}_timeout must be greater than 0.") unless sec > 0
-      @{{name.id}}_timeout = sec
+      @{{name.id}}_timeout = sec.second
     end
     {% end %}
   end
