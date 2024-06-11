@@ -7,7 +7,7 @@ require "uri"
 require "./email/*"
 
 module EMail
-  VERSION           = "0.7.0"
+  VERSION           = "0.7.1"
   DEFAULT_SMTP_PORT = 25
 
   # :nodoc:
